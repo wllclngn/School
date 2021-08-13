@@ -1,4 +1,4 @@
-/*** WARNING: UNFINISHED ***/
+/*** WARNING: UI UNFINISHED ***/
 
 package main
 
@@ -436,50 +436,29 @@ func riscSim(x []string, y bool) {
 			system[loadVarInt] = logJunk
 			system[8] = "010000"
 			i += 2
-
-		/**************************************
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		HIT AND MISS
-		***************************************/
 		case x[i] == "STOREHALF":
 			/* REG TO MEM */
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
+			tempJunk[0] = x[i+1]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt, _ := strconv.Atoi(loadVar[0])
+			tempJunk[1] = x[i+2]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt2, _ := strconv.Atoi(loadVar[1])
+			system[loadVarInt] = system[loadVarInt2][((len(system[loadVarInt2]) - 1) / 2):]
 			system[8] = "010001"
-			system[results1] = subJunk2
-			i += 3
+			i += 2
 		case x[i] == "STOREWORD":
 			/* REG TO MEM */
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
+			tempJunk[0] = x[i+1]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt, _ := strconv.Atoi(loadVar[0])
+			tempJunk[1] = x[i+2]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt2, _ := strconv.Atoi(loadVar[1])
+			system[loadVarInt] = system[loadVarInt2]
 			system[8] = "010010"
-			system[results1] = subJunk2
-			i += 3
+			i += 2
 		case x[i] == "LOADBYTE":
-			/* DONE */
 			/* MEM TO REG */
 			tempJunk[0], tempJunk[1] = x[i+1], x[i+2]
 			translateOperation(system, tempJunk)
@@ -491,7 +470,6 @@ func riscSim(x []string, y bool) {
 			system[8] = "010011"
 			i += 2
 		case x[i] == "LOADBYTEUN":
-			/* DONE */
 			/* MEM TO REG */
 			tempJunk[0], tempJunk[1] = x[i+1], x[i+2]
 			translateOperation(system, tempJunk)
@@ -504,65 +482,68 @@ func riscSim(x []string, y bool) {
 			i += 2
 		case x[i] == "LOADHALF":
 			/* MEM TO REG */
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
-			system[8] = "010101"
-			system[results1] = subJunk2
-			i += 3
+			tempJunk[0] = x[i+1]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt, _ := strconv.Atoi(loadVar[0])
+			tempJunk[1] = x[i+2]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt2, _ := strconv.Atoi(loadVar[1])
+			system[loadVarInt] = system[loadVarInt2][((len(system[loadVarInt2]) - 1) / 2):]
+			system[8] = "010110"
+			i += 2
 		case x[i] == "LOADHALFUN":
 			/* MEM TO REG */
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
+			tempJunk[0] = x[i+1]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt, _ := strconv.Atoi(loadVar[0])
+			tempJunk[1] = x[i+2]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt2, _ := strconv.Atoi(loadVar[1])
+			system[loadVarInt] = system[loadVarInt2][((len(system[loadVarInt2]) - 1) / 2):]
 			system[8] = "010110"
-			system[results1] = subJunk2
-			i += 3
+			i += 2
 		case x[i] == "LOADWORD":
-			/* MEM TO REG */
-			tempJunk[0], tempJunk[1] = x[i+1], x[i+2]
-			translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			logJunk := strconv.FormatInt(int64(moreJunk1), 2)
-			loadVar := tempJunk[0]
-			loadVarInt, _ := strconv.Atoi(loadVar)
-			system[loadVarInt] = logJunk
+			tempJunk[0] = x[i+1]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt, _ := strconv.Atoi(loadVar[0])
+			tempJunk[1] = x[i+2]
+			_, loadVar = translateOperation(system, tempJunk)
+			loadVarInt2, _ := strconv.Atoi(loadVar[1])
+			system[loadVarInt] = system[loadVarInt2]
 			system[8] = "010111"
 			i += 2
 		case x[i] == "SETLESSTHAN":
-			/* The	immediate	value	(a	sign-extended	12-bit	value,	i.e.,	-2,048	..	+2,047)	is
-			compared	to	the	contents	of	Reg1	using	signed	comparison.	If	the	value	in
-			Reg1	is	less	than	the	immediate	value,	the	value	1	is	stored	in	RegD.
-			Otherwise,	the	value	0	is	stored	in	RegD.*/
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
+			/* COMPARISON TO REGC */
+			tempJunk[0] = x[i+1]
+			_, logJunk := translateOperation(system, tempJunk)
+			results1, _ := strconv.Atoi(logJunk[0])
+			results2, _ := strconv.Atoi(system[results1])
+			tempJunk[0] = x[i+2]
+			_, logJunk2 := translateOperation(system, tempJunk)
+			logJunk3, _ := strconv.Atoi(logJunk2[0])
+			if results2 < logJunk3 {
+				system[0] = "1"
+			} else {
+				system[0] = "0"
+			}
 			system[8] = "011000"
-			system[results1] = subJunk2
-			i += 3
+			i += 2
 		case x[i] == "SETLESSTHANUN":
-			tempJunk[0], tempJunk[1], tempJunk[2] = x[i+1], x[i+2], x[i+3]
-			//translateOperation(system, tempJunk)
-			moreJunk1, _ := strconv.Atoi(tempJunk[1])
-			moreJunk2, _ := strconv.Atoi(tempJunk[2])
-			subJunk := moreJunk1 - moreJunk2
-			subJunk2 := strconv.FormatInt(int64(subJunk), 2)
-			results1, _ := strconv.Atoi(tempJunk[0])
-			system[8] = "011001"
-			system[results1] = subJunk2
-			i += 3
+			/* COMPARISON TO REGC */
+			tempJunk[0] = x[i+1]
+			_, logJunk := translateOperation(system, tempJunk)
+			results1, _ := strconv.Atoi(logJunk[0])
+			results2, _ := strconv.Atoi(system[results1])
+			tempJunk[0] = x[i+2]
+			_, logJunk2 := translateOperation(system, tempJunk)
+			logJunk3, _ := strconv.Atoi(logJunk2[0])
+			if results2 < logJunk3 {
+				system[0] = "1"
+			} else {
+				system[0] = "0"
+			}
+			system[8] = "011000"
+			i += 2
 		case x[i] == "SHIFTLEFTLOG":
 			tempJunk[0] = x[i+1]
 			_, logJunk := translateOperation(system, tempJunk)
@@ -587,12 +568,6 @@ func riscSim(x []string, y bool) {
 			system[8] = "011100"
 			system[results1] = logJunk4
 			i += 2
-		// ***** WORKS ***** //
-		// ***** WORKS ***** //
-		// ***** WORKS ***** //
-		// ***** WORKS ***** //
-		// ***** WORKS ***** //
-		// ***** WORKS ***** //
 		case x[i] == "SHIFTRIGHARTH":
 			tempJunk[0] = x[i+1]
 			_, logJunk := translateOperation(system, tempJunk)
