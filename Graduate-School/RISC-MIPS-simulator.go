@@ -1,5 +1,3 @@
-/*** WARNING: UI UNFINISHED ***/
-
 package main
 
 import (
@@ -21,7 +19,6 @@ func fetchFile(x string, y bool) {
 		return
 	}
 	// CONVERT DATA TO []string, TRIM "\n" CHARACTERS
-	fmt.Print(data)
 	var dataStr []string
 	setup := ""
 	for i := 0; i < len(data); i++ {
@@ -231,14 +228,7 @@ func binToHex(b []string) []string {
 	value3 := ""
 	value4 := []string{}
 
-	fmt.Println(binSlice)
 	for k := 0; k < len(binSlice); k++ {
-		fmt.Println(value2)
-		fmt.Println(value2)
-		fmt.Println(value2)
-		fmt.Println(value2)
-		fmt.Println(value2)
-		fmt.Println(value2)
 		value, _ := strconv.Atoi(binSlice[k])
 		if value > 9 {
 			for l := 0; l < 9223372036854775807; l++ {
@@ -327,7 +317,6 @@ func riscSim(x []string, y bool) {
 	// string >> INSTRUCTIONS, MEM, REGISTER byte 0,1
 	//  ***** DECIMAL TO BINARY ***** //
 	for i := 0; i < len(x); i++ {
-		fmt.Println(x[i:])
 		switch {
 		case x[i] == "ZERO":
 			system[8] = "000000"
@@ -778,8 +767,8 @@ func riscSim(x []string, y bool) {
 			stepScan := bufio.NewScanner(os.Stdin)
 		keepOnSteppin:
 			for stepScan.Scan() {
-				stepper := stepScan.Text()
-				fmt.Printf("INPUT: %q\n", stepper)
+				//stepper := stepScan.Text()
+				//fmt.Printf("INPUT: %q\n", stepper)
 				break keepOnSteppin
 			}
 		}
@@ -1015,23 +1004,15 @@ func main() {
 
 	fmt.Print("Will Clingan\nHomework #2\nCIS 655, Dr. Mo\n6 August 2021\n\n")
 	fmt.Print("Welcome to the command-line RISC-V Simulator.\n\n")
-	fmt.Print("TUTORIAL: List accepted instructions for input programs, as well a few examples.\n")
-	fmt.Print("RUN: Load in a new program by giving the RISC-V Simulator your file's path (with no quotes).\n")
-	fmt.Print("WALK: Load in Step thru RUN instructions\n")
-	fmt.Print("When ready, enter the branch you wish to take:\n")
+	fmt.Print("When ready, type RUN and press Enter to begin:\n")
 
-	fetcher := ""
+	//fetcher := ""
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		prompt := scanner.Text()
 		fmt.Println()
-		if prompt == "INSTRUCTIONS" {
-			fmt.Println("********** INSTRUCTIONS **********")
-			fmt.Print("********** INSTRUCTIONS **********\n\n")
-			fmt.Println("Enter your next branch:")
-
-		} else if prompt == "RUN" {
-			fmt.Println("********** FETCH **********")
+		if prompt == "RUN" {
+			fmt.Println("********** RUN **********")
 			fmt.Println("Enter the file's path (with no quotes):")
 
 		fetchLoop:
@@ -1055,20 +1036,9 @@ func main() {
 				} else {
 					fetchFile(fetchPrompt, false)
 				}
-				fmt.Println("FETCH of input file succesful.")
-				fmt.Println("********** FETCH **********")
-				fmt.Print("\nEnter your next branch:\n")
+				fmt.Print("\nSUCCESS. Your file has been processed. Please press Ctl+C to iniate program termination.\n")
 				break fetchLoop
 			}
-
-		} else if prompt == "RESET" {
-
-		} else if prompt == "STEP" {
-			if fetcher == "" {
-				fmt.Println("")
-			}
-
-		} else if prompt == "END" {
 
 		}
 	}
