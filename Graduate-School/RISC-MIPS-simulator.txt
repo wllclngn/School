@@ -1,0 +1,8 @@
+# NOTE: Read-in expects a New Line/Carriage Return at the EOF. Please remove this note, too.
+AIN  MEM1
+LOADA MEM2
+BIN  MEM1
+ADD  MEM2, MEM1, 300
+SUB  MEM3, MEM2, 150
+SHIFTLEFTARTH MEM5, MEM3
+SHIFTRIGHARTH MEM1, MEM5
