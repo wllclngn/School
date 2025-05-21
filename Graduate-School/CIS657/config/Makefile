@@ -11,53 +11,42 @@ SHELL_SRCS = \
 	shell/xsh_signaln.c \
 	shell/xsh_resumen.c
 
-# Standard Xinu object files (add others as necessary)
-SYSTEM_OBJS = $(SYSTEM_SRCS:.c=.o)
-SHELL_OBJS  = $(SHELL_SRCS:.c=.o)
+#
+# Make the Xinu configuration program
+#
 
-# All object files
-OBJS = $(SYSTEM_OBJS) $(SHELL_OBJS)
+CC	= gcc
+LEX	= flex
+YACC	= bison -y	# Flag enables yacc-compatible filenames
+CFLAGS	= 
+LFLAGS	= -lfl
 
-# Compiler and flags
-CC      = gcc
-LEX     = flex
-YACC    = bison -y    # Flag enables yacc-compatible filenames
-CFLAGS  = -Wall -Werror -I../include
-LFLAGS  = -lfl
+#
+# Name of the onfiguration program
+#
 
-# Target binaries
-TARGET  = xinu
-CONFIG  = config
+CONFIG	= config
 
-all: $(TARGET) conf.h conf.c
+all:		conf.h conf.c
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS)
+${CONFIG}:	lex.yy.c y.tab.c
+		$(CC) ${CFLAGS} -o $@ y.tab.c ${LFLAGS}
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+lex.yy.c:	config.l
+		$(LEX) config.l
 
-# Configuration generation rules
-${CONFIG}: lex.yy.c y.tab.c
-	$(CC) ${CFLAGS} -o $@ y.tab.c ${LFLAGS}
-
-lex.yy.c: config.l
-	$(LEX) config.l
-
-y.tab.c: config.y
-	$(YACC) config.y
-
-conf.h: $(CONFIG) Configuration
-	./$(CONFIG)
-
-conf.c: $(CONFIG) Configuration
-	./$(CONFIG)
-
-install: conf.h conf.c
-	cp conf.h ../include
-	cp conf.c ../system
+y.tab.c:	config.y
+		$(YACC) config.y
 
 clean:
-	rm -f $(OBJS) $(TARGET) ${CONFIG} lex.yy.c y.tab.c
+		rm -f ${CONFIG} lex.yy.c y.tab.c
 
-.PHONY: all clean install
+conf.h:		$(CONFIG) Configuration
+		./$(CONFIG)
+
+conf.c:		$(CONFIG) Configuration
+		./$(CONFIG)
+
+install:	conf.h conf.c
+		cp conf.h ../include
+		cp conf.c ../system
