@@ -1,4 +1,11 @@
+/* xsh_resumen.c - xsh_resumen */
+
 #include <xinu.h>
+
+/*------------------------------------------------------------
+ * xsh_resumen - Shell command to create a new process. *
+ *------------------------------------------------------------
+ */
 
 shellcmd xsh_resumen(int nargs, char *args[]) {
     int i;

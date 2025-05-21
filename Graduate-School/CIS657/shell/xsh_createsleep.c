@@ -1,5 +1,12 @@
+/* xsh_createsleep.c - xsh_createsleep */
+
 #include <xinu.h>
 extern process runafterwait(void);
+
+/*------------------------------------------------------------
+ * xsh_createsleep - Shell command to sleep a process. *
+ *------------------------------------------------------------
+ */
 
 shellcmd xsh_createsleep(int nargs, char *args[]) {
     int prio = 20;

@@ -1,4 +1,11 @@
+/* xsh_psready.c - xsh_psready */
+
 #include <xinu.h>
+
+/*------------------------------------------------------------
+ * xsh_psready - Shell command to print the PID Table. *
+ *------------------------------------------------------------
+ */
 
 shellcmd xsh_psready(int nargs, char *args[]) {
     int32 i;
