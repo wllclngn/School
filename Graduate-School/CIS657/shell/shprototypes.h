@@ -1,3 +1,17 @@
+/* MIDTERM SETUP */
+
+#ifndef _SHPROTOTYPES_H_
+#define _SHPROTOTYPES_H_
+
+shellcmd xsh_create(int, char *[]);
+shellcmd xsh_createsleep(int, char *[]);
+shellcmd xsh_psready(int, char *[]);
+shellcmd xsh_wait(int, char *[]);
+shellcmd xsh_signaln(int, char *[]);
+shellcmd xsh_resumen(int, char *[]);
+
+#endif
+
 /* in file xsh_argecho.c */
 extern	shellcmd  xsh_argecho	(int32, char *[]);
 
