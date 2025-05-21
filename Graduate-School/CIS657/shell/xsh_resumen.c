@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------
- * xsh_resumen - Shell command to create a new process. *
+ * xsh_resumen - Shell command to resume process. *
  *------------------------------------------------------------
  */
 

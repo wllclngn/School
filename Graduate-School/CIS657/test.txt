@@ -1,5 +1,14 @@
-
-create command that outputs the PID table
-
-create command also is able to intake priority
-
+data:
+- shell/xsh_create.c
+- shell/xsh_createsleep.c
+- shell/xsh_psready.c
+- shell/xsh_wait.c
+- shell/xsh_signaln.c
+- shell/xsh_resumen.c
+- shell/shell.c
+- include/shprototypes.h
+- include/prototypes.h
+- include/semaphore.h
+- system/main.c
+- compile/makefile.c
+- CHANGESUMMARY.md

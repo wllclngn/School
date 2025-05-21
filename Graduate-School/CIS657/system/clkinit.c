@@ -1,6 +1,7 @@
 /* clkinit.c - clkinit */
 
 #include <xinu.h>
+#include <prototypes.h>
 #include <interrupt.h>
 #include <clock.h>
 

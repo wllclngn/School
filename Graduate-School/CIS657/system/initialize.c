@@ -3,6 +3,7 @@
 /* Handle system initialization and become the null process */
 
 #include <xinu.h>
+#include <semaphore.h>
 #include <string.h>
 
 extern	void	start(void);	/* start of Xinu code */
