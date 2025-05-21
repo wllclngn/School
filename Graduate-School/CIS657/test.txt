@@ -1,1 +1,5 @@
 
+create command that outputs the PID table
+
+create command also is able to intake priority
+
