@@ -4,6 +4,7 @@
 
 #include <xinu.h>
 #include <string.h>
+#include <pstarv.h> // <--- ADD THIS INCLUDE
 
 extern	void	start(void);	/* start of Xinu code */
 extern	void	*_end;		/* end of Xinu code */
@@ -24,6 +25,15 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// + DEFINITIONS FOR PSTARV VARIABLES                                   +
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+pid32 pstarv_pid = BADPID;
+bool8 enable_starvation_fix = FALSE; // Set to TRUE if you want the fix active by default
+uint32 pstarv_ready_time = 0;
+uint32 last_boost_time = 0;
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 /* Memory bounds set by start.S */
 
@@ -83,7 +93,7 @@ void	nulluser(void)
 
 	resume (
 	   create((void *)main, INITSTK, INITPRIO, "Main process", 20, 0,
-           NULL));
+            NULL));
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
@@ -198,6 +208,12 @@ static	void	sysinit(void)
 			(devptr->dvinit) (devptr);
 		}
 	}
+
+    // You might also want to initialize your pstarv variables here if needed,
+    // for example, if you have a specific setup function in pstarv.h/c
+    // e.g., initialize_pstarv_subsystem();
+    // For now, their global definitions with initial values are above.
+
 	return;
 }
 
