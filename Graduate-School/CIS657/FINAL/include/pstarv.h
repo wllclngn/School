@@ -3,7 +3,7 @@
 
 #include <xinu.h>
 
-extern pid_t pstarv_pid;
+extern pid32 pstarv_pid;
 extern bool8 enable_starvation_fix;
 extern uint32 pstarv_ready_time;
 extern uint32 last_boost_time;
