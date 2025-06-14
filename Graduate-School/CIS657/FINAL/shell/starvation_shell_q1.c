@@ -15,7 +15,7 @@ shellcmd starvation_test(int nargs, char *args[]) {
 
     // To print states meaningfully, you'd ideally use the macros.
     // For now, we'll just print the numbers.
-    // Example state values (confirm from your Xinu's process.h or similar):
+    // From your include/process.h:
     // #define PR_SUSP 5
     // #define PR_READY 2
 
@@ -48,22 +48,34 @@ shellcmd starvation_test(int nargs, char *args[]) {
     kprintf("P1 created with PID: %d, Initial Priority: 40\n", p1_pid_local);
     kprintf("P2 created with PID: %d, Initial Priority: 35\n", p2_pid_local);
     kprintf("Pstarv created with PID: %d, Initial Priority: 25. This PID will be monitored.\n", pstarv_pid);
-    // Check Pstarv's state immediately after creation
-    kprintf("SHELL: Pstarv (PID: %d) state after create: %d (Expected PR_SUSP, e.g., 5)\n",
+
+    // Check states immediately after creation
+    kprintf("SHELL: P1 (PID: %d) state after create: %d (Expected PR_SUSP = 5)\n",
+            p1_pid_local, proctab[p1_pid_local].prstate);
+    kprintf("SHELL: P2 (PID: %d) state after create: %d (Expected PR_SUSP = 5)\n",
+            p2_pid_local, proctab[p2_pid_local].prstate);
+    kprintf("SHELL: Pstarv (PID: %d) state after create: %d (Expected PR_SUSP = 5)\n",
             pstarv_pid, proctab[pstarv_pid].prstate);
 
+    // Resume Pstarv FIRST and check its state immediately
+    kprintf("SHELL: Calling resume(pstarv_pid (%d))...\n", pstarv_pid);
+    resume(pstarv_pid);
+    kprintf("SHELL: After resume(pstarv_pid (%d)), Pstarv state is: %d (Expected PR_READY = 2)\n",
+            pstarv_pid, proctab[pstarv_pid].prstate);
 
+    // Then resume P1 and P2
+    kprintf("SHELL: Calling resume(p1_pid_local (%d)) and resume(p2_pid_local (%d))...\n", p1_pid_local, p2_pid_local);
     resume(p1_pid_local);
     resume(p2_pid_local);
-    resume(pstarv_pid);
-    // Check Pstarv's state immediately after resume
-    kprintf("SHELL: After resume(pstarv_pid), Pstarv (PID: %d) state is: %d (Expected PR_READY, e.g., 2)\n",
-            pstarv_pid, proctab[pstarv_pid].prstate);
 
-
-    kprintf("Processes resumed. P1 and P2 will run, causing context switches.\n");
-    kprintf("Pstarv's priority will be boosted at each context switch until it runs.\n");
-    kprintf("Watch the output for Pstarv's priority increasing...\n");
+    kprintf("Processes P1, P2, and Pstarv have been resumed.\n");
+    kprintf("P1 and P2 will run, causing context switches.\n");
+    if (enable_starvation_fix == TRUE) {
+        kprintf("Q1 Starvation fix is ENABLED. Pstarv's priority should be boosted at each context switch (if it's ready and not the one switching out).\n");
+    } else {
+        kprintf("Q2 Starvation fix is (presumably) ENABLED. Pstarv's priority should be boosted based on time.\n");
+    }
+    kprintf("Watch the output for Pstarv's priority increasing and relevant DEBUG messages...\n");
 
     return SHELL_OK;
 }
