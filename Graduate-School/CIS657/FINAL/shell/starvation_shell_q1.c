@@ -2,6 +2,7 @@
 #include <pstarv.h> 
 #include <stdio.h>
 
+// Ensure prototypes match implementation signatures!
 extern void p1_func_q1(void);
 extern void p2_func_q1(void);
 extern void pstarv_func_q1(void);
@@ -23,9 +24,19 @@ shellcmd starvation_test(int nargs, char *args[]) {
     pstarv_ready_time = 0; // Initialize for Q2, though not used in Q1 explicitly by shell
     last_boost_time = 0;   // Initialize for Q2
 
-    p1_pid_local = create(p1_func_q1, 1024, 40, "P1_Process", 0);
-    p2_pid_local = create(p2_func_q1, 1024, 35, "P2_Process", 0);
-    pstarv_pid = create(pstarv_func_q1, 1024, 25, "Pstarv_Process", 0); 
+    // Print debug before creation
+    kprintf("[DEBUG] About to create P1, P2, and Pstarv processes (Q1)\n");
+
+    // Create processes for Q1 test
+    p1_pid_local = create((void *)p1_func_q1, 2048, 40, "P1_Process_Q1", 0);
+    p2_pid_local = create((void *)p2_func_q1, 1024, 35, "P2_Process_Q1", 0);
+    pstarv_pid   = create((void *)pstarv_func_q1, 1024, 25, "Pstarv_Process_Q1", 0); 
+
+    // Print states after creation
+    kprintf("[DEBUG] After creation:\n");
+    kprintf("P1 PID: %d, state: %d, prio: %d\n", p1_pid_local, proctab[p1_pid_local].prstate, proctab[p1_pid_local].prprio);
+    kprintf("P2 PID: %d, state: %d, prio: %d\n", p2_pid_local, proctab[p2_pid_local].prstate, proctab[p2_pid_local].prprio);
+    kprintf("Pstarv PID: %d, state: %d, prio: %d\n", pstarv_pid, proctab[pstarv_pid].prstate, proctab[pstarv_pid].prprio);
 
     if (p1_pid_local == SYSERR || p2_pid_local == SYSERR || pstarv_pid == SYSERR) {
         kprintf("Error creating processes.\n");
@@ -49,6 +60,7 @@ shellcmd starvation_test(int nargs, char *args[]) {
     kprintf("SHELL: Pstarv (PID: %d) state after create: %d (Expected PR_SUSP = 5)\n",
             pstarv_pid, proctab[pstarv_pid].prstate);
 
+    // Resume Pstarv first to match original intent
     kprintf("SHELL: Calling resume(pstarv_pid (%d))...\n", pstarv_pid);
     resume(pstarv_pid);
     kprintf("SHELL: After resume(pstarv_pid (%d)), Pstarv state is: %d (Expected PR_READY = 2)\n",
@@ -57,6 +69,12 @@ shellcmd starvation_test(int nargs, char *args[]) {
     kprintf("SHELL: Calling resume(p1_pid_local (%d)) and resume(p2_pid_local (%d))...\n", p1_pid_local, p2_pid_local);
     resume(p1_pid_local);
     resume(p2_pid_local);
+
+    // Print states after resumes
+    kprintf("[DEBUG] After resumes:\n");
+    kprintf("P1 PID: %d, state: %d, prio: %d\n", p1_pid_local, proctab[p1_pid_local].prstate, proctab[p1_pid_local].prprio);
+    kprintf("P2 PID: %d, state: %d, prio: %d\n", p2_pid_local, proctab[p2_pid_local].prstate, proctab[p2_pid_local].prprio);
+    kprintf("Pstarv PID: %d, state: %d, prio: %d\n", pstarv_pid, proctab[pstarv_pid].prstate, proctab[pstarv_pid].prprio);
 
     kprintf("Processes P1, P2, and Pstarv have been resumed.\n");
     kprintf("P1 and P2 will run, causing context switches.\n");

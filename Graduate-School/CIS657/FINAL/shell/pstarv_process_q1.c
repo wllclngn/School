@@ -9,6 +9,6 @@ void pstarv_func_q1(void) {
     kprintf("I (wllclngn) will get a good grade! This simulation rocks!\n");
     kprintf("##########################################################################\n\n");
 
-    enable_starvation_fix = TRUE;
-    pstarv_pid = BADPID;
+    //enable_starvation_fix = TRUE;
+    //pstarv_pid = BADPID;
 }

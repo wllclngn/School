@@ -1,5 +1,4 @@
 #include <xinu.h>
-#include <stdio.h>
 
 #ifndef BADPID
 #define BADPID (-1)
@@ -51,15 +50,15 @@ void resched(void) {
             /**************** Q1 LOGIC: Context-switch based boost ****************/
             if (pstarv_entry->prstate == PR_READY && old_pid != pstarv_pid) {
                 if (pstarv_entry->prprio < MAXKEY) {
-                    pri16 old_prio = pstarv_entry->prprio;
-                    pstarv_entry->prprio += 1;
+                    // Boost by 2 for Q1 logic
+                    pstarv_entry->prprio += 2;
 
-                    kprintf("DEBUG: Q1 Pstarv (PID: %d) priority incremented from %d to %d\n", pstarv_pid, old_prio, pstarv_entry->prprio);
+                    kprintf("DEBUG: Pstarv priority incremented to %d\n", pstarv_entry->prprio);
 
-                    /* Remove from ready list, then re-insert */
-                    dequeue(pstarv_pid);
-                    insert(pstarv_pid, readylist, pstarv_entry->prprio);
-                    kprintf("DEBUG: Q1 Pstarv reinserted into ready queue with priority %d\n", pstarv_entry->prprio);
+                    if (getitem(pstarv_pid) != SYSERR) {
+                        insert(pstarv_pid, readylist, pstarv_entry->prprio);
+                        kprintf("DEBUG: Pstarv reinserted into ready queue with priority %d\n", pstarv_entry->prprio);
+                    }
                 }
             }
         } else {
@@ -80,20 +79,26 @@ void resched(void) {
                     if (new_prio_val > old_prio_val) {
                         pstarv_entry->prprio = new_prio_val;
 
-                        /* Remove from ready list, then re-insert */
-                        dequeue(pstarv_pid);
-                        insert(pstarv_pid, readylist, pstarv_entry->prprio);
-
+                        if (getitem(pstarv_pid) != SYSERR) {
+                            insert(pstarv_pid, readylist, pstarv_entry->prprio);
+                        }
                         last_boost_time = current_time;
 
-                        kprintf("DEBUG: Q2 Pstarv (PID: %d) priority boosted from %d to %d after %dms\n",
-                                pstarv_pid, old_prio_val, new_prio_val, time_since_last_boost);
+                        kprintf("DEBUG: Pstarv priority boosted to %d after %dms\n",
+                                new_prio_val, time_since_last_boost);
                     }
                 }
             }
 
-            /* pstarv_ready_time is now set in the timer interrupt handler */
-
+            if (pstarv_pid == currpid) {
+                if (pstarv_ready_time != 0) {
+                    pstarv_ready_time = 0;
+                    last_boost_time = clktime;
+                }
+            } else if (pstarv_entry->prstate == PR_READY && pstarv_ready_time == 0) {
+                pstarv_ready_time = clktime;
+                last_boost_time = clktime;
+            }
         }
     }
     /* STARVATION FIX LOGIC END */
