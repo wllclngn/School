@@ -7,8 +7,8 @@ extern void p2_func_q1(void);
 extern void pstarv_func_q1(void);
 
 shellcmd starvation_test(int nargs, char *args[]) {
-    pid32 p1_pid_local, p2_pid_local; 
-    
+    pid32 p1_pid_local, p2_pid_local;
+
     if (nargs > 1) {
         kprintf("Usage: starvation_test\n");
         return SHELL_ERROR;
@@ -16,10 +16,9 @@ shellcmd starvation_test(int nargs, char *args[]) {
 
     kprintf("Starting starvation simulation...\n");
 
-    // Initialize global variables for this test run
-    enable_starvation_fix = TRUE; 
+    enable_starvation_fix = TRUE;
     kprintf("SHELL DEBUG: enable_starvation_fix set to %d (1=TRUE, 0=FALSE) at line %d\n", enable_starvation_fix, __LINE__);
-    
+
     pstarv_pid = BADPID; // Initialize monitored PID for this test
     pstarv_ready_time = 0; // Initialize for Q2, though not used in Q1 explicitly by shell
     last_boost_time = 0;   // Initialize for Q2
@@ -29,14 +28,13 @@ shellcmd starvation_test(int nargs, char *args[]) {
     pstarv_pid = create(pstarv_func_q1, 1024, 25, "Pstarv_Process", 0); 
 
     if (p1_pid_local == SYSERR || p2_pid_local == SYSERR || pstarv_pid == SYSERR) {
-        kprintf("Error: Failed to create one or more processes.\n");
+        kprintf("Error creating processes.\n");
         if (p1_pid_local != SYSERR) kill(p1_pid_local);
         if (p2_pid_local != SYSERR) kill(p2_pid_local);
         if (pstarv_pid != SYSERR) kill(pstarv_pid);
-        
-        // Reset globals on error to a safe state
-        enable_starvation_fix = FALSE; 
-        pstarv_pid = BADPID; 
+
+        enable_starvation_fix = FALSE;
+        pstarv_pid = BADPID; // Reset on error
         return SHELL_ERROR;
     }
 
@@ -68,9 +66,6 @@ shellcmd starvation_test(int nargs, char *args[]) {
     if (enable_starvation_fix == TRUE) {
         kprintf("Q1 Starvation fix is ENABLED. Pstarv's priority should be boosted at each context switch (if it's ready and not the one switching out).\n");
     } else {
-        kprintf("Q2 Starvation fix is (presumably) ENABLED. Pstarv's priority should be boosted based on time.\n");
+        kprintf("Q2 Starvation fix is ENABLED. Pstarv's priority should increase based on time spent in ready state.\n");
     }
-    kprintf("Watch the output for Pstarv's priority increasing and relevant DEBUG messages...\n");
-
-    return SHELL_OK;
 }
