@@ -26,16 +26,6 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
 
-/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// + DEFINITIONS FOR PSTARV VARIABLES                                   +
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-pid32 pstarv_pid = BADPID;
-bool8 enable_starvation_fix = FALSE; // Set to TRUE if you want the fix active by default
-uint32 pstarv_ready_time = 0;
-uint32 last_boost_time = 0;
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-*/
-
 /* Memory bounds set by start.S */
 
 void	*minheap;		/* start of heap			*/

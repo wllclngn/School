@@ -33,7 +33,7 @@ shellcmd starvation_test(int nargs, char *args[]) {
         if (p2_pid_local != SYSERR) kill(p2_pid_local);
         if (pstarv_pid != SYSERR) kill(pstarv_pid);
 
-        enable_starvation_fix = FALSE;
+        enable_starvation_fix = TRUE;
         pstarv_pid = BADPID; // Reset on error
         return SHELL_ERROR;
     }
