@@ -21,6 +21,9 @@
 
 #define	PNMLEN		16	/* length of process "name"		*/
 #define	NULLPROC	0	/* ID of the null process		*/
+/* DECLARATION FOR FINAL */
+#define	BADPID		(-1)	/* invalid process ID			*/
+
 
 /* Process initialization constants */
 
