@@ -4,6 +4,8 @@
 void p1_func_q1(void) {
     int i;
     for (i = 0; i < 15; i++) {
+            kprintf("!!!!!!!!!! P1_func_q1 (PID: %d, Prio: %d) HAS STARTED !!!!!!!!!!\n", currpid, proctab[currpid].prprio); // <-- ADD THIS
+
         kprintf("P1 (PID: %d, Prio: %d) is running (iteration %d)\n",
                 currpid, proctab[currpid].prprio, i + 1);
         volatile int j;

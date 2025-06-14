@@ -1,3 +1,6 @@
+#ifndef _MEMORY_H_  // Or any other unique guard name
+#define _MEMORY_H_
+
 /* memory.h - roundmb, truncmb, freestk */
 
 #define	PAGE_SIZE	4096
@@ -37,3 +40,5 @@ extern	void	*minheap;		/* address beyond loaded memory	*/
 extern	int	end;			/* end of program		*/
 extern	int	edata;			/* end of data segment		*/
 extern	int	etext;			/* end of text segment		*/
+
+#endif /* _MEMORY_H_ */
