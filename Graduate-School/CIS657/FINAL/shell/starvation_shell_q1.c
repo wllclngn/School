@@ -1,5 +1,5 @@
 /* starvation_shell_q1.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 06:14:32 UTC
+ * Last modified: 2025-06-15 15:54:16 UTC
  * Modified by: wllclngn
  */
 
@@ -9,22 +9,22 @@
 
 extern void p1_func_q1(void);
 extern void p2_func_q1(void);
-extern void pstarv_func_q1(void);
+extern void pstarv_func_q1(void); // Ensure this is the function being called
 
 shellcmd starvation_test(int nargs, char *args[]) {
-    pid32 p1_pid, p2_pid; 
+    pid32 p1_pid, p2_pid;
 
     if (nargs > 1) {
         kprintf("Usage: starvation_test\n");
         return SHELL_ERROR;
     }
 
-    kprintf("Starting starvation simulation...\n");
+    kprintf("Starting starvation simulation (Question 1)...\n");
 
-    // Initialize global variables
+    // Initialize global variables BEFORE process creation
     enable_starvation_fix = TRUE;    // Enable priority boosting
     pstarv_pid = BADPID;            // Initialize to invalid PID
-    
+
     // Create processes with proper priorities
     p1_pid = create(p1_func_q1, 4096, 40, "P1_Process", 0);
     p2_pid = create(p2_func_q1, 4096, 35, "P2_Process", 0);
@@ -39,6 +39,7 @@ shellcmd starvation_test(int nargs, char *args[]) {
     }
 
     kprintf("P1, P2, and PStarv processes created successfully\n");
+    kprintf("PStarv PID: %d\n", pstarv_pid); // Print PStarv's PID
 
     // Resume processes in strict priority order
     resume(p1_pid);    // Highest priority first

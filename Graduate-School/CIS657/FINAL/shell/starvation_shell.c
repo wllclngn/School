@@ -1,5 +1,5 @@
 /* starvation_shell.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 05:47:15 UTC
+ * Last modified: 2025-06-15 15:54:16 UTC
  * Modified by: wllclngn
  */
 
@@ -9,10 +9,51 @@
 
 extern void p1_func(void);
 extern void p2_func(void);
-extern void pstarv_func(void);
+// extern void pstarv_func(void); // Remove this extern declaration
+
+// New function for PStarv to check its ready time and boost priority
+void check_pstarv_time(void) {
+    uint32 current_time;
+    uint32 time_in_ready_queue;
+
+    if (enable_starvation_fix == FALSE && pstarv_pid != BADPID) {
+        struct procent *pstarv = &proctab[pstarv_pid];
+        if (pstarv->prstate == PR_READY) {
+            current_time = clktime;
+            time_in_ready_queue = current_time - pstarv_ready_time;
+
+            if (time_in_ready_queue >= 2 * CLKTICKS_PER_SEC) {
+                pstarv->prprio = min(pstarv->prprio + 5, 50); // Boost priority
+                kprintf("TIMEBOOST: PStarv priority increased to %d after %d seconds\n",
+                        pstarv->prprio, time_in_ready_queue / CLKTICKS_PER_SEC);
+                pstarv_ready_time = current_time; // Reset ready time
+            }
+        }
+    }
+}
+
+void pstarv_func(void) {
+    kprintf("\n##########################################################################\n");
+    kprintf("Pstarv (PID: %d, Prio: %d) HAS STARTED at time %d! Hooray!\n",
+            currpid, proctab[currpid].prprio, clktime);
+    kprintf("I (wllclngn) will get a good grade! Time-based scheduling works!\n");
+    kprintf("##########################################################################\n\n");
+
+    //enable_starvation_fix = FALSE; // Important for Q2
+    //pstarv_pid = BADPID;
+    //pstarv_ready_time = 0;
+    //last_boost_time = 0;
+
+    // Loop and check time periodically
+    while (1) {
+        check_pstarv_time();
+        sleep(1); // Check every second
+    }
+}
+
 
 shellcmd starvation_test2(int nargs, char *args[]) {  // Changed to match the name expected by shell.o
-    pid32 p1_pid_local, p2_pid_local; 
+    pid32 p1_pid_local, p2_pid_local;
 
     if (nargs > 1) {
         kprintf("Usage: starvation_test2\n");  // Updated usage message
@@ -36,7 +77,7 @@ shellcmd starvation_test2(int nargs, char *args[]) {  // Changed to match the na
         if (p1_pid_local != SYSERR) kill(p1_pid_local);
         if (p2_pid_local != SYSERR) kill(p2_pid_local);
         if (pstarv_pid != SYSERR) kill(pstarv_pid);
-        
+
         enable_starvation_fix = FALSE;
         pstarv_pid = BADPID;
         return SHELL_ERROR;
