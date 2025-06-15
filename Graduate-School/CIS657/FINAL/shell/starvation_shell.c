@@ -1,5 +1,5 @@
 /* starvation_shell.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 15:54:16 UTC
+ * Last modified: 2025-06-15 16:01:30 UTC
  * Modified by: wllclngn
  */
 
@@ -9,7 +9,7 @@
 
 extern void p1_func(void);
 extern void p2_func(void);
-// extern void pstarv_func(void); // Remove this extern declaration
+// extern void pstarv_func(void); // Remove extern declaration, function is defined here
 
 // New function for PStarv to check its ready time and boost priority
 void check_pstarv_time(void) {
@@ -38,11 +38,6 @@ void pstarv_func(void) {
             currpid, proctab[currpid].prprio, clktime);
     kprintf("I (wllclngn) will get a good grade! Time-based scheduling works!\n");
     kprintf("##########################################################################\n\n");
-
-    //enable_starvation_fix = FALSE; // Important for Q2
-    //pstarv_pid = BADPID;
-    //pstarv_ready_time = 0;
-    //last_boost_time = 0;
 
     // Loop and check time periodically
     while (1) {

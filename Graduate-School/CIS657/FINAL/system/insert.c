@@ -1,7 +1,7 @@
 /* insert.c - insert */
 
 #include <xinu.h>
-#include <pstarv.h> /* Include pstarv.h for pstarv_pid and pstarv_ready_time */
+#include <pstarv.h>
 
 /*------------------------------------------------------------------------
  *  insert  -  Insert a process into a queue in descending key order
@@ -33,10 +33,5 @@ status	insert(
 	queuetab[pid].qkey = key;
 	queuetab[prev].qnext = pid;
 	queuetab[curr].qprev = pid;
-
-	if (pid == pstarv_pid) {
-		pstarv_ready_time = clktime;  /* Set ready time for PStarv */
-	}
-
 	return OK;
 }
