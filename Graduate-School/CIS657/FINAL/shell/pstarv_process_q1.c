@@ -1,25 +1,37 @@
-#include <xinu.h>
-#include <pstarv.h>
-#include <stdio.h>
+/* pstarv_process_q1.c - Modified for XINU Final Project
+ * Last modified: 2025-06-15 05:19:17 UTC
+ * Modified by: wllclngn
+ */
 
 #include <xinu.h>
 #include <pstarv.h>
 #include <stdio.h>
 
 void pstarv_func_q1(void) {
-    kprintf("\n##########################################################################\n");
-    kprintf("Pstarv (PID: %d, Prio: %d) IS FINALLY RUNNING! Hooray for fair scheduling!\n",
-            currpid, proctab[currpid].prprio);
-    kprintf("I (wllclngn) will get a good grade! This simulation rocks!\n");
-    kprintf("##########################################################################\n\n");
+    int iterations = 0;
+    int max_iterations = 50;
+    int has_announced = 0;  // Using int instead of bool
 
-    int i;
-    for (i = 0; i < 100; i++) {  // Added 100 iteration loop
-        kprintf("PStarv (PID: %d, Prio: %d) is running (iteration %d/100)\n",
-                currpid, proctab[currpid].prprio, i + 1);
+    while (iterations < max_iterations) {
+        // First time PStarv gets to run, show celebration
+        if (!has_announced) {
+            kprintf("\n===============================================\n");
+            kprintf("PStarv (PID=%d) FINALLY RUNNING!\n", currpid);
+            kprintf("Priority boosted to: %d\n", proctab[currpid].prprio);
+            kprintf("wllclngn's starvation prevention works!\n");
+            kprintf("===============================================\n\n");
+            has_announced = 1;  // Using 1 instead of TRUE
+        }
+
+        kprintf("[PStarv] PID=%d Priority=%d Iteration=%d\n",
+                currpid, proctab[currpid].prprio, iterations + 1);
+        iterations++;
+        
+        // Simulate some work
         volatile int j;
-        for(j=0; j<5; j++);
+        for(j = 0; j < 10000; j++);
+        
+        // Give up CPU
         yield();
     }
-    kprintf("PStarv (PID: %d) finished.\n", currpid);
 }

@@ -1,58 +1,48 @@
+/* starvation_shell_q1.c - Modified for XINU Final Project
+ * Last modified: 2025-06-15 05:08:02 UTC
+ * Modified by: wllclngn
+ */
+
 #include <xinu.h>
-#include <pstarv.h>
+#include <pstarv.h> 
 #include <stdio.h>
 
-extern void p1_func(void);
-extern void p2_func(void);
-extern void pstarv_func(void);
+extern void p1_func_q1(void);
+extern void p2_func_q1(void);
+extern void pstarv_func_q1(void);
 
-shellcmd starvation_test2(int nargs, char *args[]) {
+shellcmd starvation_test(int nargs, char *args[]) {
     pid32 p1_pid_local, p2_pid_local; 
 
     if (nargs > 1) {
-        kprintf("Usage: starvation_test2\n");
+        kprintf("Usage: starvation_test\n");
         return SHELL_ERROR;
     }
 
-    kprintf("Starting time-based starvation simulation at time %d...\n", clktime);
+    kprintf("\n========== XINU Process Scheduling Simulation ==========\n");
+    kprintf("Demonstrating process starvation prevention...\n");
 
-    enable_starvation_fix = FALSE;    // <-- Q2: time-based fix is usually FALSE
+    // Initialize globals
+    enable_starvation_fix = TRUE;
     pstarv_pid = BADPID;
-    pstarv_ready_time = 0;
-    last_boost_time = 0;
 
-    // INCREASED STACK SIZE FOR SAFETY
-    p1_pid_local = create(p1_func, 4096, 40, "P1_Process", 0);
-    p2_pid_local = create(p2_func, 4096, 35, "P2_Process", 0);
-    pstarv_pid   = create(pstarv_func, 4096, 25, "Pstarv_Process", 0);
+    // Create processes with defined priorities
+    p1_pid_local = create(p1_func_q1, 4096, 40, "P1", 0);
+    p2_pid_local = create(p2_func_q1, 4096, 35, "P2", 0);
+    pstarv_pid = create(pstarv_func_q1, 4096, 25, "PStarv", 0);
 
     if (p1_pid_local == SYSERR || p2_pid_local == SYSERR || pstarv_pid == SYSERR) {
-        kprintf("Error: Failed to create one or more processes.\n");
-        if (p1_pid_local != SYSERR) kill(p1_pid_local);
-        if (p2_pid_local != SYSERR) kill(p2_pid_local);
-        if (pstarv_pid != SYSERR) kill(pstarv_pid);
-        
-        enable_starvation_fix = FALSE;
-        pstarv_pid = BADPID;
+        kprintf("Process creation failed\n");
         return SHELL_ERROR;
     }
 
-    kprintf("P1 created with PID: %d, Initial Priority: 40\n", p1_pid_local);
-    kprintf("P2 created with PID: %d, Initial Priority: 35\n", p2_pid_local);
-    kprintf("Pstarv created with PID: %d, Initial Priority: 25\n", pstarv_pid);
+    kprintf("Created: P1(pid=%d, pri=40), P2(pid=%d, pri=35), PStarv(pid=%d, pri=25)\n", 
+            p1_pid_local, p2_pid_local, pstarv_pid);
 
-    // Resume Pstarv first (recommended), then P1, then P2
-    resume(pstarv_pid);
-    kprintf("After resume(pstarv_pid): state=%d\n", proctab[pstarv_pid].prstate);
-
+    // Start processes
     resume(p1_pid_local);
-    kprintf("After resume(p1_pid_local): state=%d\n", proctab[p1_pid_local].prstate);
-
     resume(p2_pid_local);
-    kprintf("After resume(p2_pid_local): state=%d\n", proctab[p2_pid_local].prstate);
-
-    kprintf("Processes resumed. Pstarv priority will boost every 2 seconds in ready queue.\n");
-    kprintf("Current clock frequency: %d ticks per second\n", CLKTICKS_PER_SEC);
+    resume(pstarv_pid);
 
     return SHELL_OK;
 }
