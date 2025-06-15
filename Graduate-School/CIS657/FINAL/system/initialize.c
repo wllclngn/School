@@ -1,143 +1,254 @@
-/* initialize.c - sysinit */
+/* initialize.c - nulluser, sysinit, sizmem */
 
-#include <xinu.h> // Master include: pulls in kernel.h, memory.h, process.h, prototypes.h, etc.
+/* Handle system initialization and become the null process */
 
-/*
- * Note: Global variables like clktime, proctab, currpid, readylist, devtab,
- * memlist, minheap, maxheap are typically defined in other .c files (e.g., a
- * dedicated data.c, or within kernel/proc/device/mem .c files respectively)
- * and declared as 'extern' in their corresponding .h files.
- * This file (initialize.c) should primarily use these externed globals.
- */
+#include <xinu.h>
+#include <string.h>
+#include <pstarv.h> // <--- ADD THIS INCLUDE
 
-/* Global variables for the final exam starvation fix (defined in this file) */
-int g_enable_starvation_fix;
-pid32 g_pstarv_pid;
-uint32 g_pstarv_ready_time;
-uint32 g_last_boost_time;
+extern	void	start(void);	/* start of Xinu code */
+extern	void	*_end;		/* end of Xinu code */
 
+/* Function prototypes */
+
+extern	void main(void);	/* main is the first process created	*/
+extern	void xdone(void);	/* system "shutdown" procedure		*/
+static	void sysinit(void);	/* initializes system structures	*/
+
+/* Declarations of major kernel variables */
+
+struct	procent	proctab[NPROC];	/* Process table			*/
+struct	sentry	semtab[NSEM];	/* Semaphore table			*/
+struct	memblk	memlist;	/* List of free memory blocks		*/
+
+/* Active system status */
+
+int	prcount;		/* Total number of live processes	*/
+pid32	currpid;		/* ID of currently executing process	*/
+
+/* Memory bounds set by start.S */
+
+void	*minheap;		/* start of heap			*/
+void	*maxheap;		/* highest valid memory address		*/
 
 /*------------------------------------------------------------------------
  * nulluser - initialize the system and become the null process
+ *
+ * Note: execution begins here after the C run-time environment has been
+ * established.  Interrupts are initially DISABLED, and must eventually
+ * be enabled explicitly.  The code turns itself into the null process
+ * after initialization.  Because it must always remain ready to execute,
+ * the null process cannot execute code that might cause it to be
+ * suspended, wait for a semaphore, put to sleep, or exit.  In
+ * particular, the code must not perform I/O except for polled versions
+ * such as kprintf.
  *------------------------------------------------------------------------
  */
-void nulluser(void)
+
+void	nulluser(void)
 {
-    sysinit(); /* Initialize Xinu */
+	sysinit();
 
-    /* kprintf is declared in kernel.h (and possibly stdio.h via prototypes.h) */
-    /* VERSION should be defined in conf.h (generated during compilation) */
-    kprintf("\n\nXinu %s\n\n", VERSION);
+	kprintf("\n\r%s\n\n\r", VERSION);
 
-    /* Null process main loop */
-    while (TRUE) {
-        asm volatile ("hlt"); /* Halt CPU until an interrupt occurs */
-    }
+	/* Output Xinu memory layout */
+
+	kprintf("%10d bytes physical memory.\n",
+		(uint32)maxheap - (uint32)0);
+	kprintf("           [0x%08X to 0x%08X]\r\n",
+		(uint32)0, (uint32)maxheap - 1);
+	kprintf("%10d bytes of Xinu code.\n",
+		(uint32)&etext - (uint32)0);
+	kprintf("           [0x%08X to 0x%08X]\n",
+		(uint32)0, (uint32)&etext - 1);
+	kprintf("%10d bytes of data.\n",
+		(uint32)&end - (uint32)&etext);
+	kprintf("           [0x%08X to 0x%08X]\n",
+		(uint32)&etext, (uint32)&end - 1);
+	if ( (char *)minheap < HOLESTART) {
+	    kprintf("%10d bytes of heap space below 640K.\n",
+		(uint32)HOLESTART - (uint32)roundmb(minheap));
+	}
+	if ( (char *)maxheap > HOLEEND ) {
+	    kprintf("%10d bytes of heap space above 1M.\n",
+		(uint32)maxheap - (uint32)HOLEEND);
+	    kprintf("           [0x%08X to 0x%08X]\n",
+		(uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
+	}
+
+	/* Enable interrupts */
+	
+	enable();
+
+	/* Create a process to execute function main() */
+
+	resume (
+	   create((void *)main, INITSTK, INITPRIO, "Main process", 20, 0,
+            NULL));
+
+	/* Become the Null process (i.e., guarantee that the CPU has	*/
+	/*  something to run when no other process is ready to execute)	*/
+
+	while (TRUE) {
+		;		/* do nothing */
+	}
 }
 
 /*------------------------------------------------------------------------
- * sysinit - initialize all Xinu data structures and devices
+ *
+ * sysinit - intialize all Xinu data structures and devices
+ *
  *------------------------------------------------------------------------
  */
-void sysinit(void)
+
+static	void	sysinit(void)
 {
-    int32 i;
-    struct procent *prptr; /* Pointer to process table entry */
+	int32	i;
+	struct	procent	*prptr;		/* ptr to process table entry	*/
+	struct	dentry	*devptr;	/* ptr to device table entry	*/
+	struct	sentry	*semptr;	/* prr to semaphore table entry	*/
+	struct	memblk	*memptr;	/* ptr to memory block		*/
 
-    /* Initialize process count (prcount is extern from process.h) */
-    prcount = 0;
+	/* Initialize the interrupt vectors */
 
-    /* Initialize process table entries to PR_FREE (proctab is extern from process.h) */
-    for (i = 0; i < NPROC; i++) {
-        proctab[i].prstate = PR_FREE;
-    }
+	initevec();
 
-    /* Initialize the Ready list (readylist is extern from kernel.h/queue.h) */
-    readylist = newqueue(); /* newqueue() is prototyped in queue.h (included via xinu.h) */
+	/* Initialize system variables */
 
-    /* Initialize current process ID (currpid is extern from process.h) */
-    currpid = NULLPROC;
+	/* Count the Null process as the first process in the system */
 
-    /* Initialize devices (devtab is extern from device.h) */
-    for (i = 0; i < NDEVS; i++) {
-        if (devtab[i].dvinit != NULL) {
-            (devtab[i].dvinit)(&devtab[i]); /* Call device-specific init routine */
-        }
-    }
+	prcount = 1;
 
-    /* Initialize memory manager */
-    /* minheap and maxheap (lowercase) are global char* pointers from memory.h */
-    /* &end and MAXADDR are from memory.h (via xinu.h) */
-    /* memlist is the head of the free list, extern from memory.h */
+	/* Scheduling is not currently blocked */
 
-#ifdef HEAPCHK
-    /* This section is for a heap checking version, often a compile-time option */
-    memlist.mnext = (struct memblk *)roundmb((uint32)&end);
-    memlist.mlength = (uint32)truncmb((uint32)MAXADDR - (uint32)&end);
-    if (memlist.mlength < MEMMIN) { /* MEMMIN is from memory.h */
-        panic("sysinit: not enough memory for HEAPCHK"); /* panic() from prototypes.h */
-    }
-    memlist.mnext->mnext = (struct memblk *)NULL;
-    memlist.mnext->mlength = memlist.mlength;
-#else
-    /* Standard heap initialization */
-    minheap = (char *)roundmb((uint32)&end);
-    maxheap = (char *)truncmb((uint32)MAXADDR);
-    if (((uint32)maxheap - (uint32)minheap) < MEMMIN) { /* MEMMIN is from memory.h */
-        panic("sysinit: not enough memory"); /* panic() from prototypes.h */
-    }
-    /* The first call to freemem (usually via getmem) will initialize memlist.mnext and memlist.mlength */
-    /* No explicit memlist.mnext/mlength initialization here for standard non-HEAPCHK Xinu memory manager */
-    /* However, Xinu typically initializes memlist explicitly: */
-    memlist.mnext = (struct memblk *)minheap;
-    memlist.mlength = (uint32)maxheap - (uint32)minheap;
-    /* If the above causes issues, it implies your freemem/getmem handles the very first setup. */
-    /* For robustness with typical Xinu, an explicit init is safer: */
-    if (memlist.mlength > 0) { // Only if there's actually memory
-        struct memblk *baseblk = (struct memblk *)minheap;
-        baseblk->mnext = NULL; // No other blocks initially
-        baseblk->mlength = memlist.mlength; // The whole available space
-    } else {
-        memlist.mnext = NULL; // No memory available
-        memlist.mlength = 0;
-    }
+	Defer.ndefers = 0;
 
+	/* Initialize the free memory list */
 
-#endif
+	/* Note: PC version has to pre-allocate 640K-1024K "hole" */
 
-    /* Initialize the system clock (clkinit is prototyped, likely in clock.h or prototypes.h) */
-    clkinit();
+	maxheap = (void *)MAXADDR;
+	minheap = &end;
 
-    /* Initialize starvation fix global variables (defined in this file) */
-    g_enable_starvation_fix = TRUE; /* Assuming TRUE is 1, defined in kernel.h */
-    g_pstarv_pid = BADPID;          /* BADPID from process.h */
-    g_pstarv_ready_time = 0;
-    g_last_boost_time = 0; /* This will be updated by clkhandler or resched based on clktime */
+	memptr = memlist.mnext = (struct memblk *)roundmb(minheap);
+	if ((char *)(maxheap+1) > HOLESTART) {
+		/* create two blocks that straddle the hole */
+		memptr->mnext = (struct memblk *)HOLEEND;
+		memptr->mlength = (int) truncmb((unsigned) HOLESTART -
+	     		 (unsigned)&end - 4);
+		memptr = (struct memblk *) HOLEEND;
+		memptr->mnext = (struct memblk *) NULL;
+		memptr->mlength = (int) truncmb( (uint32)maxheap - 
+				(uint32)HOLEEND - NULLSTK);
+	} else {
+		/* initialize free memory list to one block */
+		memlist.mnext = memptr = (struct memblk *) roundmb(&end);
+		memptr->mnext = (struct memblk *) NULL;
+		memptr->mlength = (uint32) truncmb((uint32)maxheap -
+				(uint32)&end - NULLSTK);
+	}
 
-    /* Initialize the Null process (PID 0) */
-    prptr = &proctab[NULLPROC];
-    prptr->prstate = PR_CURR;
-    prptr->prprio = 0; /* Lowest priority */
-    /* strncpy from string.h (via prototypes.h); PNMLEN from process.h */
-    strncpy(prptr->prname, "prnull", PNMLEN - 1);
-    prptr->prname[PNMLEN - 1] = NULLCH; /* NULLCH from kernel.h (ensure null termination) */
-    
-    /* NULLSTK from kernel.h */
-    prptr->prstkbase = (char *)NULLSTK; 
-    prptr->prstklen = NULLSTK;
-    /* Stack pointer initialization for x86 (stack grows down): points to the top-most address.
-       The context switcher will typically adjust this before running the process.
-    */
-    prptr->prstkptr = (char *)((uint32)prptr->prstkbase + prptr->prstklen);
+	/* Initialize process table entries free */
 
+	for (i = 0; i < NPROC; i++) {
+		prptr = &proctab[i];
+		prptr->prstate = PR_FREE;
+		prptr->prname[0] = NULLCH;
+		prptr->prstkbase = NULL;
+		prptr->prprio = 0;
+	}
 
-    currpid = NULLPROC; /* Set current process to Null process */
-    prcount++;          /* Increment active process count */
+	/* Initialize the Null process entry */
 
-    kprintf("System initialization complete.\n");
-    /* Record current time as of 2025-06-15 02:26:53 UTC */
-    kprintf("System initialized by wllclngn at %s %s UTC\n", __DATE__, __TIME__);
+	prptr = &proctab[NULLPROC];
+	prptr->prstate = PR_CURR;
+	prptr->prprio = 0;
+	strncpy(prptr->prname, "prnull", 7);
+	prptr->prstkbase = getstk(NULLSTK);
+	prptr->prstklen = NULLSTK;
+	prptr->prstkptr = 0;
+	currpid = NULLPROC;
 
+	/* Initialize semaphores */
 
-    return;
+	for (i = 0; i < NSEM; i++) {
+		semptr = &semtab[i];
+		semptr->sstate = S_FREE;
+		semptr->scount = 0;
+		semptr->squeue = newqueue();
+	}
+
+	/* Initialize buffer pools */
+
+	bufinit();
+	/* Create a ready list for processes */
+
+	readylist = newqueue();
+
+	/* Initialize the PCI bus */
+
+	pci_init();
+
+	/* Initialize the real time clock */
+
+	clkinit();
+
+	for (i = 0; i < NDEVS; i++) {
+		if (! isbaddev(i)) {
+			devptr = (struct dentry *) &devtab[i];
+			(devptr->dvinit) (devptr);
+		}
+	}
+
+    // You might also want to initialize your pstarv variables here if needed,
+    // for example, if you have a specific setup function in pstarv.h/c
+    // e.g., initialize_pstarv_subsystem();
+    // For now, their global definitions with initial values are above.
+
+	return;
+}
+
+#define	NBPG		4096		/* number of bytes per page	*/
+
+/*------------------------------------------------------------------------
+ * sizmem - return memory size (in pages)
+ *------------------------------------------------------------------------
+ */
+int32	sizmem(void) {
+
+	unsigned char	*ptr, *start, stmp, tmp;
+	int32		npages;
+
+        return 4096;	/* 16M for now */
+	start = ptr = 0;
+	npages = 0;
+	stmp = *start;
+	while (1) {
+		tmp = *ptr;
+		*ptr = 0xA5;
+		if (*ptr != 0xA5)
+			break;
+		*ptr = tmp;
+		++npages;
+		ptr += NBPG;
+		if ((uint32)ptr == (uint32)HOLESTART) {	/* skip I/O pages */
+			npages += (1024-640)/4;
+			ptr = (unsigned char *)HOLEEND;
+		}
+	}
+	return npages;
+}
+
+int32	stop(char *s)
+{
+	kprintf("%s\n", s);
+	kprintf("looping... press reset\n");
+	while(1)
+		/* empty */;
+}
+
+int32	delay(int n)
+{
+	DELAY(n);
+	return OK;
 }

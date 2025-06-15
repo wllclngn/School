@@ -105,9 +105,10 @@ SHELL_CFILES +=								\
 	xsh_echo.c	xsh_exit.c	xsh_devdump.c	xsh_help.c	\
 	xsh_kill.c	xsh_memdump.c	xsh_ps.c 	xsh_sleep.c 	\
 	xsh_memstat.c  	\
-	xsh_final_test.c \
 	pstarv_globals.c	p1_process_q1.c	p2_process_q1.c	\
-	pstarv_process_q1.c	starvation_shell_q1.c
+	pstarv_process_q1.c	starvation_shell_q1.c		\
+	p1_process.c		p2_process.c	pstarv_process.c \
+	starvation_shell.c
 
 SHELL_CFULL  = ${SHELL_CFILES:%=../shell/%}
 

@@ -1,8 +1,3 @@
-#include <string.h> /* ADDED: To make strncpy, etc. available */
-#include <stdio.h>
-
-extern	void	panic(char *); /* Ensure this matches your panic.c prototype */
-
 /* in file addargs.c */
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
@@ -42,15 +37,8 @@ extern	void	ctxsw(void *, void *);
 /* in file dot2ip.c */
 extern	uint32	dot2ip(char *, uint32 *);
 
-/* in file queue.c */ /* Note: This is likely where enqueue, dequeue etc. are, but prototypes.h lists them sometimes */
-/* Assuming newqueue, enqueue, dequeue, getfirst, getitem, insert, insertd are prototyped in queue.h or here */
-extern qid16 newqueue(void);
-extern pid32 dequeue(qid16);
-extern pid32 getfirst(qid16);
-extern pid32 getitem(pid32); /* Usually takes pid, but some Xinu versions take qid. Check queue.c */
-extern status insert(pid32, qid16, int32);
-extern status insertd(pid32, qid16, int32);
-
+/* in file queue.c */
+extern	pid32	enqueue(pid32, qid16);
 
 /* in file intutils.S */
 extern	intmask	disable(void);
@@ -78,8 +66,8 @@ extern	char	*getbuf(bpid32);
 /* in file getc.c */
 extern	syscall	getc(did32);
 
-/* in file getitem.c - Already listed above with queue functions */
-// extern	pid32	getfirst(qid16); // getfirst is more common for head of queue
+/* in file getitem.c */
+extern	pid32	getfirst(qid16);
 
 /* in file dhcp.c */
 extern	uint32	getlocalip(void);
@@ -107,16 +95,15 @@ extern	void	halt(void);
 
 /* in file init.c */
 extern	syscall	init(did32);
-extern	syscall	init_dev(did32); // Added this based on usage in initialize.c
 
 /* in file initialize.c */
-extern	int32	sizmem(void); // This might be from an older Xinu version or a specific utility
+extern	int32	sizmem(void);
 
-/* in file insert.c - Already listed above */
-// extern	status	insert(pid32, qid16, int32);
+/* in file insert.c */
+extern	status	insert(pid32, qid16, int32);
 
-/* in file insertd.c - Already listed above */
-// extern	status	insertd(pid32, qid16, int32);
+/* in file insertd.c */
+extern	status	insertd(pid32, qid16, int32);
 
 /* in file intr.S */
 extern	uint16	getirmask(void);
@@ -157,7 +144,7 @@ extern	void	_mkinit(void);
 /* in file memcpy.c */
 extern	void	*memcpy(void *, const void *, int32);
 
-/* in file memcmp.c */ /* Note: Xinu often has its own, not necessarily std C one */
+/* in file memcpy.c */
 extern	int32	*memcmp(void *, const void *, int32);
 
 /* in file memset.c */
@@ -170,14 +157,14 @@ extern	bpid32	mkbufpool(int32, int32);
 extern	syscall	mount(char *, char *, did32);
 extern	int32	namlen(char *, int32);
 
-/* in file newqueue.c - Already listed above */
-// extern	qid16	newqueue(void);
+/* in file newqueue.c */
+extern	qid16	newqueue(void);
 
 /* in file open.c */
 extern	syscall	open(did32, char *, char *);
 
 /* in file panic.c */
-extern	void	panic(char *); // Changed from kpanic
+extern	void	panic(char *);
 
 /* in file pci.c */
 extern	int32	pci_init(void);
@@ -333,6 +320,3 @@ extern	void	xdone(void);
 
 /* in file yield.c */
 extern	syscall	yield(void);
-
-#include <string.h> // Added to ensure strncpy etc. are available
-#include <stdio.h>  // Added to ensure kprintf/fprintf alternatives are available if used
