@@ -27,83 +27,55 @@ void resched(void) {
     ptold_proc = &proctab[currpid];
     old_pid = currpid;
 
+    /* Handle current process - CRITICAL CHANGE HERE */
     if (ptold_proc->prstate == PR_CURR) {
-        ptold_proc->prstate = PR_READY;
-        insert(currpid, readylist, ptold_proc->prprio);
+        if (currpid != NULLPROC) {
+            ptold_proc->prstate = PR_READY;
+            insert(currpid, readylist, ptold_proc->prprio);
+        }
     }
 
-    currpid = dequeue(readylist);
-    ptnew_proc = &proctab[currpid];
-    ptnew_proc->prstate = PR_CURR;
+    /* Starvation Prevention - BEFORE selecting next process */
+    if (enable_starvation_fix && 
+        pstarv_pid != BADPID && 
+        pstarv_pid < NPROC && 
+        proctab[pstarv_pid].prstate == PR_READY) {
+        
+        struct procent *pstarv_entry = &proctab[pstarv_pid];
+        
+        /* Remove from current position if in ready queue */
+        if (getitem(pstarv_pid) != SYSERR) {
+            /* Boost priority */
+            if (pstarv_entry->prprio < MAXKEY - 2) {
+                pstarv_entry->prprio += 2;
+                kprintf("DEBUG: Pstarv priority boosted to %d\n", pstarv_entry->prprio);
+            }
+            
+            /* Reinsert with new priority */
+            insert(pstarv_pid, readylist, pstarv_entry->prprio);
+        }
+    }
 
-#ifdef XINUSIM
+    /* Select highest priority process */
+    pid32 next_pid = dequeue(readylist);
+    
+    /* CRITICAL CHANGE - Proper handling when ready queue is empty */
+    if (next_pid == EMPTY || next_pid == NULLPROC) {
+        /* If no other process is ready, run NULLPROC */
+        currpid = NULLPROC;
+        ptnew_proc = &proctab[NULLPROC];
+        ptnew_proc->prstate = PR_CURR;
+    } else {
+        currpid = next_pid;
+        ptnew_proc = &proctab[currpid];
+        ptnew_proc->prstate = PR_CURR;
+    }
+
+    /* Debug output for context switch */
     kprintf("Context switch: Old_PID=%d (%s, Prio:%d) ==> New_PID=%d (%s, Prio:%d)\n",
             old_pid, ptold_proc->prname, ptold_proc->prprio,
             currpid, ptnew_proc->prname, ptnew_proc->prprio);
-#endif
 
-    /* STARVATION FIX LOGIC START */
-    if (pstarv_pid != BADPID && pstarv_pid < NPROC && proctab[pstarv_pid].prstate != PR_FREE) {
-        struct procent *pstarv_entry = &proctab[pstarv_pid];
-        
-        if (enable_starvation_fix == TRUE) {
-            /**************** Q1 LOGIC: Context-switch based boost ****************/
-            if (pstarv_entry->prstate == PR_READY && old_pid != pstarv_pid) {
-                if (pstarv_entry->prprio < MAXKEY) {
-                    // Boost by 2 for Q1 logic
-                    pstarv_entry->prprio += 2;
-
-                    kprintf("DEBUG: Pstarv priority incremented to %d\n", pstarv_entry->prprio);
-
-                    if (getitem(pstarv_pid) != SYSERR) {
-                        insert(pstarv_pid, readylist, pstarv_entry->prprio);
-                        kprintf("DEBUG: Pstarv reinserted into ready queue with priority %d\n", pstarv_entry->prprio);
-                    }
-                }
-            }
-        } else {
-            /**************** Q2 LOGIC: Time-based boost ****************/
-            if (pstarv_entry->prstate == PR_READY) {
-                uint32 current_time = clktime;
-                uint32 time_since_last_boost = current_time - last_boost_time;
-
-                if (time_since_last_boost >= (2 * CLKTICKS_PER_SEC)) {
-                    pri16 old_prio_val = pstarv_entry->prprio;
-                    pri16 new_prio_val = old_prio_val + 2;
-                    const pri16 priority_cap = 42;
-
-                    if (new_prio_val > priority_cap) {
-                        new_prio_val = priority_cap;
-                    }
-
-                    if (new_prio_val > old_prio_val) {
-                        pstarv_entry->prprio = new_prio_val;
-
-                        if (getitem(pstarv_pid) != SYSERR) {
-                            insert(pstarv_pid, readylist, pstarv_entry->prprio);
-                        }
-                        last_boost_time = current_time;
-
-                        kprintf("DEBUG: Pstarv priority boosted to %d after %dms\n",
-                                new_prio_val, time_since_last_boost);
-                    }
-                }
-            }
-
-            if (pstarv_pid == currpid) {
-                if (pstarv_ready_time != 0) {
-                    pstarv_ready_time = 0;
-                    last_boost_time = clktime;
-                }
-            } else if (pstarv_entry->prstate == PR_READY && pstarv_ready_time == 0) {
-                pstarv_ready_time = clktime;
-                last_boost_time = clktime;
-            }
-        }
-    }
-    /* STARVATION FIX LOGIC END */
-
+    /* Perform context switch */
     ctxsw(&ptold_proc->prstkptr, &ptnew_proc->prstkptr);
-
-    return;
 }
