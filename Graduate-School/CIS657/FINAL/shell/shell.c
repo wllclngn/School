@@ -2,11 +2,14 @@
 
 #include <xinu.h>
 #include <stdio.h>
-#include "shprototypes.h"		  
+#include "shprototypes.h" // Good place for the extern declaration of xsh_final_test
 
 /************************************************************************/
-/* Xinu shell commands and the function associated with each		*/
+/* Xinu shell commands and the function associated with each            */
 /************************************************************************/
+// Ensure xsh_final_test is declared, ideally in shprototypes.h
+// If not, you could add: extern shellcmd xsh_final_test(int nargs, char *args[]); here.
+
 const	struct	cmdent	cmdtab[] = {
 	{"argecho",		TRUE,	xsh_argecho},
 	{"cat",			FALSE,	xsh_cat},
@@ -14,34 +17,22 @@ const	struct	cmdent	cmdtab[] = {
 	{"devdump",		FALSE,	xsh_devdump},
 	{"echo",		FALSE,	xsh_echo},
 	{"exit",		TRUE,	xsh_exit},
+	{"finaltest",   FALSE,  xsh_final_test}, // <-- YOUR NEW COMMAND
 	{"help",		FALSE,	xsh_help},
 	{"kill",		TRUE,	xsh_kill},
 	{"memdump",		FALSE,	xsh_memdump},
 	{"memstat",		FALSE,	xsh_memstat},
 	{"ps",			FALSE,	xsh_ps},
 	{"sleep",		FALSE,	xsh_sleep},
-	{"starvation_test",	FALSE,	starvation_test},
-	{"starvation_test2",	FALSE,	starvation_test2},
+	{"starvation_test",	FALSE,	starvation_test},   // Existing custom command
+	{"starvation_test2",FALSE,	starvation_test2},  // Existing custom command
 	{"?",			FALSE,	xsh_help}
 };
 
-uint32	ncmd = sizeof(cmdtab) / sizeof(struct cmdent);
+uint32	ncmd = sizeof(cmdtab) / sizeof(struct cmdent); // This will update automatically
 
 /************************************************************************/
-/* Xinu shell - provide an interactive user interface that executes	*/
-/*		commands.  Each command begins with a command name, has	*/
-/*		a set of optional arguments, has optional input or	*/
-/*		output redirection, and an optional specification for	*/
-/*		background execution (ampersand).  The syntax is:	*/
-/*									*/
-/*		   command_name [args*] [redirection] [&]		*/
-/*									*/
-/*		Redirection is either or both of:			*/
-/*									*/
-/*				< input_file				*/
-/*			or						*/
-/*				> output_file				*/
-/*									*/
+/* Xinu shell - (rest of the shell code remains the same)		        */
 /************************************************************************/
 
 process	shell (

@@ -22,6 +22,8 @@
 #define PNMLEN      16
 #define NULLPROC    0
 #define BADPID      (-1)
+#define MAXKEY      255   // Maximum priority key for queues (add if not present)
+
 
 /* Process initialization constants */
 #define INITSTK     65536
@@ -61,5 +63,9 @@ struct  procent {
 extern  struct  procent proctab[];
 extern  int32   prcount;
 extern  pid32   currpid;
+
+// Extern declaration for the ready list ID
+extern  qid16   readylist;
+
 
 #endif /* _PROCESS_H_ */
