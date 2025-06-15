@@ -1,37 +1,31 @@
 /* pstarv_process_q1.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 05:19:17 UTC
+ * Last modified: 2025-06-15 06:42:05 UTC
  * Modified by: wllclngn
  */
 
 #include <xinu.h>
-#include <pstarv.h>
 #include <stdio.h>
 
 void pstarv_func_q1(void) {
     int iterations = 0;
-    int max_iterations = 50;
-    int has_announced = 0;  // Using int instead of bool
-
-    while (iterations < max_iterations) {
-        // First time PStarv gets to run, show celebration
-        if (!has_announced) {
-            kprintf("\n===============================================\n");
-            kprintf("PStarv (PID=%d) FINALLY RUNNING!\n", currpid);
-            kprintf("Priority boosted to: %d\n", proctab[currpid].prprio);
-            kprintf("wllclngn's starvation prevention works!\n");
-            kprintf("===============================================\n\n");
-            has_announced = 1;  // Using 1 instead of TRUE
-        }
-
-        kprintf("[PStarv] PID=%d Priority=%d Iteration=%d\n",
-                currpid, proctab[currpid].prprio, iterations + 1);
-        iterations++;
+    const int MAX_ITERATIONS = 25;
+    
+    kprintf("\n##########################################################################\n");
+    kprintf("PStarv (PID: %d, Prio: %d) IS FINALLY RUNNING! Priority boosting works!\n",
+            currpid, proctab[currpid].prprio);
+    kprintf("##########################################################################\n\n");
+    
+    while (iterations < MAX_ITERATIONS) {
+        kprintf("PStarv (PID: %d, Prio: %d) running iteration %d/%d\n",
+                currpid, proctab[currpid].prprio, iterations + 1, MAX_ITERATIONS);
         
-        // Simulate some work
+        // Longer delay loop but slightly shorter than P1/P2
         volatile int j;
-        for(j = 0; j < 10000; j++);
+        for(j = 0; j < 400000; j++);
         
-        // Give up CPU
+        iterations++;
         yield();
     }
+    
+    kprintf("PStarv (PID: %d) finished.\n", currpid);
 }
