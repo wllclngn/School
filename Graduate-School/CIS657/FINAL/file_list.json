@@ -5,6 +5,10 @@
                       "type":  "file"
                   },
                   {
+                      "path":  "file_list.json",
+                      "type":  "file"
+                  },
+                  {
                       "path":  "FINAL.md",
                       "type":  "markdown"
                   },

@@ -1,34 +1,9 @@
-# PowerShell Script for Compiling and Running XINU Kernel Simulation
+# PowerShell Script for Compiling XINU Kernel Simulation from JSON file list
 
 # Configuration Variables
 $projectDir = $PSScriptRoot
 $sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
-
-# Define XINU kernel source files - ADJUST THESE BASED ON YOUR REPO
-$source_files = @(
-    "system\main.c",          # Kernel entry point
-    "system\initialize.c",    # System initialization
-    "system\create.c",        # Process creation
-    "system\kill.c",          # Process termination
-    "system\resume.c",        # Process resume
-    "system\sleep.c",         # Process sleep
-    "system\kprintf.c",       # Kernel printf
-    "system\queue.c",        # Queue management
-    "system\ready.c",        # Ready list management
-    "system\chprio.c",       # Change priority
-    "system\getitem.c",      # Get item from queue
-    "system\insert.c",       # Insert item into queue
-    "system\receive.c",      # Message receive
-    "system\recvclr.c",      # Clear message
-    "shell\xinu_main.c",       # Simulation entry point
-    "shell\starvation_shell.c",  # Starvation shell command
-    "shell\pstarv_globals.c",   # Starvation globals
-    "shell\pstarv_process.c",   # Starvation process
-    "shell\p2_process.c",      # Process 2
-    "shell\p1_process.c"       # Process 1
-    # Add device driver files if needed (e.g., TTY)
-    # Add other necessary XINU kernel files here
-)
+$jsonFile = Join-Path -Path $projectDir -ChildPath "file_list.json"  # Path to your JSON file
 
 $executable_name = Join-Path -Path $sim_output_dir -ChildPath "xinu_simulation.exe"
 
@@ -103,23 +78,27 @@ function Build-XINUSimulation {
         Remove-Item -Path "$sim_output_dir\*" -Force -ErrorAction SilentlyContinue
     }
 
+    # Load source files from JSON
+    try {
+        $jsonContent = Get-Content -Path $jsonFile -Raw | ConvertFrom-Json
+        $source_files = $jsonContent.files | Where-Object { $_.path -notlike "*include\\*" -and $_.type -eq "source" -and $_.path -notlike "pstarv_test.c" } | ForEach-Object { $_.path }
+        if (-not $source_files) {
+            Write-Host "ERROR: No source files found in JSON or all files were filtered out." -ForegroundColor Red
+            return $false
+        }
+    }
+    catch {
+        Write-Host "ERROR: Failed to load or parse JSON file: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+
     # Construct the paths to the source files relative to the project directory
     $full_source_paths = $source_files | ForEach-Object { Join-Path -Path $projectDir -ChildPath $_ }
 
-    # Define include paths
-    $include_paths = @(
-        "`"$projectDir`"",
-        "`"$projectDir\system`"",
-        "`"$projectDir\shell`""
-    ) -join ";"
-
-    # Set the INCLUDE environment variable
-    $env:INCLUDE = $include_paths
-
     # Construct compile commands for each source file
     $compile_commands = foreach ($source_file in $full_source_paths) {
-        $object_file = Join-Path -Path $sim_output_dir -ChildPath "$($_.BaseName).obj"
-        "cl.exe /nologo /W4 /EHsc /c `"$source_file`" /Fo`"$object_file`""
+        $object_file = Join-Path -Path $sim_output_dir -ChildPath "$([System.IO.Path]::GetFileNameWithoutExtension($source_file)).obj"
+        "cl.exe /nologo /W4 /EHsc /c `"$source_file`" /Fo`"$object_file`" /I.`" /I.\system`" /I.\shell`" /I.\config`" /I.\device\tty`" /I.\lib\libxc`" /D_CRT_SECURE_NO_WARNINGS"
     }
 
     # Construct the link command
@@ -135,7 +114,6 @@ echo Setting up Visual Studio environment...
 call `"$vsDevCmdPath`"
 echo Compiling XINU kernel files...
 cd `"$projectDir`"
-set INCLUDE=$include_paths
 $($compile_commands -join "`r`n")
 echo Linking XINU simulation...
 $link_command
