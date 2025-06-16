@@ -1,13 +1,23 @@
-# Use direct paths instead of Join-Path to avoid ChildPath issues
-$projectDir = $PSScriptRoot
-$sim_output_dir = "$projectDir\sim_output"
-$executable_name = "$sim_output_dir\xinu_simulation.exe"
+# PowerShell Script for Compiling XINU Kernel Simulation
+# This script builds and runs the XINU simulation using actual XINU source files
 
+# Configuration Variables
+$projectDir = $PSScriptRoot
+$sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
+$executable_name = Join-Path -Path $sim_output_dir -ChildPath "xinu_simulation.exe"
+$generateIncludesScript = Join-Path -Path $projectDir -ChildPath "generate_xinu_includes.ps1"
+
+# Current date and username - get them dynamically
+$currentDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$currentUser = $env:USERNAME
+
+# Function to execute a command and capture its output with error limit
 function Invoke-CommandLine {
     param (
         [string]$command,
         [string]$workingDirectory = $PSScriptRoot,
-        [switch]$noOutput
+        [switch]$noOutput,
+        [int]$errorLimit = 10
     )
 
     Write-Host "Executing: $command" -ForegroundColor Yellow
@@ -25,6 +35,8 @@ function Invoke-CommandLine {
     $process.Start() | Out-Null
 
     if (-not $noOutput) {
+        # Read output without infinite loop problems
+        $errorCount = 0
         while (-not $process.StandardOutput.EndOfStream) {
             $line = $process.StandardOutput.ReadLine()
             Write-Host $line
@@ -33,6 +45,14 @@ function Invoke-CommandLine {
         while (-not $process.StandardError.EndOfStream) {
             $line = $process.StandardError.ReadLine()
             Write-Host $line -ForegroundColor Red
+            # Count errors and stop after limit
+            if ($line -match "error") {
+                $errorCount++
+                if ($errorCount -ge $errorLimit) {
+                    Write-Host "Reached error limit of $errorLimit. Stopping output..." -ForegroundColor Yellow
+                    break
+                }
+            }
         }
     }
 
@@ -40,25 +60,24 @@ function Invoke-CommandLine {
     return $process.ExitCode
 }
 
-function Generate-XinuIncludes {
-    $generateScript = "$projectDir\generate_xinu_includes.ps1"
+# Clean the simulation output directory
+function Clean-SimulationOutput {
+    param (
+        [string]$outputDir
+    )
     
-    if (-not (Test-Path $generateScript)) {
-        Write-Host "ERROR: generate_xinu_includes.ps1 not found at $generateScript" -ForegroundColor Red
-        return $false
+    if (Test-Path $outputDir) {
+        Write-Host "Cleaning simulation output directory..." -ForegroundColor Yellow
+        Remove-Item -Path "$outputDir\*" -Force -ErrorAction SilentlyContinue
+        Write-Host "Cleaned $outputDir" -ForegroundColor Green
+    } else {
+        Write-Host "Creating simulation output directory..." -ForegroundColor Yellow
+        New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
+        Write-Host "Created $outputDir" -ForegroundColor Green
     }
-    
-    Write-Host "Generating XINU includes and initialization code..." -ForegroundColor Cyan
-    & $generateScript
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "ERROR: Failed to generate XINU includes and initialization code" -ForegroundColor Red
-        return $false
-    }
-    
-    return $true
 }
 
+# Build the simulation
 function Build-XINUSimulation {
     param (
         [string]$sim_output_dir
@@ -66,13 +85,14 @@ function Build-XINUSimulation {
 
     Write-Host "`nBuilding XINU kernel simulation..." -ForegroundColor Cyan
 
+    # Find Visual Studio
     $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     $vsDevCmdPath = $null
 
     if (Test-Path $vsWherePath) {
         $vsPath = & $vsWherePath -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
         if ($vsPath) {
-            $vsDevCmdPath = "$vsPath\Common7\Tools\VsDevCmd.bat"
+            $vsDevCmdPath = Join-Path $vsPath "Common7\Tools\VsDevCmd.bat"
         }
     }
 
@@ -82,49 +102,58 @@ function Build-XINUSimulation {
         return $false
     }
 
-    if (-not (Test-Path $sim_output_dir)) {
-        New-Item -Path $sim_output_dir -ItemType Directory -Force | Out-Null
-    }
+    # Clean the simulation output directory
+    Clean-SimulationOutput -outputDir $sim_output_dir
 
-    # Generate XINU includes and initialization code
-    if (-not (Generate-XinuIncludes)) {
-        return $false
-    }
-
-    # Get source files from file_list.json
+    # Generate xinu_includes.h
+    Write-Host "Generating xinu_includes.h using $generateIncludesScript..." -ForegroundColor Green
     try {
-        $jsonContent = Get-Content -Path "$projectDir\file_list.json" -Raw | ConvertFrom-Json
-        $sourceFiles = $jsonContent.files | Where-Object { $_.type -eq "source" } | ForEach-Object { $_.path }
-        if (-not $sourceFiles) {
-            Write-Host "ERROR: No source files found in file_list.json" -ForegroundColor Red
-            return $false
-        }
-        
-        Write-Host "Found $($sourceFiles.Count) source files in file_list.json" -ForegroundColor Yellow
+        & $generateIncludesScript
+        Write-Host "Successfully generated xinu_includes.h" -ForegroundColor Green
     } catch {
-        Write-Host "ERROR: Failed to load or parse file_list.json: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "ERROR: Failed to generate xinu_includes.h: $($_.Exception.Message)" -ForegroundColor Red
         return $false
     }
 
-    # Construct compile commands for each source file
-    $compileCommands = foreach ($sourceFile in $sourceFiles) {
-        $objectName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile) + ".obj"
-        $objectFile = "$sim_output_dir\$objectName"
-        "cl.exe /nologo /W4 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I`"$projectDir`" /I`"$projectDir\include`" /D_CRT_SECURE_NO_WARNINGS"
-    }
-
-    # Write each command to a temporary batch file
-    $compileBatchName = "xinu_compile.bat"
-    $compileBatch = "$env:TEMP\$compileBatchName"
+    # Source files to compile
+    $sourceFiles = @(
+        "xinu_simulation.c",
+        "system\starvation_prevention.c"
+    )
     
-    # Get all object files that will be created
-    $objectFiles = $sourceFiles | ForEach-Object { 
-        $objectName = [System.IO.Path]::GetFileNameWithoutExtension($_) + ".obj"
-        "$sim_output_dir\$objectName"
+    # Check if source files exist
+    $missingFiles = @()
+    foreach ($file in $sourceFiles) {
+        if (-not (Test-Path (Join-Path -Path $projectDir -ChildPath $file))) {
+            $missingFiles += $file
+        }
+    }
+    
+    if ($missingFiles.Count -gt 0) {
+        Write-Host "ERROR: Required source files not found:" -ForegroundColor Red
+        foreach ($file in $missingFiles) {
+            Write-Host "  - $file" -ForegroundColor Red
+        }
+        return $false
+    }
+    
+    # Construct compile commands for each source file
+    $compileCommands = @()
+    foreach ($sourceFile in $sourceFiles) {
+        $objectFile = Join-Path -Path $sim_output_dir -ChildPath "$([System.IO.Path]::GetFileNameWithoutExtension($sourceFile)).obj"
+        $compileCommands += "cl.exe /nologo /W3 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I`"$projectDir`" /I`"$projectDir\include`" /D_CRT_SECURE_NO_WARNINGS /DSIMULATION"
     }
 
     # Construct the link command
-    $link_command = "link.exe /nologo /SUBSYSTEM:CONSOLE /OUT:`"$executable_name`" $($objectFiles -join ' ') kernel32.lib user32.lib"
+    $objectFilePaths = @()
+    foreach ($sourceFile in $sourceFiles) {
+        $objName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile)
+        $objectFilePaths += "`"$(Join-Path -Path $sim_output_dir -ChildPath "$objName.obj")`""
+    }
+    $link_command = "link.exe /nologo /SUBSYSTEM:CONSOLE /OUT:`"$executable_name`" $($objectFilePaths -join ' ') kernel32.lib user32.lib"
+
+    # Create batch file for compilation
+    $compileBatch = Join-Path $env:TEMP "xinu_compile.bat"
 
     # Batch file content
     $batchContent = @"
@@ -135,8 +164,10 @@ call `"$vsDevCmdPath`"
 echo Compiling XINU kernel files...
 cd `"$projectDir`"
 $($compileCommands -join "`r`n")
+
 echo Linking XINU simulation...
 $link_command
+
 if %ERRORLEVEL% NEQ 0 (
     echo Compilation failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
@@ -147,9 +178,9 @@ echo Compilation successful!
     # Write the batch file and execute it
     $batchContent | Out-File -FilePath $compileBatch -Encoding ASCII
 
-    Write-Host "Compiling XINU simulation..." -ForegroundColor Yellow
-    $result = Invoke-CommandLine $compileBatch
-    Remove-Item $compileBatch
+    Write-Host "Executing compiler with your files..." -ForegroundColor Yellow
+    $result = Invoke-CommandLine -command $compileBatch -errorLimit 10
+    Remove-Item $compileBatch -ErrorAction SilentlyContinue
 
     # Check if compilation was successful
     if (Test-Path $executable_name) {
@@ -161,10 +192,10 @@ echo Compilation successful!
     }
 }
 
+# Run the simulation
 function Run-XINUSimulation {
     param (
-        [string]$executable,
-        [string]$username
+        [string]$executable
     )
 
     Write-Host "`nRunning XINU kernel simulation..." -ForegroundColor Cyan
@@ -174,38 +205,31 @@ function Run-XINUSimulation {
         return $false
     }
 
-    # Run the simulation with username parameter
-    Write-Host "Starting XINU kernel simulation... (User: $username)" -ForegroundColor Yellow
-    Invoke-CommandLine "$executable $username"
+    # Run the simulation with the current username as parameter
+    Write-Host "Starting XINU kernel simulation..." -ForegroundColor Yellow
+    Invoke-CommandLine -command "`"$executable`" $currentUser"
     Write-Host "`nSimulation completed!" -ForegroundColor Green
     return $true
 }
 
 # Main script execution
 try {
-    # Dynamically get the current Windows username
-    $username = $env:USERNAME
-    
-    # Get current UTC date and time
-    $current_time_utc = (Get-Date).ToUniversalTime() | Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-
     # Welcome message
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "=== XINU Kernel Simulation Build Script ===" -ForegroundColor Cyan
-    Write-Host "User: $username" -ForegroundColor White
-    Write-Host "Date: $current_time_utc UTC" -ForegroundColor White
     Write-Host "====================================================" -ForegroundColor Cyan
-    Write-Host "This script compiles and runs a simulation of the XINU kernel." -ForegroundColor Green
-
+    Write-Host "Current Date and Time (UTC): $currentDate" -ForegroundColor White
+    Write-Host "Current User's Login: $currentUser" -ForegroundColor White
+    Write-Host "====================================================" -ForegroundColor Cyan
+    
     # Step 1: Build the simulation
     $executable = Build-XINUSimulation -sim_output_dir $sim_output_dir
     if ($executable -eq $false) {
         exit 1
     }
 
-    # Step 2: Run the simulation with username
-    # The $username variable is already set from $env:USERNAME
-    $success = Run-XINUSimulation -executable $executable -username $username
+    # Step 2: Run the simulation
+    $success = Run-XINUSimulation -executable $executable
     if (-not $success) {
         exit 1
     }
@@ -213,7 +237,7 @@ try {
     # Final message
     Write-Host "`nXINU kernel simulation completed successfully!" -ForegroundColor Green
     Write-Host "`nTo run the simulation again:" -ForegroundColor Cyan
-    Write-Host "$executable" -ForegroundColor White
+    Write-Host "`"$executable`" $currentUser" -ForegroundColor White
 }
 catch {
     Write-Host "An error occurred:" -ForegroundColor Red

@@ -3,8 +3,8 @@
 
 /* Function prototypes */
 extern void initialize_system(void);
-extern shellcmd starvation_test(int nargs, char *args[]);
-extern shellcmd starvation_test2(int nargs, char *args[]);
+extern shellcmd starvation_test_Q1(int nargs, char *args[]);
+extern shellcmd starvation_test_Q2(int nargs, char *args[]);
 extern void check_pstarv_time(void);
 
 /* Constants */
