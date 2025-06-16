@@ -1,63 +1,120 @@
-﻿===== XINU Simulation Compilation Log =====
-Date: 2025-06-16 03:32:00
-User: mol
-=======================================
+XINU Simulation Build Log - 2025-06-16 06:19:36 UTC by mol
 
-====================================================
-=== XINU Kernel Simulation Build Script ===
-====================================================
-Current Date and Time (UTC): 2025-06-16 03:32:00
-Current User's Login: mol
-====================================================
-Cleaning simulation output directory...
-Cleaned C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output
-
-Building Windows host process...
-Executing compiler for host process...
-Executing: C:\Users\mol\AppData\Local\Temp\xinu_host_compile.bat
-Setting up Visual Studio environment...
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Starting source file collection from Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\compile\Makefile
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - ParseFN: Attempting to parse Makefile variable: SYSTEM_CFILES
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - ParseFN: Attempting to parse Makefile variable: TTY_CFILES
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - ParseFN: Attempting to parse Makefile variable: SHELL_CFILES
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - ParseFN: Attempting to parse Makefile variable: LIBXCCFILES
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - ParseFN: Variable 'LIBXCCFILES' was NOT matched or error. Warning.
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Total XINU C source files collected for compilation: 111
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - XINU Simulation Build Script Started (v5.30.9)
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Date/User for this run: 2025-06-16 06:19:36 UTC by mol
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Project Directory: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Generated Includes File (for XINU code /FI): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h
+2025-06-16 06:19:36 UTC (UTC) 06:19:36 (local) - Generated Sim Declarations File (for shim code): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_sim_declarations.h
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generated Windows Sim Helper C File: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_simulation_win.c
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Cleaning previous build...
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generating XINU includes wrapper (xinu_includes.h)...
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generated XINU includes wrapper at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generating XINU sim declarations header (xinu_sim_declarations.h)...
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generated XINU sim declarations at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_sim_declarations.h
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generating Windows simulation helper (xinu_simulation_win.c)...
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Generated Windows simulation helper at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_simulation_win.c
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Building XINU Core Process...
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Compiling to OBJ: "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" -> "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj"
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Executing (via helper): cl /nologo /EHsc /W3 /Od /c "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" /Fo"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj" /FI"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include" /D"_CONSOLE"
+2025-06-16 06:19:36 UTC (UTC) 06:19:37 (local) - Invoke-MSVCCommandAndLog: Executing: cmd /c "call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" && cl /nologo /EHsc /W3 /Od /c "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" /Fo"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj" /FI"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include" /D"_CONSOLE""
+2025-06-16 06:19:36 UTC (UTC) 06:19:39 (local) - Invoke-MSVCCommandAndLog: Process exited with code: 2.
 **********************************************************************
 ** Visual Studio 2022 Developer Command Prompt v17.14.5
 ** Copyright (c) 2025 Microsoft Corporation
 **********************************************************************
-Compiling Windows host process...
-xinu_host.c
-Linking Windows host process...
-Compilation of host process successful!
-Successfully built Windows host process at C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\xinu_host.exe
-
-Building XINU core process...
-Executing compiler for XINU core...
-Executing: C:\Users\mol\AppData\Local\Temp\xinu_core_compile.bat
-Setting up Visual Studio environment...
-**********************************************************************
-** Visual Studio 2022 Developer Command Prompt v17.14.5
-** Copyright (c) 2025 Microsoft Corporation
-**********************************************************************
-Compiling XINU core files...
-xinu_core.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(85): error C2373: 'CreateProcessA': redefinition; different type modifiers
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\processthreadsapi.h(370): note: see declaration of 'CreateProcessA'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(294): error C2373: 'CreateProcessA': redefinition; different type modifiers
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\processthreadsapi.h(370): note: see declaration of 'CreateProcessA'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(552): fatal error C1075: '{': no matching token found
-resched.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\resched.c(1): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
-ready.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ready.c(3): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
-starvation_prevention.c
+[vcvarsall.bat] Environment initialized for: 'x64'
+ascdate.c
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2061: syntax error: identifier 'xinu_doscan_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2061: syntax error: identifier 'xinu_sscanf_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2061: syntax error: identifier 'xinu_fscanf_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2143: syntax error: missing ')' before ','
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: 'type'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(10): warning C4005: 'scanf': macro redefinition
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h(27): note: see previous definition of 'scanf'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2061: syntax error: identifier 'xinu_fprintf_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2061: syntax error: identifier 'xinu_printf_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2061: syntax error: identifier 'xinu_sprintf_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2061: syntax error: identifier 'xinu_fgetc_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2061: syntax error: identifier 'xinu_fputc_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2143: syntax error: missing ')' before ','
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2061: syntax error: identifier 'xinu_fputs_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'xinu_putchar_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2146: syntax error: missing ')' before identifier 'c'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'c'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): warning C4002: too many arguments for function-like macro invocation 'getchar'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2061: syntax error: identifier 'xinu_getchar_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2061: syntax error: identifier 'xinu_labs_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2061: syntax error: identifier 'xinu_atol_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): warning C4002: too many arguments for function-like macro invocation 'rand'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2061: syntax error: identifier 'xinu_rand_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'xinu_strncmp_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'xinu_strnlen_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'xinu_strncmp_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'xinu_strnlen_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'xinu_strncmp_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'xinu_strnlen_sim_redirect'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
+C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\winnt.h(23711): warning C4013: 'xinu_memset_sim_redirect' undefined; assuming extern returning int
+C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\stralign.h(488): warning C4013: '_wcsicmp' undefined; assuming extern returning int
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(18): error C2061: syntax error: identifier 'sid32'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(20): error C2061: syntax error: identifier 'bpsize'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(20): error C2059: syntax error: ';'
@@ -81,63 +138,5 @@ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(10): err
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(10): error C2059: syntax error: ')'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(11): error C2143: syntax error: missing ')' before '*'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(11): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(11): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(12): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(12): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(12): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(13): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(13): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(13): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(13): error C2081: 'uint32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(14): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(14): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(14): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(14): error C2081: 'uint32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2143: syntax error: missing ')' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(21): error C2061: syntax error: identifier 'dvirq'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(21): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(22): error C2059: syntax error: '}'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(21): error C2061: syntax error: identifier 'uint32'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(24): error C2061: syntax error: identifier 'dt_bootvalid'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(24): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(25): error C2061: syntax error: identifier 'dt_daylight'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(25): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2061: syntax error: identifier 'dt_msize'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2059: syntax error: '['
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(29): error C2059: syntax error: '}'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/interrupt.h(3): error C2061: syntax error: identifier 'girmask'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/interrupt.h(3): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/kernel.h(51): warning C4005: 'NULL': macro redefinition
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(230): note: see previous definition of 'NULL'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/kernel.h(59): warning C4005: 'EOF': macro redefinition
-C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdio.h(41): note: see previous definition of 'EOF'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(67): warning C4028: formal parameter 1 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(145): warning C4028: formal parameter 3 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): warning C4028: formal parameter 1 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): warning C4028: formal parameter 3 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): error C2040: 'memcmp': 'int32 *(void *,const void *,int32)' differs in levels of indirection from 'int (const void *,const void *,size_t)'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(151): warning C4028: formal parameter 2 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(151): warning C4028: formal parameter 3 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(197): warning C4028: formal parameter 2 different from declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/pstarv.h(9): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
-Linking XINU core process...
-LINK : fatal error LNK1181: cannot open input file 'C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\xinu_core.obj'
-Compilation failed with error code 1181
-ERROR: Failed to build XINU core process
-Failed to build XINU core process. Exiting.
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(11): fatal error C1003: error count exceeds 100; stopping compilation
+2025-06-16 06:19:36 UTC (UTC) 06:19:40 (local) - ERROR: Compilation to OBJ failed for "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c". CL.exe Exit Code: 2. Check C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\compilation.txt.
