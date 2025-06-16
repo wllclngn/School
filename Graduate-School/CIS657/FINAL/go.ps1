@@ -1,11 +1,5 @@
 # PowerShell Script for Compiling XINU Kernel Simulation (Full Project)
 
-# Generate a unique identifier
-$uniqueId = New-Guid
-
-# Print the unique identifier
-Write-Host "Script execution ID: $uniqueId" -ForegroundColor Green
-
 # Configuration Variables
 $projectDir = $PSScriptRoot
 $sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
@@ -15,6 +9,12 @@ $xinuIncludesHeader = Join-Path -Path $projectDir -ChildPath "xinu_includes.h" #
 
 # Path to the script that generates xinu_includes.h (replace with your script)
 $generateIncludesScript = Join-Path -Path $projectDir -ChildPath "generate_xinu_includes.ps1"
+
+# Generate a unique identifier
+$uniqueId = New-Guid
+
+# Print the unique identifier
+Write-Host "Script execution ID: $uniqueId" -ForegroundColor Green
 
 # Function to execute a command and capture its output
 function Invoke-CommandLine {
@@ -60,6 +60,18 @@ function Build-XINUSimulation {
         [string]$sim_output_dir
     )
 
+    # Static variable to track execution
+    static [bool]$alreadyExecuted = $false
+
+    # Check if already executed
+    if ($alreadyExecuted) {
+        Write-Host "Build-XINUSimulation already executed. Skipping." -ForegroundColor Yellow
+        return $false
+    }
+
+    # Set the flag to indicate execution
+    $alreadyExecuted = $true
+
     Write-Host "`nBuilding XINU kernel simulation..." -ForegroundColor Cyan
 
     # Initialize error flag
@@ -87,8 +99,15 @@ function Build-XINUSimulation {
         if (-not (Test-Path $sim_output_dir)) {
             New-Item -Path $sim_output_dir -ItemType Directory -Force | Out-Null
         } else {
-            # Clean the directory
-            Remove-Item -Path "$sim_output_dir\*" -Force -ErrorAction SilentlyContinue
+            # Verify that the output directory is not the root directory or a directory containing important files
+            if ($sim_output_dir -eq $PSScriptRoot -or $sim_output_dir -eq "\") {
+                Write-Host "ERROR: Output directory cannot be the root directory or the project directory." -ForegroundColor Red
+                $buildError = $true
+            } else {
+                # Clean the directory (commented out to prevent accidental deletion)
+                # Remove-Item -Path "$sim_output_dir\*" -Force -ErrorAction SilentlyContinue
+                Write-Host "Cleaning output directory is disabled to prevent accidental data loss." -ForegroundColor Yellow
+            }
         }
     }
 
@@ -144,7 +163,6 @@ $($compileCommands -join "`r`n")
 echo Linking XINU simulation...
 $link_command
 if %ERRORLEVEL% NEQ 0 (
-    echo Compilation failed with error code %ERRORLEVEL%
     echo Compilation failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
 )
