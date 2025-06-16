@@ -1,0 +1,32 @@
+﻿===== XINU Simulation Compilation Log =====
+Date: 2025-06-16 02:54:40
+User: mol
+=======================================
+
+====================================================
+=== XINU Kernel Simulation Build Script ===
+====================================================
+Current Date and Time (UTC): 2025-06-16 02:54:40
+Current User's Login: mol
+====================================================
+Cleaning simulation output directory...
+Cleaned C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output
+
+Building Windows host process...
+Executing compiler for host process...
+Executing: C:\Users\mol\AppData\Local\Temp\xinu_host_compile.bat
+Setting up Visual Studio environment...
+**********************************************************************
+** Visual Studio 2022 Developer Command Prompt v17.14.5
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+Compiling Windows host process...
+xinu_host.c
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_host.c(544): warning C4013: 'signal' undefined; assuming extern returning int
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_host.c(544): error C2065: 'SIGINT': undeclared identifier
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_host.c(544): error C2065: 'SIG_ERR': undeclared identifier
+Linking Windows host process...
+LINK : fatal error LNK1181: cannot open input file 'C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\xinu_host.obj'
+Compilation failed with error code 1181
+ERROR: Failed to build Windows host process
+Failed to build host process. Exiting.
