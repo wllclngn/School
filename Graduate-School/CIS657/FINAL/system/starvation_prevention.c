@@ -5,6 +5,7 @@
  */
 
 #include "../xinu_includes.h"
+#include <xinu.h>
 
 /* Global variables are defined in xinu_includes.h */
 

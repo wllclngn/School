@@ -1,6 +1,9 @@
 #ifndef _XINU_H_
 #define _XINU_H_
 
+#include "xinu.h"
+
+#include <stddef.h>
 #include <stdint.h>
 #include <stddef.h> // for size_t, NULL
 
@@ -41,5 +44,6 @@ typedef unsigned char bool8;
 #include <prototypes.h>
 #include <i386.h>
 #include <pci.h>
+#include <xinu.h>
 
 #endif /* _XINU_H_ */

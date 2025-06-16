@@ -1,3 +1,8 @@
+#ifndef _STDLIB_H_
+#define _STDLIB_H_
+
+#include <xinu.h>
+
 /**
  * @file stdlib.h
  *
@@ -15,3 +20,5 @@ uint32 rand(void);
 void srand(unsigned int);
 void *malloc(unsigned int nbytes);
 void free(void *pmem);
+
+#endif /* _STDLIB_H_ */

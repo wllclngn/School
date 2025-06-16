@@ -2,6 +2,8 @@
 
 /* Intel 8254-2 clock chip constants */
 
+#include <xinu.h>
+
 #define	CLOCKBASE	0x40		/* I/O base port of clock chip	*/
 #define	CLOCK0		CLOCKBASE
 #define	CLKCNTL		(CLOCKBASE+3)	/* chip CSW I/O port		*/

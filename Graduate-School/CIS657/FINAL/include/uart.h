@@ -5,6 +5,8 @@
 #define	UART_FIFO_SIZE	16	/* chars in UART onboard output FIFO	*/
 				/* (16 for later UART chips)		*/
 
+#include <xinu.h>
+
 /*
  * Control and Status Register (CSR) definintions for the 16550 UART.
  * The code maps the structure structure directly onto the base address

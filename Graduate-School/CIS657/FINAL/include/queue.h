@@ -8,6 +8,8 @@
 #define NQENT	(NPROC + 4 + NSEM + NSEM)
 #endif
 
+#include <xinu.h>
+
 #define	EMPTY	(-1)		/* null value for qnext or qprev index	*/
 #define	MAXKEY	0x7FFFFFFF	/* max key that can be stored in queue	*/
 #define	MINKEY	0x80000000	/* min key that can be stored in queue	*/

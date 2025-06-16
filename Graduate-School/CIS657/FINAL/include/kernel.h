@@ -1,6 +1,8 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 
+#include <xinu.h>
+
 /* kernel.h */
 
 /* General type declarations used throughout the kernel */

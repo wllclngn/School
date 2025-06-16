@@ -7,6 +7,8 @@
 #define NSEM        50  /* number of semaphores, if not defined */
 #endif
 
+#include <xinu.h>
+
 #define S_FREE      0   /* semaphore table entry is available   */
 #define S_USED      1   /* semaphore table entry is in use  */
 

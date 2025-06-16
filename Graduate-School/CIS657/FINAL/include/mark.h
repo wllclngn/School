@@ -4,6 +4,8 @@
 #define	MM_MAX_MARKS	20	/* maximum number of marked locations	*/
 #endif
 
+#include <xinu.h>
+
 extern	uint32	*(marks[]);
 extern	uint32	marked;
 extern	sid32	mkmutex;

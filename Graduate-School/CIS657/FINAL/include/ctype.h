@@ -4,6 +4,8 @@
  * isprint, iscntrl, toupper, tolower, toascii, iseof
 */
 
+#include <xinu.h>
+
 #define _U 0x01
 #define _L 0x02
 #define _N 0x04

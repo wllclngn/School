@@ -23,6 +23,8 @@
 #define	TY_IMCBREAK	'K'		/* honor echo, etc, no line edit*/
 #define	TY_OMRAW	'R'		/* raw mode => normal processing*/
 
+#include <xinu.h>
+
 struct	ttycblk	{			/* tty line control block	*/
 	char	*tyihead;		/* next input char to read	*/
 	char	*tyitail;		/* next slot for arriving char	*/

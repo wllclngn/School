@@ -14,6 +14,8 @@
  */
 #if (defined(__GNUC__) && !defined(_MSC_VER)) || (!defined(XINU_SIMULATION) && !defined(_MSC_VER))
 
+#include <xinu.h>
+
 /* GCC-specific varargs */
 typedef __builtin_va_list va_list;
 

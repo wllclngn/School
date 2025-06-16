@@ -12,6 +12,8 @@
 
 /* Conversion between network and local representations */
 
+#include <xinu.h>
+
 #define	ntim2xtim(x)  ((x)-2208988800U)/* net-to-xinu time	*/
 #define	xtim2ntim(x)  ((x)+2208988800U)/* xinu-to-net time	*/
 

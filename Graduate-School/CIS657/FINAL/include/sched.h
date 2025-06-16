@@ -5,6 +5,8 @@
 #define	DEFER_START	1	/* start deferred rescehduling		*/
 #define	DEFER_STOP	2	/* stop  deferred rescehduling		*/
 
+#include <xinu.h>
+
 /* Structure that collects items related to deferred rescheduling	*/
 
 struct	defer	{

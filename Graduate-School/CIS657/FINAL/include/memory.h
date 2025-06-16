@@ -1,6 +1,8 @@
 #ifndef _MEMORY_H_  // Or any other unique guard name
 #define _MEMORY_H_
 
+#include <xinu.h>
+
 /* memory.h - roundmb, truncmb, freestk */
 
 #define	PAGE_SIZE	4096

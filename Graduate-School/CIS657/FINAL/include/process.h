@@ -1,6 +1,8 @@
 #ifndef _PROCESS_H_
 #define _PROCESS_H_
 
+#include <xinu.h>
+
 /* process.h - isbadpid */
 
 /* Maximum number of processes in the system */
