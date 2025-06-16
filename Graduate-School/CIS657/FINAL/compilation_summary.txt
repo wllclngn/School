@@ -1,2 +1,0 @@
-Compiling /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/xinu_core.o
-/home/mod/School/Graduate-School/CIS657/FINAL/xinu_includes.h:28:16: error: conflicting types for ‘xinu_sscanf_sim_redirect’; have ‘int32(char *, char *, int32)’ {aka ‘int(char *, char *, int)’}
