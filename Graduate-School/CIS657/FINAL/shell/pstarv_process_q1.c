@@ -1,5 +1,5 @@
 /* pstarv_process_q1.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 06:42:05 UTC
+ * Last modified: 2025-06-16 00:05:22 UTC
  * Modified by: wllclngn
  */
 
@@ -9,10 +9,12 @@
 void pstarv_func_q1(void) {
     int iterations = 0;
     const int MAX_ITERATIONS = 25;
-    
+/* Make sure the process identifies itself correctly */
+
     kprintf("\n##########################################################################\n");
     kprintf("PStarv (PID: %d, Prio: %d) IS FINALLY RUNNING! Priority boosting works!\n",
             currpid, proctab[currpid].prprio);
+    kprintf("XINU is awesome!\n");
     kprintf("##########################################################################\n\n");
     
     while (iterations < MAX_ITERATIONS) {
