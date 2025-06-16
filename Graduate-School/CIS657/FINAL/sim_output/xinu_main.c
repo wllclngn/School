@@ -1,7 +1,7 @@
 /**
  * XINU Simulation Main File
  * Author: wllclngn
- * Date: 2025-06-15 20:03:50
+ * Date: 2025-06-15 20:26:30
  */
 
 #include "xinu.h"
@@ -282,7 +282,7 @@ int main(void) {
     kprintf("\n======================================================\n");
     kprintf("XINU Starvation Prevention Simulation\n");
     kprintf("Using your actual source files from repository\n");
-    kprintf("Date: 2025-06-15 20:03:50\n");
+    kprintf("Date: 2025-06-15 20:26:30\n");
     kprintf("======================================================\n\n");
     
     /* Run the starvation test using your implementation */
