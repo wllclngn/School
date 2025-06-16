@@ -1,27 +1,14 @@
 #!/bin/bash
 # go.sh: Build XINU with GCC on UNIX-like systems (Linux, WSL, macOS, MSYS2, etc.)
-# Produces a compact, Copilot-optimized compilation.txt.
 # Dynamically inserts missing #include <stddef.h> (always at top) and #include <xinu.h> as needed.
 # Ensures <stddef.h> is included at the top of all "core" headers (stdlib.h, stdio.h, string.h, time.h).
+# Dynamically updates module includes within include/xinu.h.
 
 set -e
 PROJECT_DIR="$(cd "$(dirname "$0")"; pwd)"
 cd "$PROJECT_DIR"
 
-# --- Ensure <stddef.h> is the first include in all core headers ---
-for h in include/stdlib.h include/stdio.h include/string.h include/time.h; do
-  if [ -f "$h" ] && ! grep -q '#include <stddef.h>' "$h"; then
-    awk '
-      NR==1 { print; next }
-      $0 ~ /^#(ifndef|define|pragma once)/ { print; next }
-      !added && $0 ~ /^#include/ { print "#include <stddef.h>"; added=1 }
-      { print }
-      END { if (!added) print "#include <stddef.h>" }
-    ' "$h" > "$h.tmp" && mv "$h.tmp" "$h"
-    echo "Ensured <stddef.h> is the first include in $h"
-  fi
-done
-
+# --- File Paths ---
 SIM_OUTPUT_DIR="$PROJECT_DIR/sim_output"
 OBJ_DIR="$SIM_OUTPUT_DIR/obj"
 LOGFILE="$PROJECT_DIR/compilation.txt"
@@ -30,93 +17,210 @@ XINU_CORE_NAME="xinu_core"
 XINU_CORE_OUTPUT="$SIM_OUTPUT_DIR/$XINU_CORE_NAME"
 MAKEFILE="$PROJECT_DIR/compile/Makefile"
 
+GEN_XINU_STDDEFS_H="$PROJECT_DIR/xinu_stddefs.h"
 GEN_XINU_INCLUDES="$PROJECT_DIR/xinu_includes.h"
 GEN_XINU_SIM_DECLS="$PROJECT_DIR/xinu_sim_declarations.h"
 GEN_SIM_HELPER="$PROJECT_DIR/xinu_simulation.c"
 
+# --- Ensure <stddef.h> is the first include in all core headers ---
+for h in include/stdlib.h include/stdio.h include/string.h include/time.h; do
+  if [ -f "$h" ]; then
+    first_include_line=$(grep -n -m 1 '^#include' "$h" | cut -d: -f1)
+    is_stddef_first=false
+    if [[ -n "$first_include_line" ]]; then
+        if head -n "$first_include_line" "$h" | tail -n 1 | grep -q '#include <stddef.h>'; then
+            is_stddef_first=true
+        fi
+    fi
+
+    if ! $is_stddef_first && ! grep -q '#include <stddef.h>' "$h"; then
+        awk '
+            BEGIN { added=0 }
+            !added && /^#include/ { print "#include <stddef.h>"; added=1; print; next }
+            !added && !/^#(ifndef|define|pragma)/ { print "#include <stddef.h>"; added=1; print; next}
+            { print }
+            END { if (!added && NR==0) print "#include <stddef.h>"; else if (!added) print "#include <stddef.h>";}
+        ' "$h" > "$h.tmp" && mv "$h.tmp" "$h"
+        echo "Ensured <stddef.h> is among the first includes in $h"
+    elif ! $is_stddef_first && grep -q '#include <stddef.h>' "$h"; then
+        echo "Note: <stddef.h> found in $h but not as the very first include. Manual check advised if issues occur."
+    fi
+  fi
+done
+
+
 CLEAN_BUILD=0
 RUN_HOST=0
 STARVATION_TEST=""
-
 ERROR_LIMIT=20
 ERROR_COUNT=0
-WARNINGS_SEEN=()
+declare -A FIRST_WARNINGS
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --clean)
-            CLEAN_BUILD=1
-            shift
-            ;;
-        --run)
-            RUN_HOST=1
-            shift
-            ;;
-        --starvation)
-            STARVATION_TEST="$2"
-            shift 2
-            ;;
-        *)
-            echo "Unknown argument: $1"
-            exit 2
-            ;;
+        --clean) CLEAN_BUILD=1; shift ;;
+        --run) RUN_HOST=1; shift ;;
+        --starvation) STARVATION_TEST="$2"; shift 2 ;;
+        *) echo "Unknown argument: $1"; exit 2 ;;
     esac
 done
 
-# --- Dynamically insert includes for <stddef.h> (always at top) and <xinu.h> as needed ---
-echo "Auto-inserting missing includes for <stddef.h> (top of file) and <xinu.h>..."
+# --- Dynamically insert includes for <stddef.h> (top of file) and <xinu.h> into various files ---
+echo "Auto-inserting missing includes for <stddef.h> (top of file) and <xinu.h> in various source files..."
+find ./include ./lib/libxc ./system ./device ./shell -type f \( -name "*.h" -o -name "*.c" \) -print0 | while IFS= read -r -d $'\0' file; do
+    if [[ "$file" == "$GEN_XINU_INCLUDES" || "$file" == "$GEN_XINU_SIM_DECLS" || "$file" == "$GEN_SIM_HELPER" || "$file" == "$GEN_XINU_STDDEFS_H" ]]; then
+        continue
+    fi
+    if [[ "$(basename "$file")" == "xinu.h" && "$(dirname "$file")" == "$PROJECT_DIR/include" ]]; then
+        continue
+    fi
 
-find ./include ./lib/libxc ./system ./device ./shell -type f \( -name "*.h" -o -name "*.c" \) | while read -r file; do
-    # Always insert <stddef.h> as the absolute first line if size_t is used and not already included
     if grep -q '\bsize_t\b' "$file" && ! grep -q '#include <stddef.h>' "$file"; then
         (echo '#include <stddef.h>'; cat "$file") > "$file.tmp" && mv "$file.tmp" "$file"
         echo "Inserted <stddef.h> at absolute top of $file"
     fi
 
-    # Insert <xinu.h> after last #include if obvious XINU types/symbols are used and not already included
-    if grep -Eq '\b(syscall|int32|did32|XINU_|PROC|prstate|proctab|SYSCALL)\b' "$file" && ! grep -q '#include <xinu.h>' "$file"; then
-        last_include=$(grep -n '^#include' "$file" | tail -1 | cut -d: -f1)
-        if [[ -z $last_include ]]; then
-            sed -i '1i#include <xinu.h>' "$file"
+    if grep -Eq '\b(syscall|int32|did32|XINU_|PROC|prstate|proctab|SYSCALL|clktime|sleepms|resched)\b' "$file" && \
+       ! grep -q '#include <xinu.h>' "$file" && \
+       ! grep -q '#include "xinu.h"' "$file"; then
+        last_include_line_num=$(grep -n '^#include' "$file" | tail -1 | cut -d: -f1)
+        tmp_xinu_add="${file}.tmpaddxinu"
+        if [[ -z $last_include_line_num ]]; then
+            if grep -q '^#include <stddef.h>' "$file"; then
+                sed -i '1a#include <xinu.h>' "$file"
+            else
+                sed -i '1i#include <xinu.h>' "$file"
+            fi
         else
-            sed -i "${last_include}a#include <xinu.h>" "$file"
+            # Using awk for safer insertion after a specific line number
+            awk -v line_num="$last_include_line_num" 'NR==line_num {print; print "#include <xinu.h>"; next} {print}' "$file" > "$tmp_xinu_add" && mv "$tmp_xinu_add" "$file"
         fi
         echo "Inserted <xinu.h> in $file"
     fi
 done
 
+
 # --- Compilation.txt Header ---
-LINUX_USER="$(whoami)"
-NOW_FMT="$(date '+%H:%M:%S %Z %Y-%m-%d')"
+# DYNAMIC user and timestamp for log header
+LINUX_USER_LOGIN="$(whoami)"
+NOW_FMT_LOG_HEADER="$(date '+%Y-%m-%d %H:%M:%S %Z')"
 rm -f "$LOGFILE" "$SUMMARYFILE"
-echo "compilation.txt generated by $LINUX_USER at $NOW_FMT" > "$LOGFILE"
+echo "compilation.txt generated by $LINUX_USER_LOGIN at $NOW_FMT_LOG_HEADER (script run: $(date '+%Y-%m-%d %H:%M:%S %Z'))" > "$LOGFILE"
 
 log() {
     local msg="$1"
+    # DYNAMIC timestamp for log messages
     echo "$(date '+%Y-%m-%d %H:%M:%S %Z') - $msg" | tee -a "$LOGFILE"
 }
 
 # --- Clean ---
 if [[ $CLEAN_BUILD -eq 1 ]]; then
-    rm -rf "$SIM_OUTPUT_DIR" "$GEN_XINU_INCLUDES" "$GEN_XINU_SIM_DECLS" "$GEN_SIM_HELPER"
+    rm -rf "$SIM_OUTPUT_DIR" "$GEN_XINU_INCLUDES" "$GEN_XINU_SIM_DECLS" "$GEN_SIM_HELPER" "$GEN_XINU_STDDEFS_H"
+    rm -f "$PROJECT_DIR/include/xinu.h.bak_dyn_inc"
     rm -f "$LOGFILE" "$SUMMARYFILE"
-    echo "compilation.txt generated by $LINUX_USER at $NOW_FMT" > "$LOGFILE"
+    echo "compilation.txt generated by $LINUX_USER_LOGIN at $NOW_FMT_LOG_HEADER (script run: $(date '+%Y-%m-%d %H:%M:%S %Z'))" > "$LOGFILE" # Recreate header after clean
     log "Cleaning previous build..."
 fi
 mkdir -p "$SIM_OUTPUT_DIR" "$OBJ_DIR"
 
-# --- Generate xinu_includes.h ---
+# --- Generate xinu_stddefs.h (Required for include/xinu.h structure) ---
+cat > "$GEN_XINU_STDDEFS_H" <<'EOF'
+/* xinu_stddefs.h - Generated by go.sh */
+#ifndef _XINU_STDDEFS_H_
+#define _XINU_STDDEFS_H_
+typedef void exchandler; typedef int message;
+/* Add other very basic, self-contained XINU typedefs here if needed */
+/* For example: typedef int int32; if not using <stdint.h> directly in xinu.h */
+#endif /* _XINU_STDDEFS_H_ */
+EOF
+log "Generated XINU stddefs: $GEN_XINU_STDDEFS_H"
+
+
+# --- Function to dynamically update module includes in xinu.h ---
+update_xinu_h_module_includes() {
+    local xinu_h_file="$PROJECT_DIR/include/xinu.h"
+    if [[ ! -f "$xinu_h_file" ]]; then
+        log "ERROR: $xinu_h_file not found. Cannot update module includes."
+        return 1
+    fi
+
+    if ! grep -q '\[\[\[ BEGIN DYNAMIC XINU MODULE INCLUDES' "$xinu_h_file" || \
+       ! grep -q '\[\[\[ END DYNAMIC XINU MODULE INCLUDES' "$xinu_h_file"; then
+        log "ERROR: Markers for dynamic includes not found in $xinu_h_file."
+        log "Please ensure it contains '[[[ BEGIN DYNAMIC XINU MODULE INCLUDES ]]]' and '[[[ END DYNAMIC XINU MODULE INCLUDES ]]]'."
+        log "Skipping dynamic update of module includes in $xinu_h_file."
+        return 1
+    fi
+    
+    log "Dynamically updating module includes in $xinu_h_file..."
+    
+    local include_dir="$PROJECT_DIR/include"
+    local temp_include_list_file
+    temp_include_list_file=$(mktemp)
+
+    find "$include_dir" -maxdepth 1 -name "*.h" -print0 | while IFS= read -r -d $'\0' header_file; do
+        base_header_name=$(basename "$header_file")
+        if [[ "$base_header_name" == "xinu.h" || \
+              "$base_header_name" == "stddef.h" || \
+              "$base_header_name" == "stdint.h" || \
+              "$base_header_name" == "xinu_stddefs.h" ]]; then
+            continue
+        fi
+        echo "#include <$base_header_name>" >> "$temp_include_list_file"
+    done
+
+    local sorted_temp_list_file
+    sorted_temp_list_file=$(mktemp)
+    sort "$temp_include_list_file" > "$sorted_temp_list_file"
+    rm "$temp_include_list_file"
+
+    cp "$xinu_h_file" "${xinu_h_file}.bak_dyn_inc"
+    
+    awk -v include_file="$sorted_temp_list_file" '
+        BEGIN { printing_dynamic = 1; in_dynamic_section = 0; }
+        /\/\/\/\s*\[\[\[ BEGIN DYNAMIC XINU MODULE INCLUDES/{
+            print;
+            while ((getline line < include_file) > 0) {
+                print line;
+            }
+            close(include_file);
+            in_dynamic_section = 1; 
+            printing_dynamic = 0;   
+            next;
+        }
+        /\/\/\/\s*\[\[\[ END DYNAMIC XINU MODULE INCLUDES/{
+            if (in_dynamic_section == 0) {
+                 # This case should ideally be caught by the grep check before calling awk
+            }
+            printing_dynamic = 1;   
+            in_dynamic_section = 2; 
+            print;
+            next;
+        }
+        { if (printing_dynamic) print; }
+    ' "${xinu_h_file}.bak_dyn_inc" > "$xinu_h_file"
+
+    rm "$sorted_temp_list_file"
+    log "Finished updating module includes in $xinu_h_file."
+    log "WARNING: Module include order is ALPHABETICAL and may NOT respect dependencies!"
+}
+
+# --- Call the function to update xinu.h module includes ---
+update_xinu_h_module_includes
+
+
+# --- Generate xinu_includes.h (Shim wrapper) ---
 cat > "$GEN_XINU_INCLUDES" <<'EOF'
 /* xinu_includes.h - Wrapper for XINU code compilation.
  * Generated by go.sh
  * Version: GCC build variant
  */
-#ifndef _XINU_INCLUDES_H_
-#define _XINU_INCLUDES_H_
+#ifndef _XINU_INCLUDES_SIM_WRAPPER_H_
+#define _XINU_INCLUDES_SIM_WRAPPER_H_
 
-#include "xinu.h"
+#include "xinu.h" 
 #include <stdarg.h>
-#include <stddef.h>
+#include <stddef.h> 
 #include "xinu_sim_declarations.h"
 
 /* --- AGGRESSIVE SHIMS --- */
@@ -141,7 +245,7 @@ cat > "$GEN_XINU_INCLUDES" <<'EOF'
 #define fputs xinu_fputs_sim_redirect
 
 #define _doprnt xinu_doprnt_sim_redirect
-#define _doscan xinu_doscan_sim_redirect
+#define _doscan xinu_doscan_sim_redirect /* This line was the source of the error */
 
 #ifdef abs
 #undef abs
@@ -185,7 +289,7 @@ cat > "$GEN_XINU_INCLUDES" <<'EOF'
 #define memcmp xinu_memcmp_sim_redirect
 #define memset xinu_memset_sim_redirect
 
-#endif /* _XINU_INCLUDES_H_ */
+#endif /* _XINU_INCLUDES_SIM_WRAPPER_H_ */
 EOF
 log "Generated UNIX-like simulation includes wrapper at: $GEN_XINU_INCLUDES"
 
@@ -193,7 +297,6 @@ log "Generated UNIX-like simulation includes wrapper at: $GEN_XINU_INCLUDES"
 cat > "$GEN_XINU_SIM_DECLS" <<'EOF'
 /* xinu_sim_declarations.h - Declarations for XINU simulation shim functions.
  * Generated by go.sh
- * Version: GCC build variant
  */
 #ifndef _XINU_SIM_DECLARATIONS_H_
 #define _XINU_SIM_DECLARATIONS_H_
@@ -216,11 +319,14 @@ int xinu_fputc_sim_redirect(int c, void *stream);
 int xinu_fputs_sim_redirect(const char *str, void *stream);
 
 typedef int ((*xinu_putc_func_t)(int, int));
-typedef int ((*xinu_getc_func_t)(int));
-typedef int ((*xinu_ungetc_func_t)(int,int));
+/* Corrected typedefs for _doscan based on error */
+typedef int (*xinu_doscan_getc_func_t)(void);
+typedef int (*xinu_doscan_ungetc_func_t)(char);
+
 
 int xinu_doprnt_sim_redirect(char *fmt, va_list ap, xinu_putc_func_t putc_func, int putc_arg);
-int xinu_doscan_sim_redirect(char *fmt, va_list ap, xinu_getc_func_t getc_func, xinu_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg);
+/* Corrected declaration for xinu_doscan_sim_redirect */
+int xinu_doscan_sim_redirect(char *fmt, int *ap, xinu_doscan_getc_func_t getc_func, xinu_doscan_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg);
 
 // Stdlib
 int xinu_abs_sim_redirect(int n);
@@ -257,11 +363,10 @@ void xinu_trigger_clock_interrupt(void);
 EOF
 log "Generated UNIX-like simulation declarations at: $GEN_XINU_SIM_DECLS"
 
-# --- Generate xinu_simulation.c (host-side simulation shims, works on UNIX-like) ---
+# --- Generate xinu_simulation.c ---
 cat > "$GEN_SIM_HELPER" <<'EOF'
 /* xinu_simulation.c - Helper functions for UNIX-like Simulation
  * Generated by go.sh
- * Version: GCC build variant
  */
 #include "xinu_sim_declarations.h"
 #include <stdio.h>
@@ -290,21 +395,29 @@ int xinu_sscanf_sim_redirect(const char *buffer, const char *format, ...) {
     va_list args; int ret; va_start(args, format); ret = vsscanf(buffer, format, args); va_end(args); return ret;
 }
 int xinu_getchar_sim_redirect(void) { return getchar(); }
-int xinu_putchar_sim_redirect(int c) { return putchar(c); }
+int xinu_putchar_sim_redirect(int c) { fflush(stdout); return putchar(c); }
 int xinu_fgetc_sim_redirect(void *stream) { return fgetc((FILE*)stream); }
 char* xinu_fgets_sim_redirect(char *str, int num, void *stream) { return fgets(str, num, (FILE*)stream); }
-int xinu_fputc_sim_redirect(int c, void *stream) { return fputc(c, (FILE*)stream); }
-int xinu_fputs_sim_redirect(const char *str, void *stream) { return fputs(str, (FILE*)stream); }
+int xinu_fputc_sim_redirect(int c, void *stream) { fflush((FILE*)stream); return fputc(c, (FILE*)stream); }
+int xinu_fputs_sim_redirect(const char *str, void *stream) { fflush((FILE*)stream); return fputs(str, (FILE*)stream); }
 
 int xinu_doprnt_sim_redirect(char *fmt, va_list ap, xinu_putc_func_t putc_func, int putc_arg) {
-    char buffer[4096];
-    int ret = vsprintf(buffer, fmt, ap);
+    char buffer[4096]; 
+    int ret = vsprintf(buffer, fmt, ap); 
     if (putc_func) { for (int i = 0; i < ret; ++i) { putc_func(buffer[i], putc_arg); } }
     return ret;
 }
-int xinu_doscan_sim_redirect(char *fmt, va_list ap, xinu_getc_func_t getc_func, xinu_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg) {
+/* Corrected definition for xinu_doscan_sim_redirect */
+int xinu_doscan_sim_redirect(char *fmt, int *ap, xinu_doscan_getc_func_t getc_func, xinu_doscan_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg) {
     (void)fmt; (void)ap; (void)getc_func; (void)ungetc_func; (void)getc_arg; (void)ungetc_arg;
-    return 0;
+    /* This is a complex function to shim. For now, it's a stub.
+     * A real implementation would need to parse 'fmt' and use 'ap' (which is not va_list here)
+     * with getc_func and ungetc_func.
+     * The original XINU _doscan often takes a pointer to the first argument after format string,
+     * not a va_list directly.
+     */
+    fprintf(stderr, "Warning: xinu_doscan_sim_redirect is a STUB and not implemented.\n");
+    return 0; 
 }
 int xinu_abs_sim_redirect(int n) { return abs(n); }
 long xinu_labs_sim_redirect(long n) { return labs(n); }
@@ -325,7 +438,9 @@ size_t xinu_strlen_sim_redirect(const char *s) { return strlen(s); }
 size_t xinu_strnlen_sim_redirect(const char *s, size_t maxlen) {
 #if defined(_WIN32) && defined(__STDC_LIB_EXT1__) && __STDC_WANT_LIB_EXT1__ && defined(strnlen_s)
     return strnlen_s(s, maxlen);
-#else
+#elif defined(__linux__) || defined(__APPLE__) || defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L
+    return strnlen(s, maxlen);
+#else 
     size_t i = 0; while (i < maxlen && s[i]) { ++i; } return i;
 #endif
 }
@@ -342,24 +457,32 @@ void xinu_trigger_clock_interrupt(void) { }
 EOF
 log "Generated UNIX-like simulation helper at: $GEN_SIM_HELPER"
 
-# --- Gather C source files from Makefile ---
+# --- Gather C source files ---
 log "Collecting XINU C source files from Makefile: $MAKEFILE"
 srcfiles=()
 parse_make_var() {
-    local var="$1"
+    local var_name="$1" 
     local prefix="$2"
-    local found
-    found=$(awk -v var="$var" -v pre="$prefix" '
-        BEGIN { ORS=" " }
-        $1 ~ var && $2 ~ /=/ {
-            for (i=3;i<=NF;i++) {
-                if ($i ~ /\.c$/)
-                    print pre "/" $i " ";
+    local files_found
+    if [[ ! -f "$MAKEFILE" ]]; then # Check if Makefile exists before parsing
+        log "Warning: Makefile '$MAKEFILE' not found during C source file collection for '$var_name'."
+        return
+    fi
+    files_found=$(awk -v vname="$var_name" -v pre="$prefix" '
+        BEGIN { ORS=" " } 
+        $1 == vname && $2 == "=" {
+            for (i=3; i<=NF; i++) {
+                if ($i ~ /\.c$/ && $i !~ /\\$/) { 
+                    cleaned_file = $i;
+                    gsub(/\\$/, "", cleaned_file); 
+                    print pre "/" cleaned_file " ";
+                }
             }
         }
     ' "$MAKEFILE")
-    for f in $found; do
-        if [[ -f "$f" ]]; then srcfiles+=("$f"); fi
+    for f_path in $files_found; do 
+        if [[ -f "$f_path" ]]; then srcfiles+=("$f_path"); 
+        elif [[ -n "$f_path" ]]; then log "Warning: Source file '$f_path' listed in Makefile for '$var_name' not found."; fi
     done
 }
 parse_make_var "SYSTEM_CFILES" "$PROJECT_DIR/system"
@@ -367,87 +490,124 @@ parse_make_var "TTY_CFILES" "$PROJECT_DIR/device/tty"
 parse_make_var "SHELL_CFILES" "$PROJECT_DIR/shell"
 parse_make_var "LIBXCCFILES" "$PROJECT_DIR/lib/libxc"
 
-for f in "$PROJECT_DIR"/lib/libxc/*.c; do [[ -f "$f" ]] && srcfiles+=("$f"); done
 [[ -f "$PROJECT_DIR/xinu_core.c" ]] && srcfiles+=("$PROJECT_DIR/xinu_core.c")
 [[ -f "$GEN_SIM_HELPER" ]] && srcfiles+=("$GEN_SIM_HELPER")
 
-srcfiles=($(printf "%s\n" "${srcfiles[@]}" | sort -u))
-log "Total XINU C source files collected for compilation: ${#srcfiles[@]}"
+srcfiles_dedup=()
+if [[ ${#srcfiles[@]} -gt 0 ]]; then
+    mapfile -t srcfiles_dedup < <(printf "%s\n" "${srcfiles[@]}" | sort -u)
+    srcfiles=("${srcfiles_dedup[@]}")
+fi
+log "Total XINU C source files collected (pre-filter): ${#srcfiles[@]}"
 
-# --- Compile each C file, collect error and warning summary ---
+EXCLUDE_LIBC_BASENAMES=("printf" "fprintf" "sprintf" "scanf" "fscanf" "sscanf" "getchar" "putchar" "fgetc" "fgets" "fputc" "fputs" "_doprnt" "_doscan" "abs" "labs" "atoi" "atol" "rand" "srand" "qsort" "strcpy" "strncpy" "strcat" "strncat" "strcmp" "strncmp" "strlen" "strnlen" "strchr" "strrchr" "strstr" "memcpy" "memmove" "memcmp" "memset")
+filtered_srcfiles=()
+for sfp_i in "${srcfiles[@]}";do
+    sfb_ne_i=$(basename "$sfp_i" .c)
+    is_libxc_file=0
+    if [[ "$(dirname "$sfp_i")" == "$PROJECT_DIR/lib/libxc" ]]; then
+        is_libxc_file=1
+    fi
+    exclude_this_file=0
+    if [[ $is_libxc_file -eq 1 ]]; then
+        for ex_bn_i in "${EXCLUDE_LIBC_BASENAMES[@]}"; do
+            if [[ "$sfb_ne_i" == "$ex_bn_i" ]]; then
+                exclude_this_file=1
+                log "Excluding libxc source for shimmed function: $sfp_i"
+                break
+            fi
+        done
+    fi
+    if [[ $exclude_this_file -eq 0 ]]; then
+        filtered_srcfiles+=("$sfp_i")
+    fi
+done
+srcfiles=("${filtered_srcfiles[@]}")
+log "Total XINU C source files for compilation (post-filter): ${#srcfiles[@]}"
+
+
+# --- Compile each C file ---
 log "Building XINU Core Process..."
-INCLUDES="-I$PROJECT_DIR -I$PROJECT_DIR/include"
-declare -A FIRST_WARNINGS
+BASE_INCLUDES="-I$PROJECT_DIR/include -I$PROJECT_DIR"
+GCC_FORCE_INCLUDES="-include $PROJECT_DIR/xinu_includes.h"
+
 for src in "${srcfiles[@]}"; do
     obj="$OBJ_DIR/$(basename "${src%.c}.o")"
-    # Print compiling line in log and summary
     echo "Compiling $src -> $obj" | tee -a "$LOGFILE" >> "$SUMMARYFILE"
     TMPLOG=$(mktemp)
-    gcc -c "$src" $INCLUDES -o "$obj" >>"$TMPLOG" 2>&1 || true
+    
+    COMPILE_OPTIONS="$BASE_INCLUDES -Wall -Wextra -g -O0" 
+    if [[ "$src" == "$GEN_SIM_HELPER" ]]; then
+        : 
+    else
+        COMPILE_OPTIONS="$GCC_FORCE_INCLUDES $COMPILE_OPTIONS"
+    fi
 
-    # Log all errors with context, count errors
+    gcc -c "$src" $COMPILE_OPTIONS -o "$obj" >>"$TMPLOG" 2>&1 || true
+
     ERRORS_IN_FILE=0
     while IFS= read -r line; do
         if [[ "$line" =~ [eE][rR][rR][oO][rR] ]]; then
-            echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-            ((ERRORS_IN_FILE++))
+            echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"; ((ERRORS_IN_FILE++));
         elif [[ "$line" =~ [wW][aA][rR][nN][iI][nN][gG] ]]; then
-            # Only show first instance of each unique warning message
-            warning_key=$(echo "$line" | sed -E 's/.*warning: ([^[]+).*/\1/' | tr -d '\n')
-            if [[ -z "${FIRST_WARNINGS[$warning_key]}" ]]; then
-                echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-                FIRST_WARNINGS[$warning_key]=1
-            fi
+            warning_key=$(echo "$line"|sed -E 's/^[^:]+:[^:]+:[^:]+: warning: ([^[-]+).*/\1/'|tr -d '[:space:]'); if [[ -z "$warning_key" ]];then warning_key="$line";fi
+            if [[ -z "${FIRST_WARNINGS[$warning_key]}" ]];then echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"; FIRST_WARNINGS[$warning_key]=1;fi
         fi
     done < "$TMPLOG"
     ERROR_COUNT=$((ERROR_COUNT + ERRORS_IN_FILE))
     rm "$TMPLOG"
     if [[ $ERROR_COUNT -ge $ERROR_LIMIT ]]; then
-        echo "Compilation aborted after $ERROR_COUNT errors (limit: $ERROR_LIMIT)." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-        exit 1
+        log "Compilation aborted after $ERROR_COUNT errors (limit: $ERROR_LIMIT)."
+        echo "FAIL: $ERROR_COUNT errors. Aborted." >> "$SUMMARYFILE"; mv "$SUMMARYFILE" "$LOGFILE"; exit 1;
     fi
 done
 
+# --- Link ---
+if [[ ! -d "$OBJ_DIR" ]] || [[ -z "$(ls -A "$OBJ_DIR"/*.o 2>/dev/null)" ]]; then
+    log "No object files found in $OBJ_DIR. Linking skipped."
+    echo "FAIL: No object files. Check compilation." >> "$SUMMARYFILE"; mv "$SUMMARYFILE" "$LOGFILE"; exit 1;
+fi
 objs=("$OBJ_DIR"/*.o)
-log "Linking objects to $XINU_CORE_OUTPUT"
+log "Linking ${#objs[@]} objects to $XINU_CORE_OUTPUT"
 TMPLOG=$(mktemp)
-gcc "${objs[@]}" -o "$XINU_CORE_OUTPUT" >>"$TMPLOG" 2>&1 || true
-# Log link errors/warnings
+gcc "${objs[@]}" -o "$XINU_CORE_OUTPUT" -lm >>"$TMPLOG" 2>&1 || true 
+LINK_ERRORS=0
 while IFS= read -r line; do
-    if [[ "$line" =~ [eE][rR][rR][oO][rR] ]]; then
-        echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-        ((ERROR_COUNT++))
+    if [[ "$line" =~ [eE][rR][rR][oO][rR] ]]; then 
+        echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"; ((ERROR_COUNT++)); ((LINK_ERRORS++));
     elif [[ "$line" =~ [wW][aA][rR][nN][iI][nN][gG] ]]; then
-        warning_key=$(echo "$line" | sed -E 's/.*warning: ([^[]+).*/\1/' | tr -d '\n')
-        if [[ -z "${FIRST_WARNINGS[$warning_key]}" ]]; then
-            echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-            FIRST_WARNINGS[$warning_key]=1
-        fi
+        warning_key=$(echo "$line"|sed -E 's/.*warning: ([^[]+).*/\1/'|tr -d '\n'); if [[ -z "$warning_key" ]];then warning_key="$line";fi
+        if [[ -z "${FIRST_WARNINGS[$warning_key]}" ]];then echo "$line" | tee -a "$LOGFILE" >> "$SUMMARYFILE";FIRST_WARNINGS[$warning_key]=1;fi
     fi
-done < "$TMPLOG"
-rm "$TMPLOG"
+done < "$TMPLOG"; rm "$TMPLOG"
 
-if [[ $ERROR_COUNT -ge $ERROR_LIMIT ]]; then
-    echo "Compilation aborted after $ERROR_COUNT errors (limit: $ERROR_LIMIT)." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
-    exit 1
+if [[ $LINK_ERRORS -gt 0 ]]; then
+    log "Linking failed with $LINK_ERRORS errors."
 fi
 
 log "XINU Core Build Process Finished."
 
+# --- Run if requested ---
 if [[ $RUN_HOST -eq 1 ]]; then
-    log "Running XINU Core: $XINU_CORE_OUTPUT $STARVATION_TEST"
-    "$XINU_CORE_OUTPUT" $STARVATION_TEST
+    if [[ -x "$XINU_CORE_OUTPUT" && $ERROR_COUNT -eq 0 ]]; then
+        log "Running XINU Core: $XINU_CORE_OUTPUT $STARVATION_TEST"
+        "$XINU_CORE_OUTPUT" $STARVATION_TEST
+    else
+        log "Skipping run due to build errors ($ERROR_COUNT) or non-executable output."
+        echo "INFO: Skipping run due to build errors or non-executable output." >> "$SUMMARYFILE"
+    fi
 fi
 
-# Final summary
-NUM_WARNINGS=${#FIRST_WARNINGS[@]}
+# --- Final summary ---
+NUM_UNIQUE_WARNINGS=${#FIRST_WARNINGS[@]}
 if [[ $ERROR_COUNT -eq 0 ]]; then
-    echo "Compilation completed with $ERROR_COUNT errors and $NUM_WARNINGS warnings." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
+    echo "SUCCESS: Build completed with $ERROR_COUNT errors and $NUM_UNIQUE_WARNINGS unique warning(s)." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
 else
-    echo "Compilation completed with $ERROR_COUNT errors and $NUM_WARNINGS warnings." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
+    echo "FAIL: Build completed with $ERROR_COUNT errors and $NUM_UNIQUE_WARNINGS unique warning(s)." | tee -a "$LOGFILE" >> "$SUMMARYFILE"
 fi
 
-# Replace compilation.txt with summary (Copilot-optimized) view
 mv "$SUMMARYFILE" "$LOGFILE"
+log "XINU Simulation Build Script Finished. Log: $LOGFILE"
 
-log "XINU Simulation Build Script Finished."
+if [[ $ERROR_COUNT -gt 0 ]]; then exit 1; fi
+exit 0
