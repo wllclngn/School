@@ -1,6 +1,6 @@
 ﻿/* xinu_includes.h - Wrapper for XINU code compilation.
- * Generated on: 2025-06-16 06:19:36 UTC by mol
- * Version: 5.30.9 (Shims first, then xinu.h. NO HOST HEADERS HERE)
+ * Generated on: 2025-06-16 06:43:47 UTC by mol
+ * Version: 5.30.9 (INCLUDE XINU HEADERS FIRST, THEN SHIMS)
  */
 #ifndef _XINU_INCLUDES_H_ 
 #define _XINU_INCLUDES_H_
@@ -11,7 +11,10 @@
   #define _MSC_VER 1930 
 #endif
 
-/* --- STAGE 1: AGGRESSIVE SHIMS FIRST --- */
+/* --- STAGE 1: Include core XINU headers FIRST --- */
+#include \"xinu.h\"
+
+/* --- STAGE 2: AGGRESSIVE SHIMS AFTER XINU HEADERS --- */
 #ifdef getchar 
 #undef getchar
 #endif
@@ -76,9 +79,6 @@
 #define memmove xinu_memmove_sim_redirect
 #define memcmp xinu_memcmp_sim_redirect
 #define memset xinu_memset_sim_redirect 
-
-/* --- STAGE 2: Full XINU Environment --- */
-#include "xinu.h" 
 
 /* NO HOST SYSTEM HEADERS IN THIS FILE. */
 #endif /* _XINU_INCLUDES_H_ */

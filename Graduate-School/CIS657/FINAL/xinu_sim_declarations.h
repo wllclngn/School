@@ -1,5 +1,5 @@
 ﻿/* xinu_sim_declarations.h - Declarations for XINU simulation shim functions.
- * Generated on: 2025-06-16 06:19:36 UTC by mol
+ * Generated on: 2025-06-16 06:43:47 UTC by mol
  * Version: 5.30.9
  */
 #ifndef _XINU_SIM_DECLARATIONS_H_
