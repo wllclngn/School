@@ -45,4 +45,36 @@ typedef unsigned char bool8;
 #define FALSE   0
 #endif
 
+/* Include all other header files */
+/// [[[ BEGIN DYNAMIC XINU MODULE INCLUDES ]]]
+#include <bufpool.h>
+#include <clock.h>
+#include <conf.h>
+#include <ctype.h>
+#include <date.h>
+#include <device.h>
+#include <i386.h>
+#include <icu.h>
+#include <interrupt.h>
+#include <kernel.h>
+#include <mark.h>
+#include <memory.h>
+#include <pci.h>
+#include <ports.h>
+#include <process.h>
+#include <prototypes.h>
+#include <pstarv.h>
+#include <queue.h>
+#include <sched.h>
+#include <semaphore.h>
+#include <shell.h>
+#include <sscanf_fix.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <tty.h>
+#include <uart.h>
+/// [[[ END DYNAMIC XINU MODULE INCLUDES ]]]
+
 #endif /* _XINU_H_ */

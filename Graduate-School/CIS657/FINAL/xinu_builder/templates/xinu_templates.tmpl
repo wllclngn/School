@@ -18,6 +18,8 @@ typedef int did32;
 typedef int pid32;
 typedef int status;
 
+/* Only define these if not already defined in xinu.h */
+#ifndef PR_FREE
 /* Process state constants */
 #define PR_FREE      0       /* Process table entry is unused              */
 #define PR_CURR      1       /* Process is currently running               */
@@ -27,17 +29,32 @@ typedef int status;
 #define PR_SUSP      5       /* Process is suspended                       */
 #define PR_WAIT      6       /* Process is on semaphore queue              */
 #define PR_RECTIM    7       /* Process is receiving with timeout          */
+#endif
 
-/* Error/status codes */
+/* These are defined in xinu.h, so we'll avoid redefining them */
+#ifndef OK
 #define OK            1      /* System call returns OK                     */
+#endif
+#ifndef SYSERR
 #define SYSERR       -1      /* System call returns error                  */
+#endif
+#ifndef SHELL_OK
 #define SHELL_OK      1      /* Shell command returns OK                   */
+#endif
+#ifndef SHELL_ERROR
 #define SHELL_ERROR  -1      /* Shell command returns error                */
+#endif
+#ifndef BADPID
 #define BADPID       -1      /* Error process ID                           */
+#endif
 
-/* Other common definitions */
+/* These might also be defined elsewhere */
+#ifndef NULL
 #define NULL         0       /* Null pointer                               */
+#endif
+#ifndef EOF
 #define EOF         -2       /* End-of-file                                */
+#endif
 
 #endif /* _XINU_STDDEFS_H_ */
 ### END XINU_STDDEFS_H ###
@@ -96,9 +113,57 @@ void xinu_trigger_clock_interrupt(void);
 #ifndef _XINU_INCLUDES_SIM_WRAPPER_H_
 #define _XINU_INCLUDES_SIM_WRAPPER_H_
 
-#include "xinu.h" 
+/* Include standard headers first */
 #include <stdarg.h>
-#include <stddef.h> 
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+/* Define platform-specific macros to help with compatibility */
+#define XINU_SIM_MODE 1
+
+/* Now include XINU headers */
+#include "xinu.h" 
+#include "xinu_sim_declarations.h"
+
+/* Define platform-specific macros to help with compatibility */
+#define XINU_SIM_MODE 1
+
+/* Prevent duplicate definitions */
+#ifdef NULL
+#undef NULL
+#endif
+
+#ifdef OK
+#undef OK
+#endif
+
+#ifdef SYSERR
+#undef SYSERR
+#endif
+
+#ifdef EOF
+#undef EOF
+#endif
+
+#ifdef BADPID
+#undef BADPID
+#endif
+
+#ifdef SHELL_OK
+#undef SHELL_OK
+#endif
+
+#ifdef SHELL_ERROR
+#undef SHELL_ERROR
+#endif
+
+/* Add devcall type definition before including xinu.h */
+typedef int devcall;
+
+/* Now include XINU headers */
+#include "xinu.h" 
 #include "xinu_sim_declarations.h"
 
 /* --- AGGRESSIVE SHIMS --- */
@@ -206,7 +271,7 @@ typedef int (*xinu_doscan_ungetc_func_t)(int, int);
 
 /* Format String Handlers */
 int xinu_doprnt_sim_redirect(char *fmt, va_list ap, xinu_putc_func_t putc_func, int putc_arg);
-int xinu_doscan_sim_redirect(char *fmt, int *ap, xinu_doscan_getc_func_t getc_func, xinu_doscan_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg);
+int xinu_doscan_sim_redirect(char *fmt, va_list ap, xinu_doscan_getc_func_t getc_func, xinu_doscan_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg);
 
 /* Standard Library Functions */
 int xinu_abs_sim_redirect(int n);
@@ -235,12 +300,17 @@ void* xinu_memmove_sim_redirect(void *dest, const void *src, size_t n);
 int xinu_memcmp_sim_redirect(const void *s1, const void *s2, size_t n);
 void* xinu_memset_sim_redirect(void *s, int c, size_t n);
 
+/* XINU structure definitions - needed for compatibility */
+struct uart_csreg;
+struct ttycblk;
+
 /* Simulation Helpers */
 void xinu_simulation_yield(void);
 void xinu_trigger_clock_interrupt(void);
 
 #endif /* _XINU_SIM_DECLARATIONS_H_ */
 ### END XINU_SIM_DECLARATIONS_H ###
+
 
 ### BEGIN XINU_SIMULATION_C ###
 /* xinu_simulation.c - Helper functions for UNIX-like Simulation
@@ -296,14 +366,14 @@ int xinu_doprnt_sim_redirect(char *fmt, va_list ap, xinu_putc_func_t putc_func, 
     return ret;
 }
 
-int xinu_doscan_sim_redirect(char *fmt, int *ap, xinu_doscan_getc_func_t getc_func, 
+int xinu_doscan_sim_redirect(char *fmt, va_list ap, xinu_doscan_getc_func_t getc_func, 
                              xinu_doscan_ungetc_func_t ungetc_func, int getc_arg, int ungetc_arg) {
     /* 
      * This is a functional implementation of the doscan shim that works with standard C I/O functions.
      * It creates a temporary buffer from the input stream, then uses sscanf to parse according to
      * the format string.
      */
-    if (!fmt || !ap || !getc_func) {
+    if (!fmt) {
         return -1;  /* Invalid arguments */
     }
     
@@ -312,16 +382,18 @@ int xinu_doscan_sim_redirect(char *fmt, int *ap, xinu_doscan_getc_func_t getc_fu
     int i = 0;
     int c;
     
-    /* Read characters until EOF or buffer full */
-    while (i < 4095) {
-        c = getc_func(getc_arg);
-        if (c == EOF || c < 0) break;
-        buffer[i++] = (char)c;
+    if (getc_func) {
+        /* Read characters until EOF or buffer full */
+        while (i < 4095) {
+            c = getc_func(getc_arg);
+            if (c == EOF || c < 0) break;
+            buffer[i++] = (char)c;
+        }
+        buffer[i] = '\0';  /* Ensure null-termination */
     }
-    buffer[i] = '\0';  /* Ensure null-termination */
     
     /* Use standard sscanf to parse the buffer */
-    return sscanf(buffer, fmt, ap);
+    return vsscanf(buffer, fmt, ap);
 }
 
 /* Standard Library redirects */

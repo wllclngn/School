@@ -82,30 +82,34 @@ class XinuCompiler:
             if os.path.exists(file_path) and file_path not in srcfiles:
                 srcfiles.append(file_path)
                 
-        # Filter out library functions that will be shimmed
+        # Filter out assembly files and library functions that will be shimmed
         filtered_srcfiles = []
         for src_path in srcfiles:
             basename = os.path.basename(src_path)
             basename_no_ext = os.path.splitext(basename)[0]
             
+            if basename.endswith(('.S', '.s')):
+                log(f"Skipping assembly file: {src_path}")
+                continue
+                
             if basename_no_ext in self.exclude_funcs and os.path.dirname(src_path) == self.config.libxc_dir:
                 log(f"Excluding libxc source for shimmed function: {src_path}")
             else:
                 filtered_srcfiles.append(src_path)
+                        
+                log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
+                return filtered_srcfiles
                 
-        log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
-        return filtered_srcfiles
-        
-    def _parse_makefile_for_sources(self, makefile_path):
-        """Parse Makefile for source file lists"""
-        srcfiles = []
-        
-        try:
-            with open(makefile_path, 'r') as f:
-                makefile_content = f.read()
+            def _parse_makefile_for_sources(self, makefile_path):
+                """Parse Makefile for source file lists"""
+                srcfiles = []
+                
+                try:
+                    with open(makefile_path, 'r') as f:
+                        makefile_content = f.read()
                 
             # Define source file variables to look for
-            var_patterns = {
+            vvar_patternsar_patterns = {
                 "SYSTEM_CFILES": self.config.system_dir,
                 "TTY_CFILES": os.path.join(self.config.project_dir, "device/tty"),
                 "SHELL_CFILES": self.config.shell_dir,
@@ -169,17 +173,23 @@ class XinuCompiler:
         # Setup compiler options
         base_includes = f"-I{self.config.include_dir} -I{self.config.project_dir}"
         gcc_force_includes = f"-include {self.config.includes_h}"
-        
+
+
+
+        # Setup compiler options
+        base_includes = f"-I{self.config.include_dir} -I{self.config.project_dir}"
+        gcc_force_includes = f"-include {self.config.includes_h}"
+        pre_header_path = os.path.abspath(os.path.join(self.config.project_dir, "xinu_builder/templates/xinu_pre.h"))
+
         for src in srcfiles:
             obj = os.path.join(self.config.obj_dir, os.path.basename(src).replace('.c', '.o'))
             
-            compile_options = f"{base_includes} -Wall -Wextra -g -O0"
+            compile_options = f"{base_includes} -Wall -Wextra -g -O0 -w -fno-builtin"
             if src == self.config.sim_helper_c:
                 cmd = f"gcc -c {src} {compile_options} -o {obj}"
             else:
-                cmd = f"gcc -c {src} {gcc_force_includes} {compile_options} -o {obj}"
-                
-            print(f"Compiling {src} -> {obj}")
+                cmd = f"gcc -c {src} {gcc_force_includes} {compile_options} -include {pre_header_path} -o {obj}"
+
             
             # Run the compilation
             try:

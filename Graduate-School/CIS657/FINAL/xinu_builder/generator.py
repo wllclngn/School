@@ -30,7 +30,7 @@ class XinuGenerator:
         
     def _load_templates(self):
         """Load all templates from the master template file"""
-        master_template_path = os.path.join(self.config.project_dir, "templates/xinu_templates.tmpl")
+        master_template_path = os.path.join(self.config.project_dir, "xinu_builder/templates/xinu_templates.tmpl")
         
         try:
             with open(master_template_path, 'r') as f:
