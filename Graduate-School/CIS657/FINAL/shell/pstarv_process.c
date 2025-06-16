@@ -1,6 +1,4 @@
 /* pstarv_process.c - PStarv process for XINU Final Project
- * Last modified: 2025-06-16 00:35:12 UTC
- * Modified by: wllclngn
  */
 
 #include <xinu.h>
@@ -11,7 +9,7 @@ void pstarv_func(void) {
     kprintf("\n##########################################################################\n");
     kprintf("PStarv (PID: %d, Prio: %d) IS FINALLY RUNNING at time %d! Hooray!\n",
             currpid, proctab[currpid].prprio, clktime);
-    kprintf("I (wllclngn) will get a good grade! Time-based scheduling works!\n");
+    kprintf("Time-based scheduling works!\n");
     kprintf("##########################################################################\n\n");
 
     // Run a few iterations to show it's working
@@ -38,8 +36,6 @@ void pstarv_func(void) {
     
     enable_starvation_fix = TRUE;
     pstarv_pid = BADPID;
-    pstarv_ready_time = 0;
-    last_boost_time = 0;
     
     // Process terminates
     kill(currpid);

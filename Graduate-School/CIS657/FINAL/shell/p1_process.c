@@ -15,9 +15,6 @@ void p1_func(void) {
         kprintf("P1 (PID: %d, Prio: %d) running iteration %d/%d - Time: %d\n",
                 currpid, proctab[currpid].prprio, i, MAX_ITERATIONS, clktime);
         
-        // Call check_pstarv_time to regularly check if Pstarv needs a priority boost
-        check_pstarv_time();
-        
         // Shorter busy loop to consume less CPU time
         volatile unsigned int j;
         for(j = 0; j < 25000; j++);

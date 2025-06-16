@@ -4,6 +4,7 @@
  */
 
 #include <xinu.h>
+#include <pstarv.h>
 
 /* Starvation fix global variables */
 bool8 enable_starvation_fix = TRUE;    /* FALSE = disabled, TRUE = enabled */

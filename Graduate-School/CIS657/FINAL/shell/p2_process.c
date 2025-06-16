@@ -1,6 +1,4 @@
 /* p2_process.c - P2 process for XINU Final Project
- * Last modified: 2025-06-16 00:35:12 UTC
- * Modified by: wllclngn
  */
 
 #include <xinu.h>
@@ -14,9 +12,6 @@ void p2_func(void) {
     for (i = 1; i <= MAX_ITERATIONS; i++) {
         kprintf("P2 (PID: %d, Prio: %d) running iteration %d/%d - Time: %d\n",
                 currpid, proctab[currpid].prprio, i, MAX_ITERATIONS, clktime);
-        
-        // Call check_pstarv_time to regularly check if Pstarv needs a priority boost
-        check_pstarv_time();
         
         // Shorter busy loop to consume less CPU time
         volatile unsigned int j;

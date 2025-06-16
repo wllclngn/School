@@ -1,20 +1,8 @@
-# PowerShell Script for Compiling XINU Kernel Simulation (Full Project)
-
 # Configuration Variables
 $projectDir = $PSScriptRoot
 $sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
-$sourceFile = Join-Path -Path $projectDir -ChildPath "xinu_main.c"  # Path to the xinu_main.c file
+$sourceFile = Join-Path -Path $projectDir -ChildPath "xinu_simulation.c"  # Path to the xinu_simulation.c file (in root)
 $executable_name = Join-Path -Path $sim_output_dir -ChildPath "xinu_simulation.exe"
-$xinuIncludesHeader = Join-Path -Path $projectDir -ChildPath "xinu_includes.h" # Path to generated includes file
-
-# Path to the script that generates xinu_includes.h (replace with your script)
-$generateIncludesScript = Join-Path -Path $projectDir -ChildPath "generate_xinu_includes.ps1"
-
-# Generate a unique identifier
-$uniqueId = New-Guid
-
-# Print the unique identifier
-Write-Host "Script execution ID: $uniqueId" -ForegroundColor Green
 
 # Function to execute a command and capture its output
 function Invoke-CommandLine {
@@ -111,18 +99,6 @@ function Build-XINUSimulation {
         }
     }
 
-    # Generate xinu_includes.h
-    if (-not $buildError) {
-        Write-Host "Generating xinu_includes.h using $generateIncludesScript..." -ForegroundColor Green
-        try {
-            & $generateIncludesScript
-            Write-Host "Successfully generated xinu_includes.h" -ForegroundColor Green
-        } catch {
-            Write-Host "ERROR: Failed to generate xinu_includes.h: $($_.Exception.Message)" -ForegroundColor Red
-            $buildError = $true
-        }
-    }
-
     # Get all source files from file_list.json
     if (-not $buildError) {
         try {
@@ -215,15 +191,11 @@ function Run-XINUSimulation {
 
 # Main script execution
 try {
-    $currentDate = Get-Date -Format "yyyy-MM-DD HH:MM:SS"
-    $currentUser = $env:USERNAME
-
     # Welcome message
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "=== XINU Kernel Simulation Build Script ===" -ForegroundColor Cyan
-    Write-Host "====================================================" -ForegroundColor Cyan
-    Write-Host "Current Date and Time (UTC): $currentDate" -ForegroundColor White
-    Write-Host "Current User's Login: $currentUser" -ForegroundColor White
+    Write-Host "User: wllclngn" -ForegroundColor White
+    Write-Host "Date: 2025-06-16 03:14:03 UTC" -ForegroundColor White
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "This script compiles and runs a simulation of the XINU kernel." -ForegroundColor Green
 

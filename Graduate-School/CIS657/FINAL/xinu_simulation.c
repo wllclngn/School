@@ -1,306 +1,336 @@
 /**
- * XINU Starvation Problem Simulation
- * CIS657 Final Project
+ * XINU Simulation Main File
  * Author: wllclngn
- * Date: 2025-06-15
+ * Date: 2025-06-16 03:12:35 UTC
  */
 
+#include "xinu.h"
+#include "pstarv.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <windows.h>
 
 /* Constants */
-#define MAXPRIO     100     /* Maximum process priority */
-#define MINPRIO     0       /* Minimum process priority */
-#define MAX_PROCS   10      /* Maximum number of processes */
-#define SYSERR     -1       /* Error code */
-#define OK          1       /* Success code */
+#define NPROC 10
+/* Process table and globals */
+struct procent proctab[NPROC];
+pid32 currpid = 0;
+uint32 clktime = 0;
+uint32 clkticks = 0;
 
-/* Process states */
-#define PR_FREE     0       /* Process table entry is unused */
-#define PR_CURR     1       /* Process is currently running  */
-#define PR_READY    2       /* Process is on ready queue     */
-#define PR_SUSP     3       /* Process is suspended          */
-#define PR_WAIT     4       /* Process is waiting            */
-#define PR_SLEEP    5       /* Process is sleeping           */
-
-/* Types */
-typedef int pid32;          /* Process ID type */
-typedef int pri16;          /* Priority type */
-typedef int bool;           /* Boolean type */
-typedef int syscall;        /* System call return type */
-
-#define TRUE        1
-#define FALSE       0
-
-/* Global variables */
-time_t start_time;
-DWORD clktime;              /* Current "system" time in seconds */
-DWORD clkticks;             /* Milliseconds beyond seconds */
-
-/* Process information */
-typedef struct {
-    char    name[16];       /* Process name */
-    pid32   pid;            /* Process ID */
-    pri16   priority;       /* Priority */
-    int     state;          /* State */
-    int     runtime;        /* Simulated runtime so far (ms) */
-    int     total_runtime;  /* Total simulated runtime (ms) */
-    char    *message;       /* Message when process runs */
-    int     executed;       /* Whether the process has ever executed */
-    int     celebration;    /* Whether the process showed celebration message */
-    time_t  wait_start;     /* When process started waiting */
-} Process;
-
-/* Global variables for simulation */
-Process processes[MAX_PROCS];
-int process_count = 0;
-pid32 current_pid = -1;
-pid32 starvingPID = -1;
-bool starvation_prevention = TRUE;
+/* Ready list */
+struct {
+    pid32 proc_ids[NPROC];
+    int count;
+} readylist;
 
 /* Function prototypes */
-void init_simulation(void);
-void run_simulation(void);
-void print_process_status(void);
-void update_priority_on_context_switch(void);
-void update_priority_based_on_time(void);
-pid32 create_process(const char *name, pri16 priority, int runtime, const char *message);
-pid32 select_next_process(void);
-void context_switch(pid32 old, pid32 new);
+void p1_func(void);
+void p2_func(void);
+void pstarv_func(void);
 
-/**
- * Main function - entry point for simulation
- */
-int main(void) {
-    printf("=======================================================\n");
-    printf("CIS657 Final Project: Starvation Prevention Demonstration\n");
-    printf("=======================================================\n\n");
+/* Update system time */
+void update_system_time(void) {
+    static DWORD last_tick = 0;
+    DWORD current_tick = GetTickCount();
     
-    init_simulation();
-    run_simulation();
+    if (last_tick == 0) {
+        last_tick = current_tick;
+        return;
+    }
     
-    printf("\nSimulation completed successfully.\n");
-    return 0;
+    DWORD elapsed = current_tick - last_tick;
+    clkticks += elapsed;
+    while (clkticks >= 1000) {
+        clktime++;
+        clkticks -= 1000;
+    }
+    
+    last_tick = current_tick;
 }
 
-/**
- * Initialize the simulation
- */
-void init_simulation(void) {
+/* XINU API implementation for Windows simulation */
+void kprintf(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+}
+
+/* Insert process into ready list */
+void insert(pid32 pid, int head, int key) {
     int i;
     
-    /* Initialize system time */
-    start_time = time(NULL);
-    clktime = 0;
-    clkticks = 0;
-    
-    /* Initialize process array */
-    for (i = 0; i < MAX_PROCS; i++) {
-        processes[i].state = PR_FREE;
-    }
-    
-    printf("Creating processes for demonstrating starvation prevention...\n");
-    
-    /* Create processes with different priorities */
-    pid32 p1 = create_process("P1", 40, 5000, "Process P1 (high priority) running...");
-    pid32 p2 = create_process("P2", 35, 5000, "Process P2 (medium priority) running...");
-    starvingPID = create_process("Pstarv", 25, 2500, "Process Pstarv (low priority) running...");
-    
-    printf("Starting processes...\n\n");
-    
-    /* Set all processes to ready */
-    for (i = 0; i < process_count; i++) {
-        processes[i].state = PR_READY;
-        processes[i].wait_start = time(NULL);
-    }
-}
-
-/**
- * Run the simulation
- */
-void run_simulation(void) {
-    int active_processes = process_count;
-    time_t sim_start = time(NULL);
-    time_t last_time_check = time(NULL);
-    
-    while (active_processes > 0) {
-        /* Update system time */
-        clktime = (DWORD)(time(NULL) - start_time);
-        
-        /* Check for time-based priority updates (for Q2) every second */
-        if (time(NULL) > last_time_check) {
-            update_priority_based_on_time();
-            last_time_check = time(NULL);
-        }
-        
-        /* Select next process to run */
-        pid32 old_pid = current_pid;
-        current_pid = select_next_process();
-        
-        if (current_pid != -1) {
-            /* Context switch if needed */
-            if (old_pid != current_pid) {
-                context_switch(old_pid, current_pid);
-            }
-            
-            /* Simulate process running */
-            Process *proc = &processes[current_pid];
-            
-            /* If first time running, show special message */
-            if (!proc->executed) {
-                printf("\n*** Process %s (PID %d, Priority %d) gets CPU for the first time ***\n", 
-                       proc->name, proc->pid, proc->priority);
-                proc->executed = TRUE;
-                
-                /* Special message for Pstarv */
-                if (proc->pid == starvingPID && !proc->celebration) {
-                    printf("\n!!! SUCCESS! Starving process (PID: %d) is finally running !!!\n", proc->pid);
-                    printf("!!! Celebration time! You'll get a good grade! !!!\n\n");
-                    proc->celebration = TRUE;
-                }
-            }
-            
-            /* Show the process message */
-            printf("%s (Priority: %d)\n", proc->message, proc->priority);
-            
-            /* Simulate work by sleeping */
-            Sleep(200);  /* Sleep to simulate work but not too long */
-            
-            /* Update runtime for the process */
-            proc->runtime += 200;
-            
-            /* Check if the process has completed its total runtime */
-            if (proc->runtime >= proc->total_runtime) {
-                printf("Process %s completed its execution\n", proc->name);
-                proc->state = PR_FREE;
-                active_processes--;
-            }
-        }
-        
-        /* Exit if simulation runs too long (safety) */
-        if (time(NULL) - sim_start > 60) {
-            printf("Simulation timeout after 60 seconds\n");
+    /* Find insertion point based on priority */
+    for (i = 0; i < readylist.count; i++) {
+        if (proctab[readylist.proc_ids[i]].prprio < key) {
             break;
         }
     }
-}
-
-/**
- * Create a new process for the simulation
- */
-pid32 create_process(const char *name, pri16 priority, int runtime, const char *message) {
-    if (process_count >= MAX_PROCS) {
-        printf("Error: Process table full\n");
-        return SYSERR;
+    
+    /* Shift elements */
+    for (int j = readylist.count; j > i; j--) {
+        readylist.proc_ids[j] = readylist.proc_ids[j-1];
     }
     
-    Process *proc = &processes[process_count];
-    strncpy(proc->name, name, 15);
-    proc->name[15] = '\0';
-    proc->pid = process_count;
-    proc->priority = priority;
-    proc->state = PR_SUSP;
-    proc->runtime = 0;
-    proc->total_runtime = runtime;
-    proc->message = _strdup(message);
-    proc->executed = FALSE;
-    proc->celebration = FALSE;
-    
-    printf("Created process '%s' with PID %d and priority %d\n", name, proc->pid, priority);
-    
-    return process_count++;
+    /* Insert process */
+    readylist.proc_ids[i] = pid;
+    readylist.count++;
 }
 
-/**
- * Select the highest priority ready process
- */
-pid32 select_next_process(void) {
+/* Remove process from ready list */
+pid32 getitem(pid32 pid) {
     int i;
-    pid32 highest_pid = -1;
-    pri16 highest_priority = -1;
     
-    /* Find the highest priority ready process */
-    for (i = 0; i < process_count; i++) {
-        if (processes[i].state == PR_READY && processes[i].priority > highest_priority) {
-            highest_priority = processes[i].priority;
-            highest_pid = i;
+    /* Find process in ready list */
+    for (i = 0; i < readylist.count; i++) {
+        if (readylist.proc_ids[i] == pid) {
+            break;
         }
     }
     
-    return highest_pid;
-}
-
-/**
- * Perform context switch between processes
- */
-void context_switch(pid32 old_pid, pid32 new_pid) {
-    if (old_pid != -1) {
-        /* Put old process back to ready state */
-        processes[old_pid].state = PR_READY;
-        processes[old_pid].wait_start = time(NULL);
+    /* Process not found */
+    if (i >= readylist.count) {
+        return -1;
     }
     
-    /* Update new process state */
-    processes[new_pid].state = PR_CURR;
-    
-    /* Update priorities on context switch (for Q1) */
-    update_priority_on_context_switch();
-    
-    /* Print process status */
-    print_process_status();
-}
-
-/**
- * Print current process status
- */
-void print_process_status(void) {
-    int i;
-    printf("\n----- Process Status -----\n");
-    for (i = 0; i < process_count; i++) {
-        printf("PID: %d, Name: %s, Priority: %d, State: %d\n", 
-               processes[i].pid, processes[i].name, processes[i].priority, processes[i].state);
+    /* Shift elements */
+    for (; i < readylist.count - 1; i++) {
+        readylist.proc_ids[i] = readylist.proc_ids[i+1];
     }
-    printf("-------------------------\n");
+    
+    readylist.count--;
+    return pid;
 }
 
-/**
- * Update priority of starving process on context switch (Q1)
- */
-void update_priority_on_context_switch(void) {
-    if (starvation_prevention && starvingPID != -1 && processes[starvingPID].state == PR_READY) {
-        processes[starvingPID].priority += 2;
-        if (processes[starvingPID].priority > MAXPRIO) {
-            processes[starvingPID].priority = MAXPRIO;
+/* Create a new process */
+pid32 create(void (*procaddr)(), uint32 stksize, pri16 priority, char *name, uint32 nargs, ...) {
+    pid32 pid;
+    
+    /* Find free slot in process table */
+    for (pid = 0; pid < NPROC; pid++) {
+        if (proctab[pid].prstate == PR_FREE) {
+            break;
         }
-        printf("Q1: Process %s priority increased to %d on context switch\n", 
-               processes[starvingPID].name, processes[starvingPID].priority);
     }
+    
+    if (pid >= NPROC) {
+        kprintf("ERROR: No free process slots\n");
+        return -1;
+    }
+    
+    /* Initialize process table entry */
+    strncpy_s(proctab[pid].prname, sizeof(proctab[pid].prname), name, _TRUNCATE);
+    proctab[pid].prpid = pid;
+    proctab[pid].prprio = priority;
+    proctab[pid].prstate = PR_SUSP;
+    
+    kprintf("Created process '%s' with PID %d and priority %d\n", name, pid, priority);
+    
+    return pid;
 }
 
-/**
- * Update priority of starving process based on wait time (Q2)
- */
-void update_priority_based_on_time(void) {
-    if (starvingPID != -1 && processes[starvingPID].state == PR_READY) {
-        /* Get the time the process has been waiting */
-        time_t current = time(NULL);
-        time_t wait_time = current - processes[starvingPID].wait_start;
+/* Kill a process */
+syscall kill(pid32 pid) {
+    if (pid < 0 || pid >= NPROC) {
+        return -1;
+    }
+    
+    proctab[pid].prstate = PR_FREE;
+    return 1;
+}
+
+/* Sleep for a specified time */
+syscall sleep(uint32 delay) {
+    Sleep(delay * 1000);
+    return 1;
+}
+
+/* Make a process ready */
+syscall ready(pid32 pid) {
+    if (pid < 0 || pid >= NPROC) {
+        return -1;
+    }
+    
+    proctab[pid].prstate = PR_READY;
+    insert(pid, 0, proctab[pid].prprio);
+    
+    return 1;
+}
+
+/* Resume a suspended process */
+syscall resume(pid32 pid) {
+    if (pid < 0 || pid >= NPROC || proctab[pid].prstate != PR_SUSP) {
+        return -1;
+    }
+    
+    return ready(pid);
+}
+
+/* Get process priority */
+pri16 getprio(pid32 pid) {
+    if (pid < 0 || pid >= NPROC) {
+        return -1;
+    }
+    
+    return proctab[pid].prprio;
+}
+
+/* Change process priority */
+pri16 chprio(pid32 pid, pri16 newprio) {
+    pri16 oldprio;
+    
+    if (pid < 0 || pid >= NPROC) {
+        return -1;
+    }
+    
+    oldprio = proctab[pid].prprio;
+    proctab[pid].prprio = newprio;
+    
+    /* Update position in ready list if process is ready */
+    if (proctab[pid].prstate == PR_READY) {
+        getitem(pid);
+        insert(pid, 0, newprio);
+    }
+    
+    return oldprio;
+}
+
+/* Yield processor to another process */
+syscall yield(void) {
+    /* Select highest priority process from ready list */
+    if (readylist.count > 0) {
+        pid32 next_pid = readylist.proc_ids[0];
+        getitem(next_pid);
         
-        /* Increase priority every 2 seconds of wait time */
-        if (wait_time >= 2) {
-            processes[starvingPID].priority += 1;
-            if (processes[starvingPID].priority > MAXPRIO) {
-                processes[starvingPID].priority = MAXPRIO;
-            }
-            
-            printf("Q2: Process %s priority increased to %d after 2 seconds wait\n", 
-                   processes[starvingPID].name, processes[starvingPID].priority);
-                   
-            /* Reset the wait time counter */
-            processes[starvingPID].wait_start = current;
-        }
+        /* Put current process back in ready list */
+        proctab[currpid].prstate = PR_READY;
+        insert(currpid, 0, proctab[currpid].prprio);
+        
+        /* Switch to new process */
+        proctab[next_pid].prstate = PR_CURR;
+        pid32 old_pid = currpid;
+        currpid = next_pid;
+        
+        kprintf("*** CONTEXT SWITCH: From process %d (%s) to %d (%s) ***\n", 
+            old_pid, proctab[old_pid].prname, currpid, proctab[currpid].prname);
     }
+    
+    return 1;
+}
+
+/* Stub functions for completeness */
+syscall receive(void) {
+    return 0;
+}
+
+syscall recvclr(void) {
+    return 1;
+}
+
+/* Initialize the system */
+void initialize_system(void) {
+    int i;
+    
+    /* Initialize process table */
+    for (i = 0; i < NPROC; i++) {
+        proctab[i].prstate = PR_FREE;
+    }
+    
+    /* Initialize ready list */
+    readylist.count = 0;
+    
+    /* Initialize time */
+    clktime = 0;
+    clkticks = 0;
+    
+    /* Initialize process 0 as current */
+    proctab[0].prstate = PR_CURR;
+    strncpy_s(proctab[0].prname, sizeof(proctab[0].prname), "prnull", _TRUNCATE);
+    proctab[0].prprio = 0;
+    currpid = 0;
+}
+
+/* Execute a process function */
+void execute_process(pid32 pid) {
+    if (pid < 0 || pid >= NPROC) {
+        return;
+    }
+    
+    /* Set as current process */
+    currpid = pid;
+    proctab[pid].prstate = PR_CURR;
+    
+    /* Execute the function based on process name */
+    if (strcmp(proctab[pid].prname, "P1") == 0) {
+        p1_func();
+    }
+    else if (strcmp(proctab[pid].prname, "P2") == 0) {
+        p2_func();
+    }
+    else if (strcmp(proctab[pid].prname, "Pstarv") == 0) {
+        pstarv_func();
+    }
+}
+
+/* Main function */
+int main(void) {
+    /* Initialize the system */
+    initialize_system();
+
+    /* Initialize time */
+    update_system_time();
+
+    kprintf("\n======================================================\n");
+    kprintf("XINU Starvation Prevention Simulation\n");
+    kprintf("User: wllclngn\n");
+    kprintf("Date: 2025-06-16 03:12:35 UTC\n");
+    kprintf("======================================================\n\n");
+
+    /* Create the processes */
+    pid32 p1_pid = create(p1_func, 1024, 40, "P1", 0);
+    pid32 p2_pid = create(p2_func, 1024, 35, "P2", 0);
+    pstarv_pid = create(pstarv_func, 1024, 25, "Pstarv", 0);
+
+    if (p1_pid == SYSERR || p2_pid == SYSERR || pstarv_pid == SYSERR) {
+        kprintf("Error creating processes\n");
+        return 1;
+    }
+
+    /* Set the processes to READY state */
+    resume(p1_pid);
+    resume(p2_pid);
+    resume(pstarv_pid);
+
+    /* Run the simulation */
+    int iterations = 0;
+    int max_iterations = 100;
+
+    while (iterations < max_iterations) {
+        /* Update system time */
+        update_system_time();
+        
+        /* Call resched to switch to the next process */
+        resched();
+
+        /* Check if all processes are done */
+        int active_count = 0;
+        for (int i = 1; i < NPROC; i++) { /* Skip process 0 */
+            if (proctab[i].prstate != PR_FREE) {
+                active_count++;
+            }
+        }
+        
+        if (active_count == 0) {
+            break;
+        }
+
+        /* Small delay to prevent CPU hogging */
+        Sleep(100);
+        iterations++;
+    }
+
+    kprintf("\n======================================================\n");
+    kprintf("Simulation completed after %d iterations\n", iterations);
+    kprintf("======================================================\n");
+
+    return 0;
 }

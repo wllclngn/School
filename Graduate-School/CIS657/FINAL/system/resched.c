@@ -10,6 +10,7 @@ void resched(void)
 {
     struct procent *ptold; /* Ptr to process being replaced */
     struct procent *ptnew; /* Ptr to highest priority process to run */
+    static int32 pstarv_wait_time = 0; // Static variable to track wait time
 
     /* If rescheduling is deferred, record attempt to reschedule */
 
@@ -23,16 +24,28 @@ void resched(void)
     ptold = &proctab[currpid];
 
     /* Check for starving processes and update their priorities */
-    if (starvation_prevention && starvingPID != 0) {
-        pri16 curr_prio = getprio(starvingPID);
-        if (curr_prio < MAXPRIO) {
-            /* Increase priority by 2 */
-            pri16 new_prio = curr_prio + 2;
-            chprio(starvingPID, new_prio);
+    if (pstarv_pid != BADPID && proctab[pstarv_pid].prstate == PR_READY) {
+        // Q1: Priority boost on context switch
+        if (enable_starvation_fix) {
+            pri16 curr_prio = getprio(pstarv_pid);
+            if (curr_prio < MAXPRIO) {
+                pri16 new_prio = curr_prio + 2;
+                chprio(pstarv_pid, new_prio);
+                kprintf("Q1: PStarv (PID: %d) priority increased from %d to %d on context switch\n",
+                        pstarv_pid, curr_prio, new_prio);
+            }
+        }
 
-            /* Print the priority boost information */
-            kprintf("BOOST: PStarv (PID: %d) priority increased from %d to %d\n",
-                    starvingPID, curr_prio, new_prio);
+        // Q2: Priority boost based on wait time
+        pstarv_wait_time++;
+        if (pstarv_wait_time >= 200) { // Assuming 10ms clock tick, 2 seconds = 200 ticks
+            pri16 curr_prio = getprio(pstarv_pid);
+            if (curr_prio < MAXPRIO) {
+                pri16 new_prio = curr_prio + 5;
+                chprio(pstarv_pid, new_prio);
+                kprintf("Q2: PStarv (PID: %d) priority increased from %d to %d after waiting in ready queue\n", pstarv_pid, curr_prio, new_prio);
+            }
+            pstarv_wait_time = 0; // Reset wait time
         }
     }
 
