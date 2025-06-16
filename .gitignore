@@ -1,8 +1,3 @@
-# Ignore everything in the compile directory
-Graduate-School/CIS657/FINAL/compile/
-Graduate-School/CIS657/FINAL/compile/**
-Graduate-School/CIS657/FINAL/sim_output/
-
 # Specific obj files to ignore
 *.obj
 *.bak
