@@ -1,11 +1,5 @@
 # PowerShell Script for Compiling XINU Kernel Simulation (Full Project)
 
-# Generate a unique identifier
-$uniqueId = New-Guid
-
-# Print the unique identifier
-Write-Host "Script execution ID: $uniqueId" -ForegroundColor Green
-
 # Configuration Variables
 $projectDir = $PSScriptRoot
 $sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
@@ -62,9 +56,6 @@ function Build-XINUSimulation {
 
     Write-Host "`nBuilding XINU kernel simulation..." -ForegroundColor Cyan
 
-    # Initialize error flag
-    $buildError = $false
-
     # Find Visual Studio
     $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     $vsDevCmdPath = $null
@@ -79,61 +70,54 @@ function Build-XINUSimulation {
     if (-not $vsDevCmdPath -or -not (Test-Path $vsDevCmdPath)) {
         Write-Host "ERROR: Visual Studio Developer Command Prompt not found." -ForegroundColor Red
         Write-Host "Please install Visual Studio with C++ development tools." -ForegroundColor Yellow
-        $buildError = $true
+        return $false
     }
 
     # Create output directory if it doesn't exist
-    if (-not $buildError) {
-        if (-not (Test-Path $sim_output_dir)) {
-            New-Item -Path $sim_output_dir -ItemType Directory -Force | Out-Null
-        } else {
-            # Clean the directory
-            Remove-Item -Path "$sim_output_dir\*" -Force -ErrorAction SilentlyContinue
-        }
+    if (-not (Test-Path $sim_output_dir)) {
+        New-Item -Path $sim_output_dir -ItemType Directory -Force | Out-Null
+    } else {
+        # Clean the directory
+        Remove-Item -Path "$sim_output_dir\*" -Force -ErrorAction SilentlyContinue
     }
 
     # Generate xinu_includes.h
-    if (-not $buildError) {
-        Write-Host "Generating xinu_includes.h using $generateIncludesScript..." -ForegroundColor Green
-        try {
-            & $generateIncludesScript
-            Write-Host "Successfully generated xinu_includes.h" -ForegroundColor Green
-        } catch {
-            Write-Host "ERROR: Failed to generate xinu_includes.h: $($_.Exception.Message)" -ForegroundColor Red
-            $buildError = $true
-        }
+    Write-Host "Generating xinu_includes.h using $generateIncludesScript..." -ForegroundColor Green
+    try {
+        & $generateIncludesScript
+        Write-Host "Successfully generated xinu_includes.h" -ForegroundColor Green
+    } catch {
+        Write-Host "ERROR: Failed to generate xinu_includes.h: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
     }
 
     # Get all source files from file_list.json
-    if (-not $buildError) {
-        try {
-            $jsonContent = Get-Content -Path "$projectDir\file_list.json" -Raw | ConvertFrom-Json
-            $sourceFiles = $jsonContent.files | Where-Object { $_.type -eq "source" } | ForEach-Object { $_.path }
-            if (-not $sourceFiles) {
-                Write-Host "ERROR: No source files found in file_list.json" -ForegroundColor Red
-                $buildError = $true
-            }
-        } catch {
-            Write-Host "ERROR: Failed to load or parse file_list.json: $($_.Exception.Message)" -ForegroundColor Red
-            $buildError = $true
+    try {
+        $jsonContent = Get-Content -Path "$projectDir\file_list.json" -Raw | ConvertFrom-Json
+        $sourceFiles = $jsonContent.files | Where-Object { $_.type -eq "source" } | ForEach-Object { $_.path }
+        if (-not $sourceFiles) {
+            Write-Host "ERROR: No source files found in file_list.json" -ForegroundColor Red
+            return $false
         }
+    } catch {
+        Write-Host "ERROR: Failed to load or parse file_list.json: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
     }
 
     # Construct compile commands for each source file
-    if (-not $buildError) {
-        $compileCommands = foreach ($sourceFile in $sourceFiles) {
-            $objectFile = Join-Path -Path $sim_output_dir -ChildPath "$([System.IO.Path]::GetFileNameWithoutExtension($sourceFile)).obj"
-            "cl.exe /nologo /W4 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I.`" /Iinclude /D_CRT_SECURE_NO_WARNINGS"
-        }
+    $compileCommands = foreach ($sourceFile in $sourceFiles) {
+        $objectFile = Join-Path -Path $sim_output_dir -ChildPath "$([System.IO.Path]::GetFileNameWithoutExtension($sourceFile)).obj"
+        "cl.exe /nologo /W4 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I.`" /Iinclude /D_CRT_SECURE_NO_WARNINGS"
+    }
 
-        # Construct the link command
-        $objectFiles = Get-ChildItem -Path $sim_output_dir -Filter "*.obj" | ForEach-Object { $_.FullName }
-        $link_command = "link.exe /nologo /SUBSYSTEM:CONSOLE /OUT:`"$executable_name`" $($objectFiles -join ' ') kernel32.lib user32.lib"
+    # Construct the link command
+    $objectFiles = Get-ChildItem -Path $sim_output_dir -Filter "*.obj" | ForEach-Object { $_.FullName }
+    $link_command = "link.exe /nologo /SUBSYSTEM:CONSOLE /OUT:`"$executable_name`" $($objectFiles -join ' ') kernel32.lib user32.lib"
 
-        $compileBatch = Join-Path $env:TEMP "xinu_compile.bat"
+    $compileBatch = Join-Path $env:TEMP "xinu_compile.bat"
 
-        # Batch file content
-        $batchContent = @"
+    # Batch file content
+    $batchContent = @"
 @echo off
 echo Setting up Visual Studio environment...
 call `"$vsDevCmdPath`"
@@ -145,34 +129,26 @@ echo Linking XINU simulation...
 $link_command
 if %ERRORLEVEL% NEQ 0 (
     echo Compilation failed with error code %ERRORLEVEL%
-    echo Compilation failed with error code %ERRORLEVEL%
     exit /b %ERRORLEVEL%
 )
 echo Compilation successful!
 "@
 
-        # Write the batch file and execute it
-        $batchContent | Out-File -FilePath $compileBatch -Encoding ASCII
+    # Write the batch file and execute it
+    $batchContent | Out-File -FilePath $compileBatch -Encoding ASCII
 
-        Write-Host "Executing compiler with your files..." -ForegroundColor Yellow
-        $result = Invoke-CommandLine $compileBatch
-        Remove-Item $compileBatch
+    Write-Host "Executing compiler with your files..." -ForegroundColor Yellow
+    $result = Invoke-CommandLine $compileBatch
+    Remove-Item $compileBatch
 
-        # Check if compilation was successful
-        if (Test-Path $executable_name) {
-            Write-Host "Successfully built XINU kernel simulation at $executable_name" -ForegroundColor Green
-        } else {
-            Write-Host "ERROR: Failed to build XINU kernel simulation" -ForegroundColor Red
-            $buildError = $true
-        }
-    }
-
-    if ($buildError) {
-        Write-Host "Build failed. Aborting." -ForegroundColor Red
+    # Check if compilation was successful
+    if (Test-Path $executable_name) {
+        Write-Host "Successfully built XINU kernel simulation at $executable_name" -ForegroundColor Green
+        return $executable_name
+    } else {
+        Write-Host "ERROR: Failed to build XINU kernel simulation" -ForegroundColor Red
         return $false
     }
-
-    return $executable_name
 }
 
 # Run the simulation
