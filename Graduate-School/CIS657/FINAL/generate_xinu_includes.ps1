@@ -14,102 +14,54 @@ if (-not (Test-Path $makefilePath)) {
 # Parse the Makefile to extract source files
 $makefileContent = Get-Content -Path $makefilePath -Raw
 
-# Extract system source files
-$systemCFilesMatch = [regex]::Match($makefileContent, 'SYSTEM_CFILES\s*=\s*([^#]+?)(?=\s*[A-Z_]+_[CS]FILES|\s*SRC_FILES)')
-$systemSFilesMatch = [regex]::Match($makefileContent, 'SYSTEM_SFILES\s*=\s*([^#]+?)(?=\s*[A-Z_]+_[CS]FILES|\s*SRC_FILES)')
-
-# Extract TTY source files
-$ttyCFilesMatch = [regex]::Match($makefileContent, 'TTY_CFILES\s*=\s*([^#]+?)(?=\s*[A-Z_]+_[CS]FILES|\s*SRC_FILES)')
-$ttySFilesMatch = [regex]::Match($makefileContent, 'TTY_SFILES\s*=\s*([^#]+?)(?=\s*[A-Z_]+_[CS]FILES|\s*SRC_FILES)')
-
-# Extract Shell source files
-$shellCFilesMatch = [regex]::Match($makefileContent, 'SHELL_CFILES\s*=\s*([^#]+?)(?=\s*[A-Z_]+_[CS]FILES|\s*SRC_FILES|\s*SHELL_CFULL)')
-
-# Initialize arrays for source files
-$systemCFiles = @()
-$systemSFiles = @()
-$ttyCFiles = @()
-$ttySFiles = @()
-$shellCFiles = @()
-
-# Parse system C files
-if ($systemCFilesMatch.Success) {
-    $systemCFilesText = $systemCFilesMatch.Groups[1].Value
-    $systemCFiles = $systemCFilesText -split '\s+\\?\s*\n\s*' | Where-Object { $_ -match '\S' } | ForEach-Object {
-        $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-    }
-    $systemCFiles = $systemCFiles | Where-Object { $_ -match '\S' }
+# Extract components and source files from Makefile
+$componentsMatch = [regex]::Match($makefileContent, 'COMPS\s*=\s*([^#]+)')
+$components = @()
+if ($componentsMatch.Success) {
+    $componentsText = $componentsMatch.Groups[1].Value
+    $components = $componentsText -split '\s+' | Where-Object { $_ -ne "" -and $_ -ne "\\" }
+    Write-Host "Found components: $($components -join ', ')" -ForegroundColor Yellow
+} else {
+    Write-Host "No components found in Makefile" -ForegroundColor Red
+    exit 1
 }
 
-# Parse system S files
-if ($systemSFilesMatch.Success) {
-    $systemSFilesText = $systemSFilesMatch.Groups[1].Value
-    $systemSFiles = $systemSFilesText -split '\s+\\?\s*\n\s*' | Where-Object { $_ -match '\S' } | ForEach-Object {
-        $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-    }
-    $systemSFiles = $systemSFiles | Where-Object { $_ -match '\S' }
-}
-
-# Parse TTY C files
-if ($ttyCFilesMatch.Success) {
-    $ttyCFilesText = $ttyCFilesMatch.Groups[1].Value
-    $ttyCFiles = $ttyCFilesText -split '\s+\\?\s*\n\s*' | Where-Object { $_ -match '\S' } | ForEach-Object {
-        $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-    }
-    $ttyCFiles = $ttyCFiles | Where-Object { $_ -match '\S' }
-}
-
-# Parse TTY S files
-if ($ttySFilesMatch.Success) {
-    $ttySFilesText = $ttySFilesMatch.Groups[1].Value
-    $ttySFiles = $ttySFilesText -split '\s+\\?\s*\n\s*' | Where-Object { $_ -match '\S' } | ForEach-Object {
-        $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-    }
-    $ttySFiles = $ttySFiles | Where-Object { $_ -match '\S' }
-}
-
-# Parse Shell C files
-if ($shellCFilesMatch.Success) {
-    $shellCFilesText = $shellCFilesMatch.Groups[1].Value
-    $shellCFiles = $shellCFilesText -split '\s+\\?\s*\n\s*' | Where-Object { $_ -match '\S' } | ForEach-Object {
-        $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-    }
-    $shellCFiles = $shellCFiles | Where-Object { $_ -match '\S' }
-}
-
-# Combine all source files
+# Initialize a collection for all source files
 $sourceFiles = @()
-$sourcePaths = @{}
 
-# Add system files with proper paths
-foreach ($file in $systemCFiles) {
-    $sourcePath = "system/$file"
-    $sourceFiles += $sourcePath
-    $sourcePaths[$file -replace "\.c$", ""] = $sourcePath
-}
-foreach ($file in $systemSFiles) {
-    $sourcePath = "system/$file"
-    $sourceFiles += $sourcePath
-    $sourcePaths[$file -replace "\.S$", ""] = $sourcePath
-}
-
-# Add TTY files with proper paths
-foreach ($file in $ttyCFiles) {
-    $sourcePath = "device/tty/$file"
-    $sourceFiles += $sourcePath
-    $sourcePaths[$file -replace "\.c$", ""] = $sourcePath
-}
-foreach ($file in $ttySFiles) {
-    $sourcePath = "device/tty/$file"
-    $sourceFiles += $sourcePath
-    $sourcePaths[$file -replace "\.S$", ""] = $sourcePath
-}
-
-# Add shell files with proper paths
-foreach ($file in $shellCFiles) {
-    $sourcePath = "shell/$file"
-    $sourceFiles += $sourcePath
-    $sourcePaths[$file -replace "\.c$", ""] = $sourcePath
+# Process each component to extract its source files
+foreach ($component in $components) {
+    $componentUpper = $component.ToUpper() -replace '[\/]', '_'
+    
+    # Extract C files
+    $cfilesMatch = [regex]::Match($makefileContent, "${componentUpper}_CFILES\s*=\s*([^#]+?)\s*(?=${componentUpper}_[CS]FILES|\s*SYSTEM_)")
+    if ($cfilesMatch.Success) {
+        $cfilesText = $cfilesMatch.Groups[1].Value
+        $cfiles = $cfilesText -split '\s+\\?\s*\n\s*' | ForEach-Object {
+            $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
+        }
+        $cfiles = $cfiles | Where-Object { $_ -match '\S' }
+        
+        # Add component path to each file
+        foreach ($file in $cfiles) {
+            $sourceFiles += "$component/$file"
+        }
+    }
+    
+    # Extract S files (assembly)
+    $sfilesMatch = [regex]::Match($makefileContent, "${componentUpper}_SFILES\s*=\s*([^#]+?)\s*(?=${componentUpper}_[CS]FILES|\s*SYSTEM_)")
+    if ($sfilesMatch.Success) {
+        $sfilesText = $sfilesMatch.Groups[1].Value
+        $sfiles = $sfilesText -split '\s+\\?\s*\n\s*' | ForEach-Object {
+            $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
+        }
+        $sfiles = $sfiles | Where-Object { $_ -match '\S' }
+        
+        # Add component path to each file
+        foreach ($file in $sfiles) {
+            $sourceFiles += "$component/$file"
+        }
+    }
 }
 
 # Find all header files in the include directory
@@ -167,6 +119,7 @@ $xinuHeaderContent = @"
 #include <string.h>
 #include <Windows.h>
 
+/* Type definitions */
 typedef int             int32;
 typedef short           int16;
 typedef char            int8;
@@ -186,6 +139,7 @@ typedef int             did32;
 typedef int             ibid32;
 typedef int             status;
 
+/* Constants */
 #define OK              1
 #define SYSERR          (-1)
 #define EOF             (-2)
@@ -204,6 +158,7 @@ typedef int             status;
 #define SHELL_ERROR     1
 #define SHELL_OK        0
 
+/* Process states */
 #define PR_FREE         0
 #define PR_CURR         1
 #define PR_READY        2
@@ -216,7 +171,6 @@ typedef int             status;
 
 # Add includes for all header files
 foreach ($headerFile in $headerFiles) {
-    # Extract just the filename without path
     $fileName = [System.IO.Path]::GetFileName($headerFile)
     $xinuHeaderContent += "`n#include <$fileName>"
 }
@@ -230,68 +184,53 @@ $xinuHeaderContent += @"
 $xinuHeaderContent | Out-File -FilePath $includesFile -Encoding ASCII
 Write-Host "Generated $includesFile with all header includes" -ForegroundColor Green
 
-# Analyze key XINU system files to extract function definitions
-$importantFiles = @{
-    "initialize" = "system/initialize.c"
-    "queue" = "system/queue.c"
-    "newqueue" = "system/newqueue.c"
-    "insert" = "system/insert.c" 
-    "enqueue" = "system/enqueue.c"
-    "dequeue" = "system/dequeue.c"
-    "firstkey" = "system/firstkey.c"
-    "firstid" = "system/firstid.c"
-    "getprio" = "system/getprio.c"
-    "chprio" = "system/chprio.c"
-    "kill" = "system/kill.c"
-    "ready" = "system/ready.c"
-    "resume" = "system/resume.c"
-    "create" = "system/create.c"
-    "yield" = "system/yield.c"
-    "sleep" = "system/sleep.c"
-    "kprintf" = "system/kprintf.c"
-}
-
-# Generate a Windows-compatible implementation based on the original XINU implementations
+# Create the xinu_init.c file with key system initialization functions
 $xinuInitContent = @"
 #include <xinu.h>
 
+/* System data structures */
 struct procent proctab[NPROC];
 qid16 readylist;
 pid32 currpid;
 uint32 clktime;
 uint32 clkticks;
 
+/* Process state strings for debugging */
 const char *states[] = {
     "FREE", "CURR", "READY", "RECV",
     "SLEEP", "SUSP", "WAIT", "RECTIM"
 };
 
+/* Starvation prevention variables */
 struct defer Defer;
+bool8 enable_starvation_fix = FALSE;
+pid32 pstarv_pid = BADPID;
+uint32 pstarv_ready_time = 0;
+uint32 last_boost_time = 0;
 
-bool8 enable_starvation_fix = FALSE; 
-pid32 pstarv_pid = BADPID;          
-uint32 pstarv_ready_time = 0;       
-uint32 last_boost_time = 0;         
-
+/* Queue entry structure */
 struct qentry {
     pid32 qnext;
     pid32 qprev;
     pri16 qkey;
 };
 
+/* Queue table */
 struct qentry queuetab[NQENT];
 
-// Function prototypes generated from Makefile
-"@
+/* Function prototypes */
+int32 firstid(qid16 q);
+int32 firstkey(qid16 q);
+pid32 getitem(pid32 pid);
+pid32 enqueue(pid32 pid, qid16 q);
+pid32 dequeue(qid16 q);
+qid16 newqueue(void);
 
-# Add function implementations that are tailored for our Windows-based simulation
-# While it's not fully dynamic line-by-line from XINU's source, it uses the key function
-# signatures from the Makefile to ensure compatibility
-$xinuInitContent += @"
-
+/* System initialization function */
 void initialize_system(void) {
     int i;
     
+    /* Initialize process table */
     for (i = 0; i < NPROC; i++) {
         proctab[i].prstate = PR_FREE;
         proctab[i].prprio = 0;
@@ -299,27 +238,33 @@ void initialize_system(void) {
         proctab[i].prpid = i;
     }
     
+    /* Initialize process 0 as current */
     currpid = 0;
     proctab[0].prstate = PR_CURR;
     strncpy(proctab[0].prname, "prnull", 8);
     proctab[0].prprio = 0;
     
+    /* Initialize ready list */
     readylist = newqueue();
     
+    /* Initialize clocks */
     clktime = 0;
     clkticks = 0;
     
+    /* Initialize deferrals */
     Defer.ndefers = 0;
     Defer.attempt = FALSE;
     
+    /* Initialize starvation prevention variables */
     pstarv_pid = BADPID;
     enable_starvation_fix = FALSE;
     pstarv_ready_time = 0;
     last_boost_time = 0;
     
-    kprintf("System initialized - current time: %d\n", clktime);
+    kprintf("System initialized at time %d\n", clktime);
 }
 
+/* Create a new queue */
 qid16 newqueue(void) {
     static qid16 nextqid = NPROC;
     qid16 q;
@@ -330,6 +275,7 @@ qid16 newqueue(void) {
     return q;
 }
 
+/* Insert a process in a queue */
 pid32 enqueue(pid32 pid, qid16 q) {
     int tail;
     
@@ -337,6 +283,7 @@ pid32 enqueue(pid32 pid, qid16 q) {
         return SYSERR;
     }
     
+    /* If queue is empty, add process as the only entry */
     if (queuetab[q].qnext == EMPTY) {
         queuetab[q].qnext = pid;
         queuetab[q].qprev = pid;
@@ -345,6 +292,7 @@ pid32 enqueue(pid32 pid, qid16 q) {
         return OK;
     }
     
+    /* Add process at the tail of the queue */
     tail = queuetab[q].qprev;
     queuetab[pid].qprev = tail;
     queuetab[pid].qnext = EMPTY;
@@ -354,6 +302,7 @@ pid32 enqueue(pid32 pid, qid16 q) {
     return OK;
 }
 
+/* Remove and return the first process from a queue */
 pid32 dequeue(qid16 q) {
     pid32 pid;
     
@@ -363,6 +312,7 @@ pid32 dequeue(qid16 q) {
     
     pid = queuetab[q].qnext;
     
+    /* Only one process on the queue */
     if (queuetab[pid].qnext == EMPTY) {
         queuetab[q].qnext = EMPTY;
         queuetab[q].qprev = EMPTY;
@@ -376,6 +326,7 @@ pid32 dequeue(qid16 q) {
     return pid;
 }
 
+/* Get ID of first process in a queue */
 int32 firstid(qid16 q) {
     if (q < 0 || q >= NQENT || queuetab[q].qnext == EMPTY) {
         return EMPTY;
@@ -383,6 +334,7 @@ int32 firstid(qid16 q) {
     return queuetab[q].qnext;
 }
 
+/* Get key (priority) of first process in a queue */
 int32 firstkey(qid16 q) {
     pid32 pid;
     
@@ -394,6 +346,72 @@ int32 firstkey(qid16 q) {
     return queuetab[pid].qkey;
 }
 
+/* Remove a specific item from a queue */
+pid32 getitem(pid32 pid) {
+    pid32 prev, next;
+    
+    if (pid < 0 || pid >= NPROC) {
+        return SYSERR;
+    }
+    
+    prev = queuetab[pid].qprev;
+    next = queuetab[pid].qnext;
+    
+    if (prev == EMPTY) {
+        return SYSERR;
+    }
+    
+    if (next == EMPTY) {
+        queuetab[prev].qnext = EMPTY;
+    } else {
+        queuetab[prev].qnext = next;
+        queuetab[next].qprev = prev;
+    }
+    
+    queuetab[pid].qnext = EMPTY;
+    queuetab[pid].qprev = EMPTY;
+    
+    return pid;
+}
+
+/* Insert a process in order by key */
+void insert(pid32 pid, int head, int key) {
+    pid32 curr, prev;
+    
+    if (pid < 0 || pid >= NPROC) {
+        return;
+    }
+    
+    curr = queuetab[head].qnext;
+    prev = head;
+    
+    queuetab[pid].qkey = key;
+    
+    /* Find insertion point */
+    while (curr != EMPTY && queuetab[curr].qkey >= key) {
+        prev = curr;
+        curr = queuetab[curr].qnext;
+    }
+    
+    /* Insert process between prev and curr */
+    queuetab[pid].qnext = curr;
+    queuetab[pid].qprev = prev;
+    queuetab[prev].qnext = pid;
+    
+    if (curr != EMPTY) {
+        queuetab[curr].qprev = pid;
+    } else {
+        /* New process is now the tail */
+        queuetab[head].qprev = pid;
+    }
+}
+
+/* Simulated context switch */
+void ctxsw(void **old_sp, void **new_sp) {
+    kprintf("Context switch: %p -> %p\n", old_sp, new_sp);
+}
+
+/* Print formatted output */
 void kprintf(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
@@ -401,55 +419,20 @@ void kprintf(const char *fmt, ...) {
     va_end(args);
 }
 
-void insert(pid32 pid, int head, int key) {
-    if (pid < 0 || pid >= NPROC) {
-        return;
-    }
-    
-    queuetab[pid].qkey = key;
-    
-    if (queuetab[head].qnext == EMPTY) {
-        queuetab[head].qnext = pid;
-        queuetab[head].qprev = pid;
-        queuetab[pid].qnext = EMPTY;
-        queuetab[pid].qprev = EMPTY;
-        return;
-    }
-    
-    pid32 curr = queuetab[head].qnext;
-    pid32 prev = EMPTY;
-    
-    while (curr != EMPTY && queuetab[curr].qkey >= key) {
-        prev = curr;
-        curr = queuetab[curr].qnext;
-    }
-    
-    if (prev == EMPTY) {
-        queuetab[pid].qnext = queuetab[head].qnext;
-        queuetab[pid].qprev = EMPTY;
-        queuetab[queuetab[head].qnext].qprev = pid;
-        queuetab[head].qnext = pid;
-    } else if (curr == EMPTY) {
-        queuetab[pid].qprev = queuetab[head].qprev;
-        queuetab[pid].qnext = EMPTY;
-        queuetab[queuetab[head].qprev].qnext = pid;
-        queuetab[head].qprev = pid;
-    } else {
-        queuetab[pid].qnext = curr;
-        queuetab[pid].qprev = prev;
-        queuetab[prev].qnext = pid;
-        queuetab[curr].qprev = pid;
-    }
-}
-
-void ctxsw(void **old_sp, void **new_sp) {
-    kprintf("Context switch: old=%p, new=%p\n", old_sp, new_sp);
-}
-
+/* Get process ID */
 pid32 getpid(void) {
     return currpid;
 }
 
+/* Get process priority */
+pri16 getprio(pid32 pid) {
+    if (pid < 0 || pid >= NPROC) {
+        return SYSERR;
+    }
+    return proctab[pid].prprio;
+}
+
+/* Change process priority */
 pri16 chprio(pid32 pid, pri16 newprio) {
     pri16 oldprio;
     
@@ -460,17 +443,16 @@ pri16 chprio(pid32 pid, pri16 newprio) {
     oldprio = proctab[pid].prprio;
     proctab[pid].prprio = newprio;
     
+    /* Update position in ready list if process is ready */
+    if (proctab[pid].prstate == PR_READY) {
+        getitem(pid);
+        insert(pid, readylist, newprio);
+    }
+    
     return oldprio;
 }
 
-pri16 getprio(pid32 pid) {
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    
-    return proctab[pid].prprio;
-}
-
+/* Kill a process */
 syscall kill(pid32 pid) {
     if (pid < 0 || pid >= NPROC) {
         return SYSERR;
@@ -480,6 +462,7 @@ syscall kill(pid32 pid) {
     return OK;
 }
 
+/* Make a process ready */
 syscall ready(pid32 pid) {
     if (pid < 0 || pid >= NPROC) {
         return SYSERR;
@@ -491,6 +474,7 @@ syscall ready(pid32 pid) {
     return OK;
 }
 
+/* Resume a suspended process */
 syscall resume(pid32 pid) {
     if (pid < 0 || pid >= NPROC || proctab[pid].prstate != PR_SUSP) {
         return SYSERR;
@@ -499,9 +483,11 @@ syscall resume(pid32 pid) {
     return ready(pid);
 }
 
+/* Create a process */
 pid32 create(void (*procaddr)(), uint32 stksize, pri16 priority, char *name, uint32 nargs, ...) {
     pid32 pid;
     
+    /* Find free slot in process table */
     for (pid = 0; pid < NPROC; pid++) {
         if (proctab[pid].prstate == PR_FREE) {
             break;
@@ -513,6 +499,7 @@ pid32 create(void (*procaddr)(), uint32 stksize, pri16 priority, char *name, uin
         return SYSERR;
     }
     
+    /* Initialize process table entry */
     strncpy(proctab[pid].prname, name, 15);
     proctab[pid].prname[15] = '\0';
     proctab[pid].prpid = pid;
@@ -524,18 +511,22 @@ pid32 create(void (*procaddr)(), uint32 stksize, pri16 priority, char *name, uin
     return pid;
 }
 
+/* Yield processor to another process */
 syscall yield(void) {
     pid32 next_pid;
     
+    /* Check if there are any processes to run */
     if (queuetab[readylist].qnext == EMPTY) {
         return OK;
     }
     
+    /* Remove highest priority process from ready list */
     next_pid = dequeue(readylist);
     if (next_pid == SYSERR) {
         return SYSERR;
     }
     
+    /* Save current process state and switch to new process */
     proctab[currpid].prstate = PR_READY;
     insert(currpid, readylist, proctab[currpid].prprio);
     
@@ -549,32 +540,11 @@ syscall yield(void) {
     return OK;
 }
 
+/* Sleep for a specified time */
 syscall sleep(uint32 delay) {
     Sleep(delay * 1000); // Windows Sleep function (milliseconds)
     return OK;
 }
-
-/* 
- * XINU process structure
- * For reference only - needed for our simulation but not in the final code
- */
-struct procent {
-    uint16 prstate;               /* process state: PR_CURR, etc.     */
-    pri16 prprio;                 /* process priority                 */
-    char *prstkptr;               /* saved stack pointer              */
-    char *prstkbase;              /* stack base                       */
-    uint32 prstklen;              /* stack length                     */
-    char prname[16];              /* process name                     */
-    uint32 prsem;                 /* semaphore on which process waits */
-    pid32 prparent;               /* ID of creating process           */
-    umsg32 prmsg;                 /* message sent to this process     */
-    bool8 prhasmsg;               /* nonzero iff msg is valid         */
-    int16 prdesc[3];              /* stdin, stdout, and stderr descriptors */
-    bool8 prprocmask;             /* process mask                     */
-    char *prbuf[10];              /* pointers to arguments            */
-    umsg32 prarg[10];             /* actual arguments                 */
-    pid32 prpid;                  /* process ID                       */
-};
 "@
 
 # Write the xinu_init.c file

@@ -25,6 +25,4 @@ const	struct	cmdent	cmdtab[] = {
 	{"?",			FALSE,	xsh_help}
 };
 
-uint32	ncmd = sizeof(cmdtab) / sizeof(struct cmdent);
-
-/* Rest of the file remains unchanged */
+uint

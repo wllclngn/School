@@ -43,7 +43,7 @@ int main(void) {
     kprintf("\n===================================================================\n");
     kprintf("XINU Starvation Prevention Simulation\n");
     kprintf("User: wllclngn\n");
-    kprintf("Date: 2025-06-16 04:05:17 UTC\n");
+    kprintf("Date: 2025-06-16 04:20:01 UTC\n");
     kprintf("===================================================================\n\n");
     
     kprintf("Available commands:\n");
@@ -72,7 +72,7 @@ int main(void) {
         /* Process command with new names */
         if (strcmp(command, "starvation_test_Q1") == 0) {
             /* Run Q1 demonstration */
-            starvation_test(1, NULL);  // Call original function
+            starvation_test(1, NULL);
             
             /* Simulate running processes */
             int max_iterations = 200;
@@ -89,7 +89,7 @@ int main(void) {
         }
         else if (strcmp(command, "starvation_test_Q2") == 0) {
             /* Run Q2 demonstration */
-            starvation_test2(1, NULL);  // Call original function
+            starvation_test2(1, NULL);
             
             /* Simulate running processes with time-based boosting */
             int max_iterations = 200;
