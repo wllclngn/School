@@ -1,7 +1,4 @@
-/* starvation_shell_q1.c - Modified for XINU Final Project
- * Last modified: 2025-06-15 16:01:30 UTC
- * Modified by: wllclngn
- */
+/* starvation_shell_q1.c - Modified for XINU Final Project */
 
 #include <xinu.h>
 #include <stdio.h>
@@ -15,14 +12,15 @@ shellcmd starvation_test(int nargs, char *args[]) {
     pid32 p1_pid, p2_pid;
 
     if (nargs > 1) {
-        kprintf("Usage: starvation_test\n");
+        kprintf("Usage: starvation_test_Q1\n");
         return SHELL_ERROR;
     }
 
-    kprintf("Starting starvation simulation...\n");
+    kprintf("\n===== STARTING Q1: CONTEXT-SWITCH BASED STARVATION PREVENTION =====\n");
+    kprintf("Starting context-switch-based starvation simulation...\n");
 
     // Initialize global variables
-    enable_starvation_fix = TRUE;    // Enable priority boosting
+    enable_starvation_fix = TRUE;    // Enable priority boosting on context switch
     pstarv_pid = BADPID;            // Initialize to invalid PID
 
     // Create processes with proper priorities
@@ -38,7 +36,13 @@ shellcmd starvation_test(int nargs, char *args[]) {
         return SHELL_ERROR;
     }
 
-    kprintf("P1, P2, and PStarv processes created successfully\n");
+    kprintf("P1 created with PID: %d, Initial Priority: 40\n", p1_pid);
+    kprintf("P2 created with PID: %d, Initial Priority: 35\n", p2_pid);
+    kprintf("PStarv created with PID: %d, Initial Priority: 25\n", pstarv_pid);
+    kprintf("\nQ1 DEMONSTRATION SETTINGS:\n");
+    kprintf("- PStarv priority will increase by 2 with each context switch\n");
+    kprintf("- Context switches will occur between P1 and P2\n");
+    kprintf("- Eventually PStarv's priority will be high enough to run\n\n");
 
     // Resume processes in strict priority order
     resume(p1_pid);    // Highest priority first
@@ -48,7 +52,7 @@ shellcmd starvation_test(int nargs, char *args[]) {
     resume(pstarv_pid); // Lowest priority last
 
     kprintf("All processes resumed. Starting execution...\n");
-    kprintf("=========== END OF SHELL SETUP ===========\n\n");
+    kprintf("===============================================================\n\n");
 
     return SHELL_OK;
 }

@@ -1,7 +1,4 @@
-/* starvation_shell.c - Modified for XINU Final Project
- * Last modified: 2025-06-16 00:35:12 UTC
- * Modified by: wllclngn
- */
+/* starvation_shell.c - Modified for XINU Final Project */
 
 #include <xinu.h>
 #include <pstarv.h>
@@ -55,11 +52,11 @@ shellcmd starvation_test2(int nargs, char *args[]) {
     pid32 p1_pid_local, p2_pid_local;
 
     if (nargs > 1) {
-        kprintf("Usage: starvation_test2\n");
+        kprintf("Usage: starvation_test_Q2\n");
         return SHELL_ERROR;
     }
 
-    kprintf("===== STARTING Q2: TIME-BASED STARVATION PREVENTION =====\n");
+    kprintf("\n===== STARTING Q2: TIME-BASED STARVATION PREVENTION =====\n");
     kprintf("Starting time-based starvation simulation at time %d...\n", clktime);
 
     // For Q2, we want time-based prevention, not context-switch-based
