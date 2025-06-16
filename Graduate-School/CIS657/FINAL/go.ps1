@@ -13,6 +13,9 @@ $currentDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $currentUser = $env:USERNAME  # Get the Windows username dynamically
 
 # Create or clear the compilation log file
+if (Test-Path $compilationLog) {
+    Remove-Item -Path $compilationLog -Force
+}
 "===== XINU Simulation Compilation Log =====" | Out-File -FilePath $compilationLog -Encoding UTF8
 "Date: $currentDate" | Out-File -FilePath $compilationLog -Append -Encoding UTF8
 "User: $currentUser" | Out-File -FilePath $compilationLog -Append -Encoding UTF8
@@ -143,7 +146,6 @@ function Build-HostProcess {
 
     # Source file to compile
     $sourceFile = "xinu_host.c"
-    $protocolFile = "ipc_protocol.h"
     
     # Check if source file exists
     if (-not (Test-Path (Join-Path -Path $projectDir -ChildPath $sourceFile))) {
@@ -232,14 +234,6 @@ function Build-XINUProcess {
         return $false
     }
     
-    # Include directories for XINU
-    $includeDirectories = @(
-        "$projectDir\include",
-        "$projectDir\system",
-        "$projectDir\shell"
-    )
-    $includeFlags = $includeDirectories | ForEach-Object { "/I`"$_`"" }
-    
     # Source files for XINU core
     $xinuSourceFiles = @(
         "xinu_core.c",
@@ -260,7 +254,7 @@ function Build-XINUProcess {
     foreach ($file in $xinuSourceFiles) {
         $baseName = [System.IO.Path]::GetFileNameWithoutExtension($file)
         $objectFile = "$sim_output_dir\$baseName.obj"
-        $compileCommands += "cl.exe /nologo /W3 /EHsc /c `"$projectDir\$file`" /Fo`"$objectFile`" /D_CRT_SECURE_NO_WARNINGS /DXINU_CORE_PROCESS $includeFlags"
+        $compileCommands += "cl.exe /nologo /W3 /EHsc /c `"$projectDir\$file`" /Fo`"$objectFile`" /D_CRT_SECURE_NO_WARNINGS /DXINU_CORE_PROCESS"
     }
 
     # Construct the link command
