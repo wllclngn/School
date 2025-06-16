@@ -6,14 +6,16 @@
  * code to demonstrate starvation prevention.
  */
 
-// Fix conflicts between Windows API and XINU definitions
+// Standard includes
+#include <stddef.h>  // Include at the very top to define size_t
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "ipc_protocol.h"
-
-// Rest of includes remain the same...
+#include "xinu_includes.h"
+#include "process.h"
+#include "pstarv.h"
 
 // Function prototypes
 bool InitializePipes(const char* inPipeName, const char* outPipeName);
@@ -23,36 +25,77 @@ pid32 XinuCreateProcess(const char* name, int priority); // Renamed from CreateP
 void SimulateReadyQueue(void);
 void DisplaySystemInfo(void);
 
+// External function declarations from our test modules
+extern process run_starvation_test_q1(void);
+extern process run_starvation_test_q2(void);
+
 // Add this function to display system info
 void DisplaySystemInfo(void) {
     // Get current time in UTC
     time_t now = time(NULL);
     struct tm *tm_info = gmtime(&now);
     char time_str[30];
-    strftime(time_str, 30, "%Y-%m-%d %H:%M:%SS", tm_info);
+    strftime(time_str, 30, "%Y-%m-%d %H:%M:%S", tm_info);
     
-    // Get Windows username
-    char username[256];
-    DWORD username_len = 256;
-    GetUserNameA(username, &username_len);
+    // Get username
+    char username[256] = "user"; // Default if not available
     
     // Display system information
     printf("Current Date and Time (UTC): %s\n", time_str);
     printf("Current User's Login: %s\n", username);
 }
 
-// Rest of the code remains the same...
+/**
+ * HandleRunStarvationTestCommand - Handle starvation test command
+ */
+void HandleRunStarvationTestCommand(const HostCommand* cmd) {
+    XinuResponse resp;
+    
+    const char* testType = GetCommandParam(cmd, "type");
+    if (!testType) {
+        resp.type = RESP_ERROR;
+        resp.paramCount = 0;
+        AddResponseParam(&resp, "error", "Missing test type parameter");
+        SendResponseToHost(&resp);
+        return;
+    }
+    
+    // Send a response to acknowledge command
+    resp.type = RESP_STARVATION_TEST;
+    resp.paramCount = 0;
+    AddResponseParam(&resp, "output", "\nStarting starvation test...\n");
+    SendResponseToHost(&resp);
+    
+    // Run the appropriate test
+    if (strcmp(testType, "Q1") == 0) {
+        run_starvation_test_q1();
+    } else if (strcmp(testType, "Q2") == 0) {
+        run_starvation_test_q2();
+    } else {
+        // Unknown test type
+        resp.type = RESP_ERROR;
+        resp.paramCount = 0;
+        AddResponseParam(&resp, "error", "Unknown test type");
+        SendResponseToHost(&resp);
+        return;
+    }
+    
+    // Send completion response
+    resp.type = RESP_OK;
+    resp.paramCount = 0;
+    AddResponseParam(&resp, "message", "Starvation test completed");
+    SendResponseToHost(&resp);
+}
 
 /**
  * XinuCreateProcess - Create a new process in the XINU system
  * Renamed from CreateProcess to avoid Windows API conflict
  */
 pid32 XinuCreateProcess(const char* name, int priority) {
-    // Implementation remains the same as CreateProcess
     // Find free slot in process table
     pid32 pid = -1;
     for (int i = 0; i < NPROC; i++) {
-        if (proctab[i].prstate == PRFREE) {
+        if (proctab[i].prstate == PR_FREE) {
             pid = i;
             break;
         }
@@ -63,11 +106,12 @@ pid32 XinuCreateProcess(const char* name, int priority) {
     }
     
     // Initialize process entry
-    proctab[pid].prstate = PRSUSP;  // Start suspended
+    proctab[pid].prstate = PR_SUSP;  // Start suspended
     proctab[pid].prprio = priority;
-    strncpy_s(proctab[pid].prname, sizeof(proctab[pid].prname), name, _TRUNCATE);
+    strncpy(proctab[pid].prname, name, PNMLEN-1);
+    proctab[pid].prname[PNMLEN-1] = '\0';  // Ensure null termination
     proctab[pid].prstklen = 1024;   // Simulated stack size
-    proctab[pid].prstkptr = 0;      // No real stack in simulation
+    proctab[pid].prstkptr = malloc(proctab[pid].prstklen);  // Allocate actual stack
     proctab[pid].prparent = currpid;
     proctab[pid].prtime = 0;
     proctab[pid].prcpuused = 0;
@@ -76,30 +120,49 @@ pid32 XinuCreateProcess(const char* name, int priority) {
     return pid;
 }
 
-// Update all function calls that used CreateProcess to use XinuCreateProcess instead
-
 /**
- * HandleCreateProcessCommand - Handle the process creation command
+ * ProcessHostCommand - Process a command from the host
  */
-void HandleCreateProcessCommand(const HostCommand* cmd) {
-    // Same implementation but use XinuCreateProcess instead
-    XinuResponse resp;
+bool ProcessHostCommand(void) {
+    HostCommand cmd;
+    char buffer[MAX_MESSAGE_LENGTH];
+    DWORD bytesRead;
     
-    const char* name = GetCommandParam(cmd, "name");
-    const char* priorityStr = GetCommandParam(cmd, "priority");
-    
-    if (!name || !priorityStr) {
-        resp.type = RESP_ERROR;
-        resp.paramCount = 0;
-        AddResponseParam(&resp, "error", "Missing name or priority parameter");
-        SendResponseToHost(&resp);
-        return;
+    // Read command from pipe
+    if (!ReadFile(pipeFromHost, buffer, sizeof(buffer), &bytesRead, NULL)) {
+        printf("Error reading from pipe: %d\n", GetLastError());
+        return FALSE;
     }
     
-    int priority = atoi(priorityStr);
-    pid32 pid = XinuCreateProcess(name, priority); // Changed from CreateProcess
+    buffer[bytesRead] = '\0';
     
-    // Rest of the function remains the same...
+    // Deserialize command
+    if (!DeserializeCommand(buffer, &cmd)) {
+        printf("Error deserializing command\n");
+        return FALSE;
+    }
+    
+    // Process command based on type
+    switch (cmd.type) {
+        case CMD_INITIALIZE:
+            // Handle initialization
+            break;
+        case CMD_RUN_STARVATION_TEST:
+            HandleRunStarvationTestCommand(&cmd);
+            break;
+        case CMD_GET_PROCESS_INFO:
+            // Handle get process info
+            break;
+        case CMD_SHUTDOWN:
+            // Handle shutdown
+            return FALSE;
+        default:
+            // Unknown command
+            SendErrorResponse("Unknown command");
+            break;
+    }
+    
+    return TRUE;
 }
 
 /**
