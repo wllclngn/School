@@ -52,19 +52,9 @@
 #ifndef NPROC
     #define NPROC 64
 #endif
-// Add other essential Xinu constants/types definitions as fallbacks if they are commonly needed
-// and not reliably defined in your project's core headers (like kernel.h) for the simulation.
-// For example:
-// #ifndef SYSERR
-//     #define SYSERR (-1)
-// #endif
-// #ifndef OK
-//     #define OK (1)
-// #endif
 
 // Forward declarations for xinu_init.c functions or core Xinu API used by simulation
 void initialize_system(void);
 void kprintf(const char *format, ...);
-// Add other prototypes for functions defined in your Xinu C code that xinu_simulation.c might call.
 
 #endif // _XINU_SIMULATION_H_
