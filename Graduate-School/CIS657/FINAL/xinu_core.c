@@ -7,12 +7,10 @@
  */
 
 // Fix conflicts between Windows API and XINU definitions
-#define WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <windows.h>
 #include "ipc_protocol.h"
 
 // Rest of includes remain the same...

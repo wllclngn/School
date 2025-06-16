@@ -1,8 +1,26 @@
-#ifndef _XINU_H_  // Or any other unique guard name like __XINU_H__
+#ifndef _XINU_H_
 #define _XINU_H_
 
-/* xinu.h - include all system header files */
+#include <stdint.h>
+#include <stddef.h> // for size_t, NULL
 
+typedef int32_t int32;
+typedef uint32_t uint32;
+typedef int16_t qid16;
+typedef int32_t pid32;
+typedef int32_t sid32;
+typedef int32_t bpid32;
+typedef uint16_t uint16;
+typedef unsigned char bool8;
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+// Now include all system header files
 #include <kernel.h>
 #include <conf.h>
 #include <process.h>

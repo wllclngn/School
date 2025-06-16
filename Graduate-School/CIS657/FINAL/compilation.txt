@@ -1,36 +1,599 @@
-XINU Simulation Build Log - 2025-06-16 06:43:47 UTC by mol
-
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Starting source file collection from Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\compile\Makefile
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - ParseFN: Attempting to parse Makefile variable: SYSTEM_CFILES
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - ParseFN: Attempting to parse Makefile variable: TTY_CFILES
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - ParseFN: Attempting to parse Makefile variable: SHELL_CFILES
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - ParseFN: Attempting to parse Makefile variable: LIBXCCFILES
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - ParseFN: Variable 'LIBXCCFILES' was NOT matched or error. Warning.
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Total XINU C source files collected for compilation: 111
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - XINU Simulation Build Script Started (v5.30.9)
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Date/User for this run: 2025-06-16 06:43:47 UTC by mol
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Project Directory: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Generated Includes File (for XINU code /FI): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Generated Sim Declarations File (for shim code): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_sim_declarations.h
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Generated Windows Sim Helper C File: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_simulation_win.c
-2025-06-16 06:43:47 UTC (UTC) 06:43:47 (local) - Cleaning previous build...
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generating XINU includes wrapper (xinu_includes.h)...
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generated XINU includes wrapper at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generating XINU sim declarations header (xinu_sim_declarations.h)...
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generated XINU sim declarations at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_sim_declarations.h
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generating Windows simulation helper (xinu_simulation_win.c)...
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Generated Windows simulation helper at: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_simulation_win.c
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Building XINU Core Process...
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Compiling to OBJ: "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" -> "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj"
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Executing (via helper): cl /nologo /EHsc /W3 /Od /c "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" /Fo"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj" /FI"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include" /D"_CONSOLE"
-2025-06-16 06:43:47 UTC (UTC) 06:43:48 (local) - Invoke-MSVCCommandAndLog: Executing: cmd /c "call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" && cl /nologo /EHsc /W3 /Od /c "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c" /Fo"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\obj\ascdate.obj" /FI"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL" /I"C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include" /D"_CONSOLE""
-2025-06-16 06:43:47 UTC (UTC) 06:43:53 (local) - Invoke-MSVCCommandAndLog: Process exited with code: 2.
-**********************************************************************
-** Visual Studio 2022 Developer Command Prompt v17.14.5
-** Copyright (c) 2025 Microsoft Corporation
-**********************************************************************
-[vcvarsall.bat] Environment initialized for: 'x64'
-ascdate.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h(15): error C2017: illegal escape sequence
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_includes.h(15): fatal error C1083: Cannot open include file: 'xinu.h\': No such file or directory
-2025-06-16 06:43:47 UTC (UTC) 06:43:53 (local) - ERROR: Compilation to OBJ failed for "C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ascdate.c". CL.exe Exit Code: 2. Check C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\compilation.txt.
+compilation.txt generated by mod at 11:37:58 CDT 2025-06-16
+2025-06-16 11:37:58 CDT - Generated UNIX-like simulation includes wrapper at: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_includes.h
+2025-06-16 11:37:58 CDT - Generated UNIX-like simulation declarations at: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_sim_declarations.h
+2025-06-16 11:37:59 CDT - Generated UNIX-like simulation helper at: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_simulation.c
+2025-06-16 11:37:59 CDT - Collecting XINU C source files from Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/compile/Makefile
+2025-06-16 11:37:59 CDT - Total XINU C source files collected for compilation: 38
+2025-06-16 11:37:59 CDT - Building XINU Core Process...
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/abs.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/abs.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/atoi.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/atoi.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/atol.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/atol.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/bzero.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/bzero.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/bzero.c:14:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   14 | void bzero(void *p, int len)
+      |      ^~~~~
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/ctype_.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/ctype_.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/doprnt.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/doprnt.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/doscan.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/doscan.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fdoprnt.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fdoprnt.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fgetc.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fgetc.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fgets.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fgets.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fprintf.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fprintf.o
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu.h:32,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fprintf.c:9:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:145:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  145 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* in file addargs.c */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:197:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  197 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* in file addargs.c */
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fprintf.c:20:5: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   20 | int fprintf(int dev, char *fmt, ...)
+      |     ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fprintf.c:11:1: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+   10 | #include <stdarg.h>
+  +++ |+#include <stdio.h>
+   11 | 
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputc.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fputc.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputc.c:9:12: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern int putc(int, char);
+      |            ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputc.c:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputc.c:20:5: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   20 | int fputc(int c, int dev)
+      |     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputc.c:20:5: note: ‘fputc’ is declared in header ‘<stdio.h>’
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputs.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fputs.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputs.c:9:12: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern int putc(int, char);
+      |            ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputs.c:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputs.c:17:5: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   17 | int fputs(char *s, int dev)
+      |     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fputs.c:17:5: note: ‘fputs’ is declared in header ‘<stdio.h>’
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/fscanf.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:27:5: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   27 | int fscanf(int dev, char *fmt, int args)
+      |     ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:1:1: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c: In function ‘fscanf’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:33:60: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   33 |             (fmt, (int **)&args, getch, ungetch, dev, (int)(int)&buf));
+      |                                                            ^
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c: In function ‘getch’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:43:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   43 |     int *buf = (int *)abuf;
+      |                ^
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c: In function ‘ungetch’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:61:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   61 |     int *buf = (int *)abuf;
+      |                ^
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/getchar.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/getchar.o
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu.h:32,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/getchar.c:3:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:145:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  145 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* in file addargs.c */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:197:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  197 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* in file addargs.c */
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/getchar.c:4:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:8:17: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:1:1: note: ‘sscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* stdio.h - definintions and constants for standard I/O functions */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   32 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: note: ‘fputc’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   33 | extern  int32   fputs(char *, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: note: ‘fputs’ is declared in header ‘<stdio.h>’
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/labs.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/labs.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memchr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/memchr.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memchr.c:17:7: warning: conflicting types for built-in function ‘memchr’; expected ‘void *(const void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   17 | void *memchr(const void *cs, int c, int n)
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memchr.c:1:1: note: ‘memchr’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcmp.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/memcmp.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcmp.c:17:5: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   17 | int memcmp(const void *s1, const void *s2, int n)
+      |     ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcmp.c:1:1: note: ‘memcmp’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcpy.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/memcpy.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcpy.c:16:7: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | void *memcpy(void *s, const void *ct, int n)
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memcpy.c:1:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memset.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/memset.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memset.c:16:7: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | void *memset(void *s, int c, int n)
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memset.c:1:1: note: ‘memset’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/printf.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/printf.o
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu.h:32,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/printf.c:3:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:145:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  145 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* in file addargs.c */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:197:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  197 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* in file addargs.c */
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/printf.c:4:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:8:17: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:1:1: note: ‘sscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* stdio.h - definintions and constants for standard I/O functions */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   32 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: note: ‘fputc’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   33 | extern  int32   fputs(char *, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: note: ‘fputs’ is declared in header ‘<stdio.h>’
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/putchar.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/putchar.o
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu.h:32,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/putchar.c:3:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:145:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  145 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* in file addargs.c */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:148:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:151:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:197:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  197 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/prototypes.h:1:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* in file addargs.c */
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/putchar.c:4:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:8:17: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:1:1: note: ‘sscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* stdio.h - definintions and constants for standard I/O functions */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:17: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   32 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:17: note: ‘fputc’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   33 | extern  int32   fputs(char *, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:17: note: ‘fputs’ is declared in header ‘<stdio.h>’
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/qsort.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/qsort.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/rand.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/rand.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/sprintf.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c: In function ‘sprintf’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c:26:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   26 |     _fdoprnt(fmt, ap, sprntf, (int)&s);
+      |                               ^
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c:30:13: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   30 |     return ((int)str);
+      |             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c: In function ‘sprntf’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sprintf.c:38:18: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   38 |     char **cpp = (char **)acpp;
+      |                  ^
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sscanf.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/sscanf.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sscanf.c:24:5: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   24 | int sscanf(char *str, char *fmt, int args)
+      |     ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sscanf.c:1:1: note: ‘sscanf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sscanf.c: In function ‘sscanf’:
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/sscanf.c:29:62: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   29 |     return (_doscan(fmt, (int **)&args, sgetch, sungetch, 0, (int)&s));
+      |                                                              ^
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strchr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strchr.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strcmp.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strcmp.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strcpy.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strcpy.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strcpy.c:7:5: warning: conflicting types for built-in function ‘strcpy’; expected ‘char *(char *, const char *)’ [-Wbuiltin-declaration-mismatch]
+    7 | int strcpy(
+      |     ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strcpy.c:1:1: note: ‘strcpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* strcpy.c  -  strcpy */
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strlen.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strlen.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strlen.c:8:5: warning: conflicting types for built-in function ‘strlen’; expected ‘long unsigned int(const char *)’ [-Wbuiltin-declaration-mismatch]
+    8 | int strlen(
+      |     ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strlen.c:1:1: note: ‘strlen’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* strlen.c  -  strlen */
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncat.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strncat.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncat.c:17:7: warning: conflicting types for built-in function ‘strncat’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   17 | char *strncat(char *s1, const char *s2, int n)
+      |       ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncat.c:1:1: note: ‘strncat’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncmp.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strncmp.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncmp.c:16:5: warning: conflicting types for built-in function ‘strncmp’; expected ‘int(const char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | int strncmp(char *s1, char *s2, int n)
+      |     ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncmp.c:1:1: note: ‘strncmp’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncpy.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strncpy.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncpy.c:16:7: warning: conflicting types for built-in function ‘strncpy’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | char *strncpy(char *s1, const char *s2, int n)
+      |       ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strncpy.c:1:1: note: ‘strncpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /**
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strnlen.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strnlen.o
+/home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strnlen.c:15:5: warning: conflicting types for built-in function ‘strnlen’; expected ‘long unsigned int(const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   15 | int strnlen(const char *s, unsigned int len)
+      |     ^~~~~~~
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strrchr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strrchr.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strstr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strstr.o
+2025-06-16 11:37:59 CDT - Compiling /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/xinu_core.o
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:10:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:6:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:6:32: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |                                ^~~~~
+      |                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:6:41: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |                                         ^~~~~
+      |                                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:7:25: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                         ^~~~~
+      |                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:7:42: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                                          ^~~~~
+      |                                          int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:7:49: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                                                 ^~~~~
+      |                                                 int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:8:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:8:40: error: unknown type name ‘int32’; did you mean ‘int’?
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |                                        ^~~~~
+      |                                        int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:9:30: error: expected ‘)’ before ‘char’
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |                              ^~~~~
+      |                              )
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   23 | extern  int32   fprintf(int, char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:1:1: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* stdio.h - definintions and constants for standard I/O functions */
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:24:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   24 | extern  int32   printf(const char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:25:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   25 | extern  int32   sprintf(char *, char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:30:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   30 | extern  int32   fgetc(int);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:31:32: error: unknown type name ‘int32’; did you mean ‘int’?
+   31 | extern  char    *fgets(char *, int32, int32);
+      |                                ^~~~~
+      |                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:31:39: error: unknown type name ‘int32’; did you mean ‘int’?
+   31 | extern  char    *fgets(char *, int32, int32);
+      |                                       ^~~~~
+      |                                       int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   32 | extern  int32   fputc(int32, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:32:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+   32 | extern  int32   fputc(int32, int32);
+      | ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   33 | extern  int32   fputs(char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:33:31: error: unknown type name ‘int32’; did you mean ‘int’?
+   33 | extern  int32   fputs(char *, int32);
+      |                               ^~~~~
+      |                               int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:34:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   34 | extern  int32   putchar(int32 c);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:34:25: error: unknown type name ‘int32’; did you mean ‘int’?
+   34 | extern  int32   putchar(int32 c);
+      |                         ^~~~~
+      |                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:35:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   35 | extern  int32   getchar(void);
+      |         ^~~~~
+      |         int
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:11:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:9:1: error: unknown type name ‘int32’; did you mean ‘int’?
+    9 | int32 labs(int32);
+      | ^~~~~
+      | int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:9:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:9:7: warning: conflicting types for built-in function ‘labs’; expected ‘long int(long int)’ [-Wbuiltin-declaration-mismatch]
+    9 | int32 labs(int32);
+      |       ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:1:1: note: ‘labs’ is declared in header ‘<stdlib.h>’
+  +++ |+#include <stdlib.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:11:1: error: unknown type name ‘int32’; did you mean ‘int’?
+   11 | int32 atol(char *);
+      | ^~~~~
+      | int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:12:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   12 | void bzero(void *, int);
+      |      ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:14:1: error: unknown type name ‘uint32’
+   14 | uint32 rand(void);
+      | ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:16:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | void *malloc(unsigned int nbytes);
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:16:7: note: ‘malloc’ is declared in header ‘<stdlib.h>’
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:12:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:3:48: error: unknown type name ‘int32’; did you mean ‘int’?
+    3 | extern  char    *strncpy(char *, const char *, int32);
+      |                                                ^~~~~
+      |                                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:4:48: error: unknown type name ‘int32’; did you mean ‘int’?
+    4 | extern  char    *strncat(char *, const char *, int32);
+      |                                                ^~~~~
+      |                                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:5:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    5 | extern  int32   strncmp(const char *, const char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:5:53: error: unknown type name ‘int32’; did you mean ‘int’?
+    5 | extern  int32   strncmp(const char *, const char *, int32);
+      |                                                     ^~~~~
+      |                                                     int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:6:39: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  char    *strchr(const char *, int32);
+      |                                       ^~~~~
+      |                                       int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:7:40: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 | extern  char    *strrchr(const char *, int32);
+      |                                        ^~~~~
+      |                                        int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:9:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    9 | extern  int32   strnlen(const char *, uint32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/include/string.h:9:39: error: unknown type name ‘uint32’
+    9 | extern  int32   strnlen(const char *, uint32);
+      |                                       ^~~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:13:
+/usr/include/time.h:99:8: error: unknown type name ‘size_t’
+   99 | extern size_t strftime (char *__restrict __s, size_t __maxsize,
+      |        ^~~~~~
+/usr/include/time.h:61:1: note: ‘size_t’ is defined in header ‘<stddef.h>’; this is probably fixable by adding ‘#include <stddef.h>’
+   60 | # include <bits/types/locale_t.h>
+  +++ |+#include <stddef.h>
+   61 | #endif
+/usr/include/time.h:99:47: error: unknown type name ‘size_t’
+   99 | extern size_t strftime (char *__restrict __s, size_t __maxsize,
+      |                                               ^~~~~~
+/usr/include/time.h:99:47: note: ‘size_t’ is defined in header ‘<stddef.h>’; this is probably fixable by adding ‘#include <stddef.h>’
+/usr/include/time.h:116:8: error: unknown type name ‘size_t’
+  116 | extern size_t strftime_l (char *__restrict __s, size_t __maxsize,
+      |        ^~~~~~
+/usr/include/time.h:116:8: note: ‘size_t’ is defined in header ‘<stddef.h>’; this is probably fixable by adding ‘#include <stddef.h>’
+/usr/include/time.h:116:49: error: unknown type name ‘size_t’
+  116 | extern size_t strftime_l (char *__restrict __s, size_t __maxsize,
+      |                                                 ^~~~~~
+/usr/include/time.h:116:49: note: ‘size_t’ is defined in header ‘<stddef.h>’; this is probably fixable by adding ‘#include <stddef.h>’
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:14:
+/home/mod/School/Graduate-School/CIS657/FINAL/ipc_protocol.h:74:2: error: ‘#endif’ without ‘#if’
+   74 | #endif /* IPC_PROTOCOL_H */
+      |  ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:22:1: error: unknown type name ‘pid32’
+   22 | pid32 XinuCreateProcess(const char* name, int priority); // Renamed from CreateProcess
+      | ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c: In function ‘DisplaySystemInfo’:
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:29:23: error: ‘NULL’ undeclared (first use in this function)
+   29 |     time_t now = time(NULL);
+      |                       ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:15:1: note: ‘NULL’ is defined in header ‘<stddef.h>’; this is probably fixable by adding ‘#include <stddef.h>’
+   14 | #include "ipc_protocol.h"
+  +++ |+#include <stddef.h>
+   15 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:29:23: note: each undeclared identifier is reported only once for each function it appears in
+   29 |     time_t now = time(NULL);
+      |                       ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:32:5: error: implicit declaration of function ‘strftime’ [-Wimplicit-function-declaration]
+   32 |     strftime(time_str, 30, "%Y-%m-%d %H:%M:%SS", tm_info);
+      |     ^~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:15:1: note: include ‘<time.h>’ or provide a declaration of ‘strftime’
+   14 | #include "ipc_protocol.h"
+  +++ |+#include <time.h>
+   15 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:32:5: warning: incompatible implicit declaration of built-in function ‘strftime’ [-Wbuiltin-declaration-mismatch]
+   32 |     strftime(time_str, 30, "%Y-%m-%d %H:%M:%SS", tm_info);
+      |     ^~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:32:5: note: include ‘<time.h>’ or provide a declaration of ‘strftime’
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:36:5: error: unknown type name ‘DWORD’
+   36 |     DWORD username_len = 256;
+      |     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:37:5: error: implicit declaration of function ‘GetUserNameA’ [-Wimplicit-function-declaration]
+   37 |     GetUserNameA(username, &username_len);
+      |     ^~~~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c: At top level:
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:50:1: error: unknown type name ‘pid32’
+   50 | pid32 XinuCreateProcess(const char* name, int priority) {
+      | ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c: In function ‘XinuCreateProcess’:
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:53:5: error: unknown type name ‘pid32’
+   53 |     pid32 pid = -1;
+      |     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:54:25: error: ‘NPROC’ undeclared (first use in this function)
+   54 |     for (int i = 0; i < NPROC; i++) {
+      |                         ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:55:13: error: ‘proctab’ undeclared (first use in this function)
+   55 |         if (proctab[i].prstate == PRFREE) {
+      |             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:55:35: error: ‘PRFREE’ undeclared (first use in this function)
+   55 |         if (proctab[i].prstate == PRFREE) {
+      |                                   ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:62:16: error: ‘BADPID’ undeclared (first use in this function)
+   62 |         return BADPID;  // No free slots
+      |                ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:66:28: error: ‘PRSUSP’ undeclared (first use in this function)
+   66 |     proctab[pid].prstate = PRSUSP;  // Start suspended
+      |                            ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:68:5: error: implicit declaration of function ‘strncpy_s’ [-Wimplicit-function-declaration]
+   68 |     strncpy_s(proctab[pid].prname, sizeof(proctab[pid].prname), name, _TRUNCATE);
+      |     ^~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:68:71: error: ‘_TRUNCATE’ undeclared (first use in this function)
+   68 |     strncpy_s(proctab[pid].prname, sizeof(proctab[pid].prname), name, _TRUNCATE);
+      |                                                                       ^~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:71:29: error: ‘currpid’ undeclared (first use in this function)
+   71 |     proctab[pid].prparent = currpid;
+      |                             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:74:33: error: ‘FALSE’ undeclared (first use in this function)
+   74 |     proctab[pid].prstarvation = FALSE;
+      |                                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c: In function ‘HandleCreateProcessCommand’:
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:95:9: error: implicit declaration of function ‘SendResponseToHost’ [-Wimplicit-function-declaration]
+   95 |         SendResponseToHost(&resp);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:99:25: warning: passing argument 1 of ‘atoi’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+   99 |     int priority = atoi(priorityStr);
+      |                         ^~~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:10:10: note: expected ‘char *’ but argument is of type ‘const char *’
+   10 | int atoi(char *);
+      |          ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:100:5: error: unknown type name ‘pid32’
+  100 |     pid32 pid = XinuCreateProcess(name, priority); // Changed from CreateProcess
+      |     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c: In function ‘main’:
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:17:19: error: ‘proctab’ undeclared (first use in this function)
+   17 | #define stderr  ((proctab[currpid]).prdesc[2])
+      |                   ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:111:17: note: in expansion of macro ‘stderr’
+  111 |         fprintf(stderr, "Usage: %s <inPipeName> <outPipeName>\n", argv[0]);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:17:27: error: ‘currpid’ undeclared (first use in this function)
+   17 | #define stderr  ((proctab[currpid]).prdesc[2])
+      |                           ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c:111:17: note: in expansion of macro ‘stderr’
+  111 |         fprintf(stderr, "Usage: %s <inPipeName> <outPipeName>\n", argv[0]);
+      |                 ^~~~~~

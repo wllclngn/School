@@ -5,13 +5,6 @@
  * and the isolated XINU core process.
  */
 
-#ifndef IPC_PROTOCOL_H
-#define IPC_PROTOCOL_H
-
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 // Define pipe names for communication
 #define PIPE_HOST_TO_XINU "\\\\.\\pipe\\xinu_host_to_core"
 #define PIPE_XINU_TO_HOST "\\\\.\\pipe\\xinu_core_to_host"
