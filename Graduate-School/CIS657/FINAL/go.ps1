@@ -1,6 +1,7 @@
+# Use direct paths instead of Join-Path to avoid ChildPath issues
 $projectDir = $PSScriptRoot
-$sim_output_dir = Join-Path -Path $projectDir -ChildPath "sim_output"
-$executable_name = Join-Path -Path $sim_output_dir -ChildPath "xinu_simulation.exe"
+$sim_output_dir = "$projectDir\sim_output"
+$executable_name = "$sim_output_dir\xinu_simulation.exe"
 
 function Invoke-CommandLine {
     param (
@@ -40,7 +41,7 @@ function Invoke-CommandLine {
 }
 
 function Generate-XinuIncludes {
-    $generateScript = Join-Path -Path $projectDir -ChildPath "generate_xinu_includes.ps1"
+    $generateScript = "$projectDir\generate_xinu_includes.ps1"
     
     if (-not (Test-Path $generateScript)) {
         Write-Host "ERROR: generate_xinu_includes.ps1 not found at $generateScript" -ForegroundColor Red
@@ -71,7 +72,7 @@ function Build-XINUSimulation {
     if (Test-Path $vsWherePath) {
         $vsPath = & $vsWherePath -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
         if ($vsPath) {
-            $vsDevCmdPath = Join-Path $vsPath "Common7\Tools\VsDevCmd.bat"
+            $vsDevCmdPath = "$vsPath\Common7\Tools\VsDevCmd.bat"
         }
     }
 
@@ -107,17 +108,19 @@ function Build-XINUSimulation {
 
     # Construct compile commands for each source file
     $compileCommands = foreach ($sourceFile in $sourceFiles) {
-        $objectFile = Join-Path -Path $sim_output_dir -ChildPath "$([System.IO.Path]::GetFileNameWithoutExtension($sourceFile)).obj"
-        "cl.exe /nologo /W4 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I.`" /Iinclude /D_CRT_SECURE_NO_WARNINGS"
+        $objectName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile) + ".obj"
+        $objectFile = "$sim_output_dir\$objectName"
+        "cl.exe /nologo /W4 /EHsc /c `"$projectDir\$sourceFile`" /Fo`"$objectFile`" /I`"$projectDir`" /I`"$projectDir\include`" /D_CRT_SECURE_NO_WARNINGS"
     }
 
     # Write each command to a temporary batch file
-    $compileBatch = Join-Path $env:TEMP "xinu_compile.bat"
+    $compileBatchName = "xinu_compile.bat"
+    $compileBatch = "$env:TEMP\$compileBatchName"
     
     # Get all object files that will be created
     $objectFiles = $sourceFiles | ForEach-Object { 
         $objectName = [System.IO.Path]::GetFileNameWithoutExtension($_) + ".obj"
-        Join-Path -Path $sim_output_dir -ChildPath $objectName
+        "$sim_output_dir\$objectName"
     }
 
     # Construct the link command
@@ -160,7 +163,8 @@ echo Compilation successful!
 
 function Run-XINUSimulation {
     param (
-        [string]$executable
+        [string]$executable,
+        [string]$username
     )
 
     Write-Host "`nRunning XINU kernel simulation..." -ForegroundColor Cyan
@@ -170,20 +174,24 @@ function Run-XINUSimulation {
         return $false
     }
 
-    # Run the simulation
+    # Run the simulation with username parameter
     Write-Host "Starting XINU kernel simulation..." -ForegroundColor Yellow
-    Invoke-CommandLine $executable
+    Invoke-CommandLine "$executable $username"
     Write-Host "`nSimulation completed!" -ForegroundColor Green
     return $true
 }
 
 # Main script execution
 try {
+    # Use the current date and username provided
+    $username = "wllclngn"
+    $current_time = "2025-06-16 04:44:20"
+    
     # Welcome message
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "=== XINU Kernel Simulation Build Script ===" -ForegroundColor Cyan
-    Write-Host "User" -ForegroundColor White
-    Write-Host "Date: 2025-06-16 04:20:01 UTC" -ForegroundColor White
+    Write-Host "User: $username" -ForegroundColor White
+    Write-Host "Date: $current_time UTC" -ForegroundColor White
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "This script compiles and runs a simulation of the XINU kernel." -ForegroundColor Green
 
@@ -193,8 +201,8 @@ try {
         exit 1
     }
 
-    # Step 2: Run the simulation
-    $success = Run-XINUSimulation -executable $executable
+    # Step 2: Run the simulation with username
+    $success = Run-XINUSimulation -executable $executable -username $username
     if (-not $success) {
         exit 1
     }
