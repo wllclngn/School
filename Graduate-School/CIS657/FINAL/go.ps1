@@ -175,7 +175,7 @@ function Run-XINUSimulation {
     }
 
     # Run the simulation with username parameter
-    Write-Host "Starting XINU kernel simulation..." -ForegroundColor Yellow
+    Write-Host "Starting XINU kernel simulation... (User: $username)" -ForegroundColor Yellow
     Invoke-CommandLine "$executable $username"
     Write-Host "`nSimulation completed!" -ForegroundColor Green
     return $true
@@ -183,15 +183,17 @@ function Run-XINUSimulation {
 
 # Main script execution
 try {
-    # Use the current date and username provided
-    $username = "wllclngn"
-    $current_time = "2025-06-16 04:44:20"
+    # Dynamically get the current Windows username
+    $username = $env:USERNAME
     
+    # Get current UTC date and time
+    $current_time_utc = (Get-Date).ToUniversalTime() | Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
     # Welcome message
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "=== XINU Kernel Simulation Build Script ===" -ForegroundColor Cyan
     Write-Host "User: $username" -ForegroundColor White
-    Write-Host "Date: $current_time UTC" -ForegroundColor White
+    Write-Host "Date: $current_time_utc UTC" -ForegroundColor White
     Write-Host "====================================================" -ForegroundColor Cyan
     Write-Host "This script compiles and runs a simulation of the XINU kernel." -ForegroundColor Green
 
@@ -202,6 +204,7 @@ try {
     }
 
     # Step 2: Run the simulation with username
+    # The $username variable is already set from $env:USERNAME
     $success = Run-XINUSimulation -executable $executable -username $username
     if (-not $success) {
         exit 1

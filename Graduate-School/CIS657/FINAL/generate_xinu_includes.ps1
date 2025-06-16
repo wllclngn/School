@@ -1,554 +1,244 @@
-$projectDir = $PSScriptRoot
-$includesFile = Join-Path -Path $projectDir -ChildPath "xinu.h"
-$xinu_init_file = Join-Path -Path $projectDir -ChildPath "xinu_init.c"
-$makefilePath = Join-Path -Path $projectDir -ChildPath "compile" -ChildPath "Makefile"
-$file_list_json = Join-Path -Path $projectDir -ChildPath "file_list.json"
+[CmdletBinding()]
+param ()
 
-Write-Host "Generating XINU includes and initialization code..." -ForegroundColor Cyan
+$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+$projectDir = $PSScriptRoot 
+$makefilePath = Join-Path -Path $projectDir -ChildPath "compile\Makefile" 
+$file_list_json = Join-Path -Path $projectDir -ChildPath "file_list.json"
+$includesFile = Join-Path -Path $projectDir -ChildPath "xinu.h" 
+$xinu_init_file = Join-Path -Path $projectDir -ChildPath "xinu_init.c"
+
+Write-Host "--- generate_xinu_includes.ps1 (User: $env:USERNAME, Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss UTC')) ---"
+Write-Host "Attempting to parse Makefile: $makefilePath"
 
 if (-not (Test-Path $makefilePath)) {
-    Write-Host "ERROR: Makefile not found at $makefilePath" -ForegroundColor Red
+    Write-Host "FATAL ERROR: Makefile not found at $makefilePath" -ForegroundColor Red
     exit 1
 }
 
-# Parse the Makefile to extract source files
 $makefileContent = Get-Content -Path $makefilePath -Raw
 
-# Extract components and source files from Makefile
-$componentsMatch = [regex]::Match($makefileContent, 'COMPS\s*=\s*([^#]+)')
-$components = @()
-if ($componentsMatch.Success) {
-    $componentsText = $componentsMatch.Groups[1].Value
-    $components = $componentsText -split '\s+' | Where-Object { $_ -ne "" -and $_ -ne "\\" }
-    Write-Host "Found components: $($components -join ', ')" -ForegroundColor Yellow
+# --- Stage 1: Parse COMPS ---
+$components = [System.Collections.Generic.List[string]]::new()
+Write-Host "Attempting to parse COMPS variable using refined regex..."
+
+# Regex explanation:
+# (?sm)            - Single-line (dot matches newline) and Multi-line (^ matches start of line)
+# ^\s*COMPS\s*=\s* - Matches "COMPS =" at the start of a line, tolerating whitespace.
+# (                - Start of capturing group 1 (the value of COMPS)
+#   (?:            -   Start of non-capturing group for a line of the value
+#     (?:          -     Start of non-capturing group for content before optional line continuation
+#       (?!\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)) # Negative lookahead: ensure current char is not start of end-delimiter
+#       .          -       Match any character
+#     )*?          -     End of content group, match zero or more times, non-greedily
+#     \\\r?\n      -     Match line continuation (backslash, optional CR, newline)
+#   )*             -   End of multi-line part, match zero or more continued lines
+#   .*?            -   Match the last line of the value (or the only line if no continuations), non-greedily
+# )                - End of capturing group 1
+# (?=\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)) # Positive lookahead for the end delimiter:
+#                    A newline followed by (another variable assignment OR a comment OR end of file/string),
+#                    where the '=' in the next var assignment is not escaped.
+$compsRegex = [regex]'(?sm)^\s*COMPS\s*=\s*((?:(?:(?!\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)).)*?\\\r?\n)*.*?(?=\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)))'
+$match = $compsRegex.Match($makefileContent)
+
+if ($match.Success) {
+    $compsValueRaw = $match.Groups[1].Value.Trim()
+    $cleanedCompsString = ($compsValueRaw -replace '\\\r?\n', ' ' -replace '\s+', ' ').Trim() # Replace '\' at EOL then all whitespace
+    
+    if ($cleanedCompsString) {
+        [string[]]$componentNamesArray = $cleanedCompsString.Split(' ') | Where-Object { $_ -ne "" -and -not $_.StartsWith("#") }
+        if ($componentNamesArray.Length -gt 0) {
+            $components.AddRange($componentNamesArray)
+            Write-Host "SUCCESS: Found components: $($components -join ', ')" -ForegroundColor Green
+        } else {
+             Write-Host "WARNING: COMPS regex matched, but yielded no components after filtering. Cleaned value: '$cleanedCompsString'" -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "WARNING: COMPS regex matched, but the captured value was empty or whitespace. Raw was: `"$($compsValueRaw.Replace("`r","\r").Replace("`n","\n"))`"" -ForegroundColor Yellow
+    }
 } else {
-    Write-Host "No components found in Makefile" -ForegroundColor Red
-    exit 1
+    Write-Host "ERROR: Could not parse COMPS variable from Makefile using current regex." -ForegroundColor Red
 }
 
-# Initialize a collection for all source files
-$sourceFiles = @()
 
-# Process each component to extract its source files
-foreach ($component in $components) {
-    $componentUpper = $component.ToUpper() -replace '[\/]', '_'
-    
-    # Extract C files
-    $cfilesMatch = [regex]::Match($makefileContent, "${componentUpper}_CFILES\s*=\s*([^#]+?)\s*(?=${componentUpper}_[CS]FILES|\s*SYSTEM_)")
-    if ($cfilesMatch.Success) {
-        $cfilesText = $cfilesMatch.Groups[1].Value
-        $cfiles = $cfilesText -split '\s+\\?\s*\n\s*' | ForEach-Object {
-            $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-        }
-        $cfiles = $cfiles | Where-Object { $_ -match '\S' }
-        
-        # Add component path to each file
-        foreach ($file in $cfiles) {
-            $sourceFiles += "$component/$file"
+# --- Stage 2: Parse _CFILES and _SFILES for each component ---
+$sourceFilePaths = [System.Collections.Generic.List[string]]::new()
+
+if ($components.Count -gt 0) {
+    Write-Host "Attempting to parse source files for each component..."
+    foreach ($componentName_outer in $components) { 
+        $compMakefileVar = $componentName_outer.ToUpper() -replace '[\\/]', '_'
+        Write-Host "  Component: $componentName_outer (Variable base: ${compMakefileVar})"
+
+        foreach ($fileType_outer in @("CFILES", "SFILES")) { 
+            $fileExt_outer = if ($fileType_outer -eq "CFILES") { ".c" } else { ".S" }
+            $varName_outer = "${compMakefileVar}_${fileType_outer}"
+            
+            $filesValueString_outer = ""
+            # Regex for VAR = value (captures 'content') and VAR += value (captures 'append_content')
+            # This pattern is similar to the COMPS one for handling multi-line values.
+            $varBlockRegexPattern = "(?sm)(?:^\s*${varName_outer}\s*=\s*(?<content>(?:(?:(?!\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)).)*?\\\r?\n)*.*?(?=\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$))))|(?:^\s*${varName_outer}\s*\+=\s*(?<append_content>(?:(?:(?!\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$)).)*?\\\r?\n)*.*?(?=\r?\n\s*(?:[A-Z_]+\s*(?<!\\)=\s*|[#]|$))))"
+            $varBlockMatches = [regex]::Matches($makefileContent, $varBlockRegexPattern)
+            
+            $accumulatedFileValues = ""
+            foreach ($varMatch in $varBlockMatches) {
+                $currentBlockContent = ""
+                if ($varMatch.Groups["content"].Success) {
+                    $currentBlockContent = $varMatch.Groups["content"].Value.Trim()
+                } elseif ($varMatch.Groups["append_content"].Success) {
+                    $currentBlockContent = $varMatch.Groups["append_content"].Value.Trim()
+                }
+                
+                if ($currentBlockContent) {
+                    if ($accumulatedFileValues -ne "") { $accumulatedFileValues += " " } # Add space before appending next block
+                    $accumulatedFileValues += ($currentBlockContent -replace '\\\r?\n', ' ' -replace '\s+', ' ').Trim()
+                }
+            }
+            $filesValueString_outer = $accumulatedFileValues # Already cleaned and trimmed by parts
+
+            if ($filesValueString_outer) {
+                $foundFiles_outer = $filesValueString_outer.Split(' ') | Where-Object { $_ -ne "" -and $_.EndsWith($fileExt_outer) }
+                if ($foundFiles_outer.Length -gt 0) { 
+                    Write-Host "    $($fileType_outer): $($foundFiles_outer.Length) files found." -ForegroundColor Green
+                    foreach ($file_inner in $foundFiles_outer) { 
+                        $pathToAdd_inner = "$componentName_outer/$file_inner" 
+                        if (-not $sourceFilePaths.Contains($pathToAdd_inner)) {
+                            $sourceFilePaths.Add($pathToAdd_inner)
+                        }
+                    }
+                } else {
+                     Write-Host "    $($fileType_outer): No files matching extension '$($fileExt_outer)' found. (Value: '$($filesValueString_outer)')" -ForegroundColor Yellow
+                }
+            } else {
+                Write-Host "    $($fileType_outer): Not defined or empty for $($componentName_outer)."
+            }
         }
     }
-    
-    # Extract S files (assembly)
-    $sfilesMatch = [regex]::Match($makefileContent, "${componentUpper}_SFILES\s*=\s*([^#]+?)\s*(?=${componentUpper}_[CS]FILES|\s*SYSTEM_)")
-    if ($sfilesMatch.Success) {
-        $sfilesText = $sfilesMatch.Groups[1].Value
-        $sfiles = $sfilesText -split '\s+\\?\s*\n\s*' | ForEach-Object {
-            $_.Trim() -replace '\\$', '' -split '\s+' | Where-Object { $_ -ne "" }
-        }
-        $sfiles = $sfiles | Where-Object { $_ -match '\S' }
-        
-        # Add component path to each file
-        foreach ($file in $sfiles) {
-            $sourceFiles += "$component/$file"
-        }
+} else {
+    Write-Host "Skipping source file parsing as no components were found." -ForegroundColor Yellow
+}
+
+# --- Stage 3: Generate file_list.json ---
+$fileListData = @{ "files" = @() }
+$actualSourceFilesForCompilation = [System.Collections.Generic.List[string]]::new()
+
+foreach ($sf_path_json in $sourceFilePaths) { 
+    $fileListData.files += @{ "path" = $sf_path_json; "type" = "source" } 
+    $actualSourceFilesForCompilation.Add($sf_path_json)
+}
+
+$simCFile_json = "xinu_simulation.c"; $initCFile_json = "xinu_init.c" 
+if (Test-Path (Join-Path -Path $projectDir -ChildPath $simCFile_json)) {
+    $fileListData.files += @{ "path" = $simCFile_json; "type" = "source" }; $actualSourceFilesForCompilation.Add($simCFile_json)
+}
+$fileListData.files += @{ "path" = $initCFile_json; "type" = "source" }; $actualSourceFilesForCompilation.Add($initCFile_json)
+
+$projectIncludeDir_json = Join-Path -Path $projectDir -ChildPath "include" 
+if (Test-Path $projectIncludeDir_json) {
+    Get-ChildItem -Path $projectIncludeDir_json -Recurse -Filter "*.h" | ForEach-Object { 
+        $fileListData.files += @{ "path" = ($_.FullName.Substring($projectDir.Length + 1).Replace("\", "/")); "type" = "header" }
     }
 }
 
-# Find all header files in the include directory
-$includeDir = Join-Path -Path $projectDir -ChildPath "include"
-$headerFiles = @()
-if (Test-Path $includeDir) {
-    $headerFiles = Get-ChildItem -Path $includeDir -Filter "*.h" | ForEach-Object { "include/$($_.Name)" }
-    Write-Host "Found $($headerFiles.Count) header files in include directory" -ForegroundColor Yellow
-}
+$fileListData | ConvertTo-Json -Depth 5 | Out-File -FilePath $file_list_json -Encoding UTF8 -Force
+Write-Host "Generated $file_list_json. Total source files for compilation: $($actualSourceFilesForCompilation.Count)"
 
-# Generate file_list.json
-$fileListData = @{
-    "files" = @()
-}
 
-# Add source files
-foreach ($sourceFile in $sourceFiles) {
-    $fileListData.files += @{
-        "path" = $sourceFile
-        "type" = "source"
-    }
-}
+# --- Stage 4: Generate MINIMAL xinu.h and xinu_init.c for structure ---
+$customStandardHeadersToSkip_gen = @("stdio.h", "stdlib.h", "string.h", "stdarg.h", "ctype.h") 
+$minimalXinuHContent = @"
+#ifndef _XINU_SIMULATION_H_
+#define _XINU_SIMULATION_H_
 
-# Add header files
-foreach ($headerFile in $headerFiles) {
-    $fileListData.files += @{
-        "path" = $headerFile
-        "type" = "header"
-    }
-}
-
-# Add xinu_simulation.c
-$fileListData.files += @{
-    "path" = "xinu_simulation.c"
-    "type" = "source"
-}
-
-# Add xinu_init.c
-$fileListData.files += @{
-    "path" = "xinu_init.c"
-    "type" = "source"
-}
-
-# Write file_list.json
-$fileListData | ConvertTo-Json -Depth 4 | Out-File -FilePath $file_list_json -Encoding UTF8
-Write-Host "Generated $file_list_json with $($fileListData.files.Count) files" -ForegroundColor Green
-
-# Create the xinu.h file that includes all headers
-$xinuHeaderContent = @"
-#ifndef _XINU_H_
-#define _XINU_H_
-
+// Standard C headers - MSVC should provide these from system paths
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Windows.h>
+#include <stdarg.h>
+#include <ctype.h>
 
-/* Type definitions */
-typedef int             int32;
-typedef short           int16;
-typedef char            int8;
-typedef unsigned int    uint32;
-typedef unsigned short  uint16;
-typedef unsigned char   uint8;
-typedef char            bool8;
-typedef int             pid32;
-typedef int             sid32;
-typedef int             qid16;
-typedef int             pri16;
-typedef int             umsg32;
-typedef int             syscall;
-typedef int             devcall;
-typedef int             shellcmd;
-typedef int             did32;
-typedef int             ibid32;
-typedef int             status;
-
-/* Constants */
-#define OK              1
-#define SYSERR          (-1)
-#define EOF             (-2)
-#define TIMEOUT         (-3)
-#define FALSE           0
-#define TRUE            1
-#define EMPTY           (-1)
-#define NULL            0
-#define NULLCH          '\0'
-#define NULLSTR         ""
-#define MAXPRIO         100
-#define MINPRIO         1
-#define NPROC           64
-#define NQENT           500
-#define BADPID          (-1)
-#define SHELL_ERROR     1
-#define SHELL_OK        0
-
-/* Process states */
-#define PR_FREE         0
-#define PR_CURR         1
-#define PR_READY        2
-#define PR_RECV         3
-#define PR_SLEEP        4
-#define PR_SUSP         5
-#define PR_WAIT         6
-#define PR_RECTIM       7
-"@
-
-# Add includes for all header files
-foreach ($headerFile in $headerFiles) {
-    $fileName = [System.IO.Path]::GetFileName($headerFile)
-    $xinuHeaderContent += "`n#include <$fileName>"
-}
-
-$xinuHeaderContent += @"
-
+// Windows API
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif
+#include <windows.h>
+
+// Include project's own non-standard headers (e.g., kernel.h, process.h)
+// These are included AFTER system headers.
 "@
-
-# Write the xinu.h file
-$xinuHeaderContent | Out-File -FilePath $includesFile -Encoding ASCII
-Write-Host "Generated $includesFile with all header includes" -ForegroundColor Green
-
-# Create the xinu_init.c file with key system initialization functions
-$xinuInitContent = @"
-#include <xinu.h>
-
-/* System data structures */
-struct procent proctab[NPROC];
-qid16 readylist;
-pid32 currpid;
-uint32 clktime;
-uint32 clkticks;
-
-/* Process state strings for debugging */
-const char *states[] = {
-    "FREE", "CURR", "READY", "RECV",
-    "SLEEP", "SUSP", "WAIT", "RECTIM"
-};
-
-/* Starvation prevention variables */
-struct defer Defer;
-bool8 enable_starvation_fix = FALSE;
-pid32 pstarv_pid = BADPID;
-uint32 pstarv_ready_time = 0;
-uint32 last_boost_time = 0;
-
-/* Queue entry structure */
-struct qentry {
-    pid32 qnext;
-    pid32 qprev;
-    pri16 qkey;
-};
-
-/* Queue table */
-struct qentry queuetab[NQENT];
-
-/* Function prototypes */
-int32 firstid(qid16 q);
-int32 firstkey(qid16 q);
-pid32 getitem(pid32 pid);
-pid32 enqueue(pid32 pid, qid16 q);
-pid32 dequeue(qid16 q);
-qid16 newqueue(void);
-
-/* System initialization function */
-void initialize_system(void) {
-    int i;
-    
-    /* Initialize process table */
-    for (i = 0; i < NPROC; i++) {
-        proctab[i].prstate = PR_FREE;
-        proctab[i].prprio = 0;
-        strncpy(proctab[i].prname, "unused", 8);
-        proctab[i].prpid = i;
-    }
-    
-    /* Initialize process 0 as current */
-    currpid = 0;
-    proctab[0].prstate = PR_CURR;
-    strncpy(proctab[0].prname, "prnull", 8);
-    proctab[0].prprio = 0;
-    
-    /* Initialize ready list */
-    readylist = newqueue();
-    
-    /* Initialize clocks */
-    clktime = 0;
-    clkticks = 0;
-    
-    /* Initialize deferrals */
-    Defer.ndefers = 0;
-    Defer.attempt = FALSE;
-    
-    /* Initialize starvation prevention variables */
-    pstarv_pid = BADPID;
-    enable_starvation_fix = FALSE;
-    pstarv_ready_time = 0;
-    last_boost_time = 0;
-    
-    kprintf("System initialized at time %d\n", clktime);
-}
-
-/* Create a new queue */
-qid16 newqueue(void) {
-    static qid16 nextqid = NPROC;
-    qid16 q;
-    
-    q = nextqid++;
-    queuetab[q].qnext = EMPTY;
-    queuetab[q].qprev = EMPTY;
-    return q;
-}
-
-/* Insert a process in a queue */
-pid32 enqueue(pid32 pid, qid16 q) {
-    int tail;
-    
-    if (pid < 0 || pid >= NPROC || q < 0 || q >= NQENT) {
-        return SYSERR;
-    }
-    
-    /* If queue is empty, add process as the only entry */
-    if (queuetab[q].qnext == EMPTY) {
-        queuetab[q].qnext = pid;
-        queuetab[q].qprev = pid;
-        queuetab[pid].qnext = EMPTY;
-        queuetab[pid].qprev = EMPTY;
-        return OK;
-    }
-    
-    /* Add process at the tail of the queue */
-    tail = queuetab[q].qprev;
-    queuetab[pid].qprev = tail;
-    queuetab[pid].qnext = EMPTY;
-    queuetab[tail].qnext = pid;
-    queuetab[q].qprev = pid;
-    
-    return OK;
-}
-
-/* Remove and return the first process from a queue */
-pid32 dequeue(qid16 q) {
-    pid32 pid;
-    
-    if (q < 0 || q >= NQENT || queuetab[q].qnext == EMPTY) {
-        return SYSERR;
-    }
-    
-    pid = queuetab[q].qnext;
-    
-    /* Only one process on the queue */
-    if (queuetab[pid].qnext == EMPTY) {
-        queuetab[q].qnext = EMPTY;
-        queuetab[q].qprev = EMPTY;
-    } else {
-        queuetab[q].qnext = queuetab[pid].qnext;
-        queuetab[queuetab[pid].qnext].qprev = EMPTY;
-    }
-    
-    queuetab[pid].qnext = EMPTY;
-    queuetab[pid].qprev = EMPTY;
-    return pid;
-}
-
-/* Get ID of first process in a queue */
-int32 firstid(qid16 q) {
-    if (q < 0 || q >= NQENT || queuetab[q].qnext == EMPTY) {
-        return EMPTY;
-    }
-    return queuetab[q].qnext;
-}
-
-/* Get key (priority) of first process in a queue */
-int32 firstkey(qid16 q) {
-    pid32 pid;
-    
-    if (q < 0 || q >= NQENT || queuetab[q].qnext == EMPTY) {
-        return SYSERR;
-    }
-    
-    pid = queuetab[q].qnext;
-    return queuetab[pid].qkey;
-}
-
-/* Remove a specific item from a queue */
-pid32 getitem(pid32 pid) {
-    pid32 prev, next;
-    
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    
-    prev = queuetab[pid].qprev;
-    next = queuetab[pid].qnext;
-    
-    if (prev == EMPTY) {
-        return SYSERR;
-    }
-    
-    if (next == EMPTY) {
-        queuetab[prev].qnext = EMPTY;
-    } else {
-        queuetab[prev].qnext = next;
-        queuetab[next].qprev = prev;
-    }
-    
-    queuetab[pid].qnext = EMPTY;
-    queuetab[pid].qprev = EMPTY;
-    
-    return pid;
-}
-
-/* Insert a process in order by key */
-void insert(pid32 pid, int head, int key) {
-    pid32 curr, prev;
-    
-    if (pid < 0 || pid >= NPROC) {
-        return;
-    }
-    
-    curr = queuetab[head].qnext;
-    prev = head;
-    
-    queuetab[pid].qkey = key;
-    
-    /* Find insertion point */
-    while (curr != EMPTY && queuetab[curr].qkey >= key) {
-        prev = curr;
-        curr = queuetab[curr].qnext;
-    }
-    
-    /* Insert process between prev and curr */
-    queuetab[pid].qnext = curr;
-    queuetab[pid].qprev = prev;
-    queuetab[prev].qnext = pid;
-    
-    if (curr != EMPTY) {
-        queuetab[curr].qprev = pid;
-    } else {
-        /* New process is now the tail */
-        queuetab[head].qprev = pid;
-    }
-}
-
-/* Simulated context switch */
-void ctxsw(void **old_sp, void **new_sp) {
-    kprintf("Context switch: %p -> %p\n", old_sp, new_sp);
-}
-
-/* Print formatted output */
-void kprintf(const char *fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
-}
-
-/* Get process ID */
-pid32 getpid(void) {
-    return currpid;
-}
-
-/* Get process priority */
-pri16 getprio(pid32 pid) {
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    return proctab[pid].prprio;
-}
-
-/* Change process priority */
-pri16 chprio(pid32 pid, pri16 newprio) {
-    pri16 oldprio;
-    
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    
-    oldprio = proctab[pid].prprio;
-    proctab[pid].prprio = newprio;
-    
-    /* Update position in ready list if process is ready */
-    if (proctab[pid].prstate == PR_READY) {
-        getitem(pid);
-        insert(pid, readylist, newprio);
-    }
-    
-    return oldprio;
-}
-
-/* Kill a process */
-syscall kill(pid32 pid) {
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    
-    proctab[pid].prstate = PR_FREE;
-    return OK;
-}
-
-/* Make a process ready */
-syscall ready(pid32 pid) {
-    if (pid < 0 || pid >= NPROC) {
-        return SYSERR;
-    }
-    
-    proctab[pid].prstate = PR_READY;
-    insert(pid, readylist, proctab[pid].prprio);
-    
-    return OK;
-}
-
-/* Resume a suspended process */
-syscall resume(pid32 pid) {
-    if (pid < 0 || pid >= NPROC || proctab[pid].prstate != PR_SUSP) {
-        return SYSERR;
-    }
-    
-    return ready(pid);
-}
-
-/* Create a process */
-pid32 create(void (*procaddr)(), uint32 stksize, pri16 priority, char *name, uint32 nargs, ...) {
-    pid32 pid;
-    
-    /* Find free slot in process table */
-    for (pid = 0; pid < NPROC; pid++) {
-        if (proctab[pid].prstate == PR_FREE) {
-            break;
+if (Test-Path $projectIncludeDir_json) { 
+    Get-ChildItem -Path $projectIncludeDir_json -Recurse -Filter "*.h" | ForEach-Object {
+        $headerName_gen = $_.Name 
+        if (-not ($customStandardHeadersToSkip_gen -contains $headerName_gen)) {
+            $relativePath_gen = $_.FullName.Substring($projectDir.Length + 1).Replace("\", "/") 
+            $minimalXinuHContent += "`n#include `"$relativePath_gen`" // Project header: $headerName_gen" # Added specific header name
+        } else {
+            $minimalXinuHContent += "`n/* SKIPPING project's custom standard header: $headerName_gen (using MSVC system version) */"
         }
     }
-    
-    if (pid >= NPROC) {
-        kprintf("ERROR: No free process slots\n");
-        return SYSERR;
-    }
-    
-    /* Initialize process table entry */
-    strncpy(proctab[pid].prname, name, 15);
-    proctab[pid].prname[15] = '\0';
-    proctab[pid].prpid = pid;
-    proctab[pid].prprio = priority;
-    proctab[pid].prstate = PR_SUSP;
-    
-    kprintf("Created process '%s' with PID %d and priority %d\n", name, pid, priority);
-    
-    return pid;
 }
 
-/* Yield processor to another process */
-syscall yield(void) {
-    pid32 next_pid;
-    
-    /* Check if there are any processes to run */
-    if (queuetab[readylist].qnext == EMPTY) {
-        return OK;
-    }
-    
-    /* Remove highest priority process from ready list */
-    next_pid = dequeue(readylist);
-    if (next_pid == SYSERR) {
-        return SYSERR;
-    }
-    
-    /* Save current process state and switch to new process */
-    proctab[currpid].prstate = PR_READY;
-    insert(currpid, readylist, proctab[currpid].prprio);
-    
-    proctab[next_pid].prstate = PR_CURR;
-    pid32 old_pid = currpid;
-    currpid = next_pid;
-    
-    kprintf("*** CONTEXT SWITCH: From process %d (%s) to %d (%s) ***\n", 
-        old_pid, proctab[old_pid].prname, currpid, proctab[currpid].prname);
-        
-    return OK;
-}
+$minimalXinuHContent += @"
 
-/* Sleep for a specified time */
-syscall sleep(uint32 delay) {
-    Sleep(delay * 1000); // Windows Sleep function (milliseconds)
-    return OK;
-}
+// Basic fallbacks if not defined by project headers
+#ifndef PNMLEN
+    #define PNMLEN 16
+#endif
+#ifndef NPROC
+    #define NPROC 64
+#endif
+// Add other essential Xinu constants/types definitions as fallbacks if they are commonly needed
+// and not reliably defined in your project's core headers (like kernel.h) for the simulation.
+// For example:
+// #ifndef SYSERR
+//     #define SYSERR (-1)
+// #endif
+// #ifndef OK
+//     #define OK (1)
+// #endif
+
+// Forward declarations for xinu_init.c functions or core Xinu API used by simulation
+void initialize_system(void);
+void kprintf(const char *format, ...);
+// Add other prototypes for functions defined in your Xinu C code that xinu_simulation.c might call.
+
+#endif // _XINU_SIMULATION_H_
 "@
+$minimalXinuHContent | Out-File -FilePath $includesFile -Encoding ASCII -Force
+Write-Host "Generated MINIMAL $includesFile."
 
-# Write the xinu_init.c file
-$xinuInitContent | Out-File -FilePath $xinu_init_file -Encoding ASCII
-Write-Host "Generated $xinu_init_file with system initialization code" -ForegroundColor Green
+$minimalXinuInitCContent = @"
+#include ""xinu.h"" 
+// Includes the simulation's master header
 
-Write-Host "XINU includes and initialization code generation completed successfully!" -ForegroundColor Green
+// Dummy kprintf if not fully available from Xinu sources yet, or for basic simulation output
+#ifndef kprintf 
+void kprintf(const char *format, ...) {
+    va_list ap;
+    char buffer[2048]; // Increased buffer size
+    va_start(ap, format);
+    vsnprintf(buffer, sizeof(buffer), format, ap); // Use vsnprintf for safety
+    va_end(ap);
+    printf(""%s"", buffer); // Use standard printf for simulation output
+    fflush(stdout);     // Ensure output is flushed, important for debugging
+}
+#endif
+
+void initialize_system(void) {
+    // This is a placeholder for your Xinu's main initialization sequence.
+    // For the simulation, you might call specific init functions from your Xinu code here.
+    // kprintf(""Minimal Xinu system initialization for simulation...\\n"");
+
+    // Example: Initialize process table, ready list, clock, etc., as needed by the simulation logic.
+    // Ensure any global variables used here (like proctab, readylist) are declared (typically in xinu.h via kernel.h)
+    // and defined (in one of your C files or in this xinu_init.c for simulation purposes).
+}
+
+// Add other minimal stubs or simulation-specific implementations if needed by xinu_simulation.c to link
+// For example, if xinu_simulation.c calls create(), ready(), kill(), etc., you might need
+// minimal stubs for them here if the full Xinu source isn't compiled/linked yet.
+"@
+$minimalXinuInitCContent | Out-File -FilePath $xinu_init_file -Encoding ASCII -Force
+Write-Host "Generated MINIMAL $xinu_init_file."
+
+Write-Host "--- generate_xinu_includes.ps1 finished ---"
