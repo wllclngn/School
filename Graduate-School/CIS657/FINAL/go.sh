@@ -2,10 +2,26 @@
 # go.sh: Build XINU with GCC on UNIX-like systems (Linux, WSL, macOS, MSYS2, etc.)
 # Produces a compact, Copilot-optimized compilation.txt.
 # Dynamically inserts missing #include <stddef.h> (always at top) and #include <xinu.h> as needed.
+# Ensures <stddef.h> is included at the top of all "core" headers (stdlib.h, stdio.h, string.h, time.h).
 
 set -e
-
 PROJECT_DIR="$(cd "$(dirname "$0")"; pwd)"
+cd "$PROJECT_DIR"
+
+# --- Ensure <stddef.h> is the first include in all core headers ---
+for h in include/stdlib.h include/stdio.h include/string.h include/time.h; do
+  if [ -f "$h" ] && ! grep -q '#include <stddef.h>' "$h"; then
+    awk '
+      NR==1 { print; next }
+      $0 ~ /^#(ifndef|define|pragma once)/ { print; next }
+      !added && $0 ~ /^#include/ { print "#include <stddef.h>"; added=1 }
+      { print }
+      END { if (!added) print "#include <stddef.h>" }
+    ' "$h" > "$h.tmp" && mv "$h.tmp" "$h"
+    echo "Ensured <stddef.h> is the first include in $h"
+  fi
+done
+
 SIM_OUTPUT_DIR="$PROJECT_DIR/sim_output"
 OBJ_DIR="$SIM_OUTPUT_DIR/obj"
 LOGFILE="$PROJECT_DIR/compilation.txt"

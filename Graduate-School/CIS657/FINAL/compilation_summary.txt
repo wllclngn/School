@@ -24,7 +24,7 @@ Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c -> /h
 /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:33:60: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
 /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/fscanf.c:43:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/getchar.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/getchar.o
-/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:11:17: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdio.h:12:17: warning: conflicting types for built-in function ‘sscanf’; expected ‘int(const char *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/labs.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/labs.o
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memchr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/memchr.o
 /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/memchr.c:17:7: warning: conflicting types for built-in function ‘memchr’; expected ‘void *(const void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
@@ -54,6 +54,6 @@ Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strnlen.c -> /
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strrchr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strrchr.o
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/lib/libxc/strstr.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/strstr.o
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/xinu_core.c -> /home/mod/School/Graduate-School/CIS657/FINAL/sim_output/obj/xinu_core.o
-/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:14:7: warning: conflicting types for built-in function ‘labs’; expected ‘long int(long int)’ [-Wbuiltin-declaration-mismatch]
-/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:21:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:15:7: warning: conflicting types for built-in function ‘labs’; expected ‘long int(long int)’ [-Wbuiltin-declaration-mismatch]
+/home/mod/School/Graduate-School/CIS657/FINAL/include/stdlib.h:22:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
 /usr/include/time.h:99:8: error: unknown type name ‘size_t’
