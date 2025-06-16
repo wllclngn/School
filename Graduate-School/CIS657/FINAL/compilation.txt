@@ -1,12 +1,12 @@
 ﻿===== XINU Simulation Compilation Log =====
-Date: 2025-06-16 03:01:01
+Date: 2025-06-16 03:32:00
 User: mol
 =======================================
 
 ====================================================
 === XINU Kernel Simulation Build Script ===
 ====================================================
-Current Date and Time (UTC): 2025-06-16 03:01:01
+Current Date and Time (UTC): 2025-06-16 03:32:00
 Current User's Login: mol
 ====================================================
 Cleaning simulation output directory...
@@ -36,176 +36,28 @@ Setting up Visual Studio environment...
 **********************************************************************
 Compiling XINU core files...
 xinu_core.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2061: syntax error: identifier '_doscan'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2061: syntax error: identifier 'sscanf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2061: syntax error: identifier 'fscanf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2143: syntax error: missing ')' before ','
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: 'type'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2061: syntax error: identifier 'fprintf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2061: syntax error: identifier 'printf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2061: syntax error: identifier 'sprintf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2061: syntax error: identifier 'fgetc'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2061: syntax error: identifier 'fputc'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2143: syntax error: missing ')' before ','
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2061: syntax error: identifier 'fputs'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'putchar'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2146: syntax error: missing ')' before identifier 'c'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'c'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2061: syntax error: identifier 'getchar'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2061: syntax error: identifier 'labs'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2061: syntax error: identifier 'atol'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2061: syntax error: identifier 'rand'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'strncmp'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'strnlen'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdarg.h(10): error C2054: expected '(' to follow '__builtin_va_list'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\specstrings.h(22): warning C4081: expected ')'; found 'string'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\minwindef.h(51): error C2085: 'ULONG': not in formal parameter list
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\minwindef.h(52): error C2085: 'ULONG': not in formal parameter list
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\minwindef.h(52): error C2143: syntax error: missing ';' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'strncmp'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'strnlen'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'strncmp'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'strnlen'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\winnt.h(23711): warning C4013: 'memset' undefined; assuming extern returning int
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(82): error C2061: syntax error: identifier 'NOTIFICATION_MASK'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(82): error C2059: syntax error: ';'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(139): error C2061: syntax error: identifier 'ULONG'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(141): error C2061: syntax error: identifier 'ArgumentLength'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(141): error C2059: syntax error: ';'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(142): error C2059: syntax error: '}'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(153): error C2061: syntax error: identifier 'ULONG'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(154): error C2059: syntax error: '}'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(156): error C2061: syntax error: identifier 'SAVEPOINT_ID'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(156): error C2059: syntax error: ';'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(156): error C2059: syntax error: ','
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(159): error C2061: syntax error: identifier 'SAVEPOINT_ID'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(160): error C2059: syntax error: '}'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(163): error C2061: syntax error: identifier 'ULONG'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(164): error C2370: 'UOW': redefinition; different storage class
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(31): note: see declaration of 'UOW'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(166): error C2061: syntax error: identifier 'BufferLength'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(166): error C2059: syntax error: ';'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(168): error C2059: syntax error: '}'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(171): error C2061: syntax error: identifier 'ULONG'
-C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared\ktmtypes.h(171): fatal error C1003: error count exceeds 100; stopping compilation
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(85): error C2373: 'CreateProcessA': redefinition; different type modifiers
+C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\processthreadsapi.h(370): note: see declaration of 'CreateProcessA'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(294): error C2373: 'CreateProcessA': redefinition; different type modifiers
+C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um\processthreadsapi.h(370): note: see declaration of 'CreateProcessA'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(340): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(425): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(426): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): warning C4047: 'function': 'LPSTR' differs in levels of indirection from 'int'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): warning C4024: 'CreateProcessA': different types for formal and actual parameter 2
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(427): error C2198: 'BOOL CreateProcessA(LPCSTR,LPSTR,LPSECURITY_ATTRIBUTES,LPSECURITY_ATTRIBUTES,BOOL,DWORD,LPVOID,LPCSTR,LPSTARTUPINFOA,LPPROCESS_INFORMATION)': too few arguments for call
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\xinu_core.c(552): fatal error C1075: '{': no matching token found
 resched.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\resched.c(31): error C2065: 'MAXPRIO': undeclared identifier
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\resched.c(43): error C2065: 'MAXPRIO': undeclared identifier
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\resched.c(1): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
 ready.c
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\system\ready.c(3): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
 starvation_prevention.c
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2061: syntax error: identifier '_doscan'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(6): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2061: syntax error: identifier 'sscanf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(8): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2061: syntax error: identifier 'fscanf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2143: syntax error: missing ')' before ','
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: 'type'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(9): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2061: syntax error: identifier 'fprintf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(23): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2061: syntax error: identifier 'printf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(24): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2061: syntax error: identifier 'sprintf'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(25): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2061: syntax error: identifier 'fgetc'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(30): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(31): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2061: syntax error: identifier 'fputc'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2143: syntax error: missing ')' before ','
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(32): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2061: syntax error: identifier 'fputs'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(33): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'putchar'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2146: syntax error: missing ')' before identifier 'c'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2061: syntax error: identifier 'c'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(34): error C2059: syntax error: ')'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2061: syntax error: identifier 'getchar'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdio.h(35): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2061: syntax error: identifier 'labs'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2061: syntax error: identifier 'atol'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(11): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2061: syntax error: identifier 'rand'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdlib.h(14): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(3): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(4): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2061: syntax error: identifier 'strncmp'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(5): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(6): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(7): error C2081: 'int32': name in formal parameter list illegal
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2061: syntax error: identifier 'strnlen'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: ';'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\string.h(9): error C2059: syntax error: '<parameter-list>'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdarg.h(10): error C2061: syntax error: identifier 'va_list'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include\stdarg.h(10): error C2059: syntax error: ';'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(18): error C2061: syntax error: identifier 'sid32'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(20): error C2061: syntax error: identifier 'bpsize'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/bufpool.h(20): error C2059: syntax error: ';'
@@ -247,7 +99,43 @@ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): err
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(15): error C2081: 'int32': name in formal parameter list illegal
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2143: syntax error: missing ')' before '*'
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2143: syntax error: missing '{' before '*'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): fatal error C1003: error count exceeds 100; stopping compilation
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(16): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2143: syntax error: missing ')' before '*'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2143: syntax error: missing '{' before '*'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(17): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2143: syntax error: missing ')' before '*'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2143: syntax error: missing '{' before '*'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2059: syntax error: ')'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(18): error C2081: 'int32': name in formal parameter list illegal
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(21): error C2061: syntax error: identifier 'dvirq'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(21): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/conf.h(22): error C2059: syntax error: '}'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(21): error C2061: syntax error: identifier 'uint32'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(24): error C2061: syntax error: identifier 'dt_bootvalid'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(24): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(25): error C2061: syntax error: identifier 'dt_daylight'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(25): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2061: syntax error: identifier 'dt_msize'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(26): error C2059: syntax error: '['
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/date.h(29): error C2059: syntax error: '}'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/interrupt.h(3): error C2061: syntax error: identifier 'girmask'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/interrupt.h(3): error C2059: syntax error: ';'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/kernel.h(51): warning C4005: 'NULL': macro redefinition
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(230): note: see previous definition of 'NULL'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/kernel.h(59): warning C4005: 'EOF': macro redefinition
+C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt\stdio.h(41): note: see previous definition of 'EOF'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(67): warning C4028: formal parameter 1 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(145): warning C4028: formal parameter 3 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): warning C4028: formal parameter 1 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): warning C4028: formal parameter 3 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(148): error C2040: 'memcmp': 'int32 *(void *,const void *,int32)' differs in levels of indirection from 'int (const void *,const void *,size_t)'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(151): warning C4028: formal parameter 2 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(151): warning C4028: formal parameter 3 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/prototypes.h(197): warning C4028: formal parameter 2 different from declaration
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\include/pstarv.h(9): fatal error C1083: Cannot open include file: 'xinu.h': No such file or directory
 Linking XINU core process...
 LINK : fatal error LNK1181: cannot open input file 'C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\sim_output\xinu_core.obj'
 Compilation failed with error code 1181

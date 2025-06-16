@@ -5,7 +5,7 @@
 $projectDir = $PSScriptRoot
 $xinuIncludesPath = Join-Path -Path $projectDir -ChildPath "xinu_includes.h"
 $simulationCPath = Join-Path -Path $projectDir -ChildPath "xinu_simulation_win.c"
-$currentDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"  # Dynamic date in UTC format
+$currentDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 $currentUser = $env:USERNAME  # Dynamic username from Windows
 
 # Display header
