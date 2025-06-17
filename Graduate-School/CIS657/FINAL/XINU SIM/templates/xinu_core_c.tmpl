@@ -3,11 +3,17 @@
  * Generated on: {{ timestamp }}
  * By user: {{ user }}
  */
-#include "xinu_includes.h"
+
+/* Include standard libraries first */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+/* Then include our XINU simulation headers */
+#include "xinu_stddefs.h"
+#include "xinu_sim_declarations.h"
+#include "xinu_includes.h"
 
 /* Forward declarations for shell commands */
 extern int starvation_test(int argc, char *argv[]);
@@ -18,8 +24,8 @@ pid32 currpid = 0;               /* Currently executing process ID   */
 unsigned long clktime = 0;       /* Current time in seconds since boot */
 unsigned long count1000 = 0;     /* Milliseconds since last second */
 
-/* Process table */
-struct procent proctab[20];      /* Simple process table with 20 entries */
+/* Process table - will be defined in xinu.h, do not redefine here */
+/* extern struct procent proctab[]; */
 
 /* Main function */
 int main(int argc, char *argv[]) {
@@ -35,6 +41,9 @@ int main(int argc, char *argv[]) {
         proctab[i].prdesc[1] = stdout;
         proctab[i].prdesc[2] = stderr;
     }
+    
+    /* Set the current process ID to the first process */
+    currpid = 0;
     
     printf("XINU Simulation Starting\n");
     

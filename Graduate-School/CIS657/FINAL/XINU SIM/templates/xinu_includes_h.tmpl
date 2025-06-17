@@ -6,7 +6,7 @@
 #ifndef _XINU_INCLUDES_H_
 #define _XINU_INCLUDES_H_
 
-/* Include system standard libraries first */
+/* Include system standard libraries first - MUST come before XINU headers */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,15 +14,18 @@
 #include <ctype.h>
 #include <time.h>
 
-/* Then include our XINU-specific standard definitions */
+/* Custom typedefs for XINU-specific function pointers */
+typedef int (*xinu_putc_func_t)(int, int);
+typedef int (*xinu_doscan_getc_func_t)(int);
+typedef int (*xinu_doscan_ungetc_func_t)(int, int);
+typedef int (*xinu_qsort_cmp_t)(const void*, const void*);
+
+/* Include XINU definitions AFTER standard libraries */
 #include "xinu_stddefs.h"
-#include "xinu.h"
 #include "xinu_sim_declarations.h"
 
-/* Define FILE pointer compatibility with XINU's stream structure */
-typedef FILE* xinu_FILE;
-
-/* Process table */
+/* Instead of redefining the process table, just declare that we'll reference it */
+/* The actual definition is in xinu.h, which should be included by other components */
 extern struct procent {
     unsigned long prstate;   /* Process state */
     char *prstkbase;         /* Base of stack */
@@ -35,43 +38,49 @@ extern struct procent {
     void *prdesc[3];         /* Standard I/O descriptors (stdin,stdout,stderr) */
 } proctab[];
 
-/* Define XINU I/O function pointer types */
-typedef int (*xinu_putc_func_t)(int, int);
-typedef int (*xinu_doscan_getc_func_t)(int);
-typedef int (*xinu_doscan_ungetc_func_t)(int, int);
-typedef int (*xinu_qsort_cmp_t)(const void*, const void*);
-
-/* Standard C library compatibility functions */
-extern int xinu_printf_sim_redirect(const char *format, ...);
-extern int xinu_fprintf_sim_redirect(void *stream, const char *format, ...);
-extern int xinu_sprintf_sim_redirect(char *buffer, const char *format, ...);
-extern int xinu_scanf_sim_redirect(const char *format, ...);
-extern int xinu_fscanf_sim_redirect(void *stream, const char *format, ...);
-extern int xinu_sscanf_sim_redirect(const char *buffer, const char *format, ...);
-extern int xinu_getchar_sim_redirect(void);
-extern int xinu_putchar_sim_redirect(int c);
-extern int xinu_fgetc_sim_redirect(void *stream);
-extern char* xinu_fgets_sim_redirect(char *str, int num, void *stream);
-extern int xinu_fputc_sim_redirect(int c, void *stream);
-extern int xinu_fputs_sim_redirect(const char *str, void *stream);
-
-/* Define redirects from XINU functions to standard C library */
-#define printf xinu_printf_sim_redirect
-#define fprintf xinu_fprintf_sim_redirect
-#define sprintf xinu_sprintf_sim_redirect
-#define scanf xinu_scanf_sim_redirect
-#define fscanf xinu_fscanf_sim_redirect
-#define sscanf xinu_sscanf_sim_redirect
-#define getchar xinu_getchar_sim_redirect
-#define putchar xinu_putchar_sim_redirect
-#define fgetc xinu_fgetc_sim_redirect
-#define fgets xinu_fgets_sim_redirect
-#define fputc xinu_fputc_sim_redirect
-#define fputs xinu_fputs_sim_redirect
-
 /* External declarations for system variables */
 extern pid32 currpid;        /* Currently executing process ID */
 extern unsigned long clktime;/* Current time in seconds since boot */
 extern unsigned long count1000;/* Milliseconds since last clock tick */
+
+/* Function declarations and redirects */
+/* Define redirects from XINU functions to standard C library WITHOUT CONFLICTING */
+#ifndef printf
+#define printf xinu_printf_sim_redirect
+#endif
+#ifndef fprintf
+#define fprintf xinu_fprintf_sim_redirect
+#endif
+#ifndef sprintf
+#define sprintf xinu_sprintf_sim_redirect
+#endif
+/* Only define scanf redirects if not already defined in XINU stdio.h */
+#ifndef scanf
+#define scanf xinu_scanf_sim_redirect
+#endif
+#ifndef fscanf
+#define fscanf xinu_fscanf_sim_redirect
+#endif
+#ifndef sscanf
+#define sscanf xinu_sscanf_sim_redirect
+#endif
+#ifndef getchar
+#define getchar xinu_getchar_sim_redirect
+#endif
+#ifndef putchar
+#define putchar xinu_putchar_sim_redirect
+#endif
+#ifndef fgetc
+#define fgetc xinu_fgetc_sim_redirect
+#endif
+#ifndef fgets
+#define fgets xinu_fgets_sim_redirect
+#endif
+#ifndef fputc
+#define fputc xinu_fputc_sim_redirect
+#endif
+#ifndef fputs
+#define fputs xinu_fputs_sim_redirect
+#endif
 
 #endif /* _XINU_INCLUDES_H_ */
