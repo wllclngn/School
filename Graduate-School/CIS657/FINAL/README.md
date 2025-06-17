@@ -1,102 +1,345 @@
 # XINU SIM Builder
 
-This project is a cross-platform build system for a XINU Operating System simulation environment. It handles the generation of necessary files, compilation of the XINU C code, and running the simulation.
+A comprehensive cross-platform build system for compiling and running XINU Operating System simulations. The XINU SIM Builder provides an integrated Python-based toolchain that handles the complete lifecycle of XINU OS development, from source code generation to executable creation and simulation execution.
 
 ## Project Overview
 
-The XINU SIM Builder (`xinu_sim`) provides a suite of Python scripts to manage the lifecycle of a XINU OS simulation. It is designed to:
-- Generate necessary header files and C source files for the simulation.
-- Compile the XINU OS source code along with the simulation-specific files using GCC.
-- Provide a clean build process.
-- Run the compiled XINU simulation.
-- Log compilation and build activities.
+The XINU SIM Builder (`xinu_sim`) is a sophisticated build automation system designed specifically for XINU Operating System development and simulation. It bridges the gap between traditional XINU OS source code and modern development environments by providing:
+
+- **Automated File Generation**: Creates necessary header files, type definitions, and simulation-specific C source files
+- **Intelligent Compilation**: Compiles XINU OS source code with proper include path resolution and cross-platform compatibility
+- **Makefile Integration**: Parses existing XINU Makefiles to extract build instructions and dependencies
+- **Simulation Execution**: Runs compiled XINU simulations with interactive terminal I/O
+- **Comprehensive Logging**: Detailed build process logging with error reporting and debugging information
 
 ## Features
 
-- **File Generation**: Automatically generates standard XINU definitions, includes, simulation declarations, and core C files.
-- **Compilation**: Compiles XINU C source files from various directories (`system`, `device/tty`, `shell`, `lib/libxc`) and links them into an executable.
-- **Build Management**: Supports cleaning previous build artifacts.
-- **Simulation Execution**: Can run the compiled XINU simulation, with support for arguments (e.g., for starvation tests).
-- **Logging**: Detailed logging of the build process is saved to `compilation.txt` in the output directory, with a summary appended.
-- **Cross-Platform**: Designed to work on different operating systems (Windows, Linux, macOS) with Python 3 and GCC.
+### Core Build System
+- **Template-Based Code Generation**: Automatically generates XINU standard definitions, includes, simulation declarations, and core implementation files
+- **Modular Architecture**: Separate modules for generation (`generator.py`), compilation (`compiler.py`), and Makefile parsing (`makefile_parser.py`)
+- **Error Handling**: Robust error detection and reporting with compilation limits and detailed logging
+- **Cross-Platform Support**: Works seamlessly across Windows, Linux, and macOS environments
 
-## Project Structure
+### Compilation Management
+- **Source File Discovery**: Automatically scans XINU OS directories (`system`, `device/tty`, `shell`, `lib/libxc`) for source files
+- **Include Path Resolution**: Intelligent include directory detection and path resolution
+- **Object File Management**: Organized compilation with separate object file directory structure
+- **Symbol Shimming**: Handles platform-specific function implementations and library conflicts
 
-The project expects a certain directory structure, typically with the XINU OS source code either in the project root or in a subdirectory named `XINU OS`.
+### Build Integration
+- **Makefile Parsing**: Extracts source files, compiler flags, include directories, and linker options from existing XINU Makefiles
+- **Dependency Tracking**: Analyzes build dependencies and compilation order
+- **Flag Management**: Cross-platform compiler and linker flag optimization
+- **Build Verification**: Post-build validation and executable integrity checking
 
-Key directories and files involved:
-- `XINU SIM/` (or your project root): Contains the builder scripts.
-    - `main.py`: Main entry point for the builder.
-    - `generator.py`: Handles generation of XINU simulation files.
-    - `compiler.py`: Manages compilation and linking of XINU source.
-    - `utils/`: Contains utility modules like `config.py` and `logger.py`.
-    - `templates/`: Contains templates for generated files.
-    - `include/`: May contain a custom `xinu.h` or be used for XINU OS headers.
-    - `/output/` (default, can be changed via `-o`):
-        - `obj/`: Directory for compiled object files.
-        - `xinu_stddefs.h`, `xinu_includes.h`, etc.: Generated files.
-        - `compilation.txt`: Log file for the build process.
-        - `xinu_core` (or `xinu_core.exe` on Windows): The compiled simulation executable.
-- `XINU OS/` (optional, if XINU source is nested):
-    - `include/`: XINU OS header files.
-    - `system/`: XINU OS system files.
-    - `device/`: XINU OS device driver files.
-    - `shell/`: XINU OS shell files.
-    - `lib/libxc/`: XINU OS library files.
+## Architecture
+
+### Project Structure
+```
+Graduate-School/CIS657/FINAL/
+├── XINU SIM/                    # Build system directory
+│   ├── main.py                  # Main entry point and build orchestration
+│   ├── generator.py             # Template-based file generation
+│   ├── compiler.py              # Source compilation and linking
+│   ├── makefile_parser.py       # Makefile analysis and parsing
+│   ├── templates/               # Template files for code generation
+│   │   ├── xinu_stddefs_h.tmpl  # XINU type definitions
+│   │   ├── xinu_h.tmpl          # Main XINU header template
+│   │   ├── xinu_includes_h.tmpl # Include wrapper template
+│   │   ├── xinu_simulation_c.tmpl # Simulation helper template
+│   │   ├── xinu_core_c.tmpl     # Core implementation template
+│   │   └── ...                  # Additional templates
+│   ├── utils/                   # Utility modules
+│   │   ├── config.py            # Configuration management
+│   │   └── logger.py            # Logging functionality
+│   ├── include/                 # Generated header files
+│   ├── output/                  # Build artifacts and executables
+│   │   ├── obj/                 # Compiled object files
+│   │   ├── xinu_core            # Main executable (Unix/Linux)
+│   │   ├── xinu_core.exe        # Main executable (Windows)
+│   │   └── compilation.txt      # Detailed build log
+│   └── system/                  # Additional system files
+└── XINU OS/                     # XINU Operating System source code
+    ├── include/                 # XINU OS header files
+    ├── system/                  # Core system implementation
+    ├── device/                  # Device drivers and I/O
+    ├── shell/                   # XINU shell implementation
+    ├── lib/libxc/              # XINU C library
+    ├── compile/                 # Build configuration and Makefiles
+    └── config/                  # System configuration files
+```
+
+### Key Components
+
+#### XinuBuilder (main.py)
+The central orchestrator that manages the complete build process:
+- Project directory detection and setup
+- Build artifact cleanup and management
+- Template loading and file generation coordination
+- Compilation and linking process management
+- Simulation execution with interactive I/O
+
+#### XinuGenerator (generator.py)
+Handles template-based code generation:
+- XINU standard definitions and type declarations
+- Platform-specific include file generation
+- Simulation helper function implementation
+- Core executable template processing
+
+#### XinuCompiler (compiler.py)
+Manages the compilation and linking process:
+- Source file discovery and filtering
+- Cross-platform compiler flag management
+- Object file generation and organization
+- Executable linking with library resolution
+
+#### MakefileParser (makefile_parser.py)
+Extracts build information from existing XINU Makefiles:
+- Variable expansion and definition extraction
+- Source file list compilation
+- Include directory resolution
+- Compiler and linker flag parsing
 
 ## Prerequisites
 
-- Python 3
-- GCC (GNU Compiler Collection) installed and accessible in the system PATH.
+- **Python 3.7+**: Required for the build system
+- **GCC (GNU Compiler Collection)**: Must be installed and accessible in system PATH
+- **XINU OS Source Code**: Complete XINU operating system source tree
 
-## How to Use
+### Platform-Specific Requirements
 
-Navigate to the directory containing `main.py` (e.g., `Graduate-School/CIS657/FINAL/XINU SIM/`).
-
-### 1. Setup
-Ensure your XINU OS source files are located correctly, either in the project directory or in a subdirectory named `XINU OS`.
-
-### 2. Building the Simulation
-
-To generate files and compile the XINU simulation:
+#### Linux/Unix
 ```bash
-python main.py
+sudo apt-get install build-essential gcc python3
 ```
 
-### 3. Running the Simulation
-
-To run the simulation after building:
+#### macOS
 ```bash
-python main.py --run
-```
-Once compiled, XINU's live environment will run automatically just like as if launched by VirtualBox within the terminal that the Python script was compiled in.
-
-### 4. Cleaning the Build
-
-To remove all generated files and build artifacts:
-```bash
-python main.py --clean
+xcode-select --install
+brew install gcc python3
 ```
 
-### Command-Line Options
+#### Windows
+- Install MinGW-w64 or similar GCC distribution
+- Ensure gcc.exe is in system PATH
+- Python 3.7+ from python.org
 
-The `main.py` script accepts several command-line arguments:
+## Installation and Setup
 
-- `--clean`: Clean the build directory before any other operation.
-- `--run`: Run the XINU simulation after a successful build.
-- `--starvation <value>`: Pass an argument for a starvation test to the simulation (used with `--run`).
-- `--no-compile`: Generate necessary files but skip the compilation step.
-- `-d <directory>`, `--directory <directory>`: Specify the project directory. Defaults to the current directory (`.`).
-- `-v`, `--verbose`: Enable verbose output during the build process.
-- `-o <output_directory>`, `--output-dir <output_directory>`: Specify a custom output directory for generated files, object files, and the executable. Defaults to `xinu_sim/output/`.
+1. **Clone or download the project** to your local development environment
+2. **Verify XINU OS source structure** - ensure the `XINU OS/` directory contains the complete XINU source tree
+3. **Test compiler installation**:
+   ```bash
+   gcc --version
+   python3 --version
+   ```
 
-**Example combining options:**
-Clean, build, and run with verbose output, specifying a project directory:
+## Usage
+
+Navigate to the `Graduate-School/CIS657/FINAL/XINU SIM/` directory for all operations.
+
+### Basic Build Operations
+
+#### Complete Build Process
+Generate files, compile source code, and create executable:
 ```bash
-python main.py -d "/path/to/your/xinu_project" --clean --run -v
+python3 main.py
 ```
 
-## Logging
+#### Clean Build
+Remove all previous build artifacts and perform fresh build:
+```bash
+python3 main.py --clean
+```
 
-The build process generates two log files:
-- `compilation.txt`: Located in the specified output directory (e.g., `XINU SIM/output/compilation.txt`). Contains detailed logs of the file generation and compilation process.
+#### Build and Execute
+Compile and immediately run the XINU simulation:
+```bash
+python3 main.py --run
+```
+
+#### Verbose Build
+Enable detailed output for debugging build issues:
+```bash
+python3 main.py --verbose
+```
+
+### Advanced Usage
+
+#### Custom Output Directory
+Specify alternative output location:
+```bash
+python3 main.py -o /path/to/custom/output
+```
+
+#### Project Directory Override
+Build XINU source from different location:
+```bash
+python3 main.py -d /path/to/xinu/project
+```
+
+#### Skip Compilation
+Generate files only without compilation:
+```bash
+python3 main.py --no-compile
+```
+
+#### Starvation Testing
+Run simulation with starvation test parameters:
+```bash
+python3 main.py --run --starvation 5
+```
+
+### Command-Line Reference
+
+| Option | Description |
+|--------|-------------|
+| `--clean` | Remove all generated files and build artifacts before building |
+| `--run` | Execute the XINU simulation after successful compilation |
+| `--verbose`, `-v` | Enable detailed logging and output during build process |
+| `--no-compile` | Generate necessary files but skip compilation step |
+| `--starvation <value>` | Pass starvation test parameter to simulation (use with `--run`) |
+| `--directory <path>`, `-d <path>` | Specify project directory (default: current directory) |
+| `--output-dir <path>`, `-o <path>` | Specify custom output directory for build artifacts |
+
+### Example Workflows
+
+#### Development Workflow
+```bash
+# Clean build with verbose output for debugging
+python3 main.py --clean --verbose
+
+# Quick compilation check
+python3 main.py
+
+# Test execution
+python3 main.py --run
+```
+
+#### CI/CD Integration
+```bash
+# Automated build verification
+python3 main.py --clean --verbose
+if [ $? -eq 0 ]; then
+    echo "Build successful"
+    python3 main.py --run --starvation 1
+else
+    echo "Build failed"
+    exit 1
+fi
+```
+
+## Build Process Details
+
+### Phase 1: File Generation
+1. **Template Loading**: Load and parse template files from `templates/` directory
+2. **Standard Definitions**: Generate `xinu_stddefs.h` with XINU type definitions and constants
+3. **Include Wrapper**: Create `xinu_includes.h` with proper include ordering
+4. **Core Implementation**: Generate `xinu_core.c` main executable template
+5. **Simulation Helpers**: Create platform-specific simulation support functions
+
+### Phase 2: Source Discovery
+1. **Directory Scanning**: Recursively scan XINU OS directories for `.c` source files
+2. **Makefile Parsing**: Extract source file lists and build parameters from Makefiles
+3. **File Filtering**: Remove assembly files and excluded library functions
+4. **Dependency Resolution**: Organize source files by compilation order
+
+### Phase 3: Compilation
+1. **Include Path Setup**: Configure compiler include directories
+2. **Flag Configuration**: Set cross-platform compiler flags and options
+3. **Object Generation**: Compile each source file to object format
+4. **Error Collection**: Aggregate compilation errors and warnings
+
+### Phase 4: Linking
+1. **Object Collection**: Gather all successfully compiled object files
+2. **Library Resolution**: Link required system and math libraries
+3. **Executable Creation**: Generate final XINU simulation executable
+4. **Permission Setting**: Configure executable permissions (Unix/Linux)
+
+### Phase 5: Verification
+1. **Build Validation**: Verify executable creation and basic integrity
+2. **Log Generation**: Create detailed compilation log with summary
+3. **Error Reporting**: Provide actionable feedback for build issues
+
+## Logging and Debugging
+
+### Log Files
+- **`output/compilation.txt`**: Complete build log with timestamps, commands, and output
+- **Console Output**: Real-time build progress and error reporting
+- **Verbose Mode**: Detailed debugging information with `-v` flag
+
+### Common Build Issues
+1. **Missing Headers**: Ensure XINU OS include files are present
+2. **Compiler Errors**: Check GCC installation and PATH configuration  
+3. **Linking Failures**: Verify all required libraries are available
+4. **Template Issues**: Confirm template files exist in `templates/` directory
+
+### Debugging Steps
+1. **Enable Verbose Mode**: Use `--verbose` for detailed output
+2. **Check Log Files**: Review `compilation.txt` for specific errors
+3. **Verify Paths**: Ensure all directory structures are correct
+4. **Test Minimal Build**: Try `--no-compile` to isolate generation issues
+
+## Simulation Execution
+
+Once successfully built, the XINU simulation provides:
+- **Interactive Shell**: Access to XINU command-line interface
+- **Process Management**: XINU process creation and scheduling
+- **System Calls**: Full XINU system call implementation
+- **Device I/O**: Simulated device driver functionality
+
+### Simulation Features
+- Real-time terminal interaction
+- Command history and editing
+- Process monitoring and debugging
+- System state inspection
+- Performance testing capabilities
+
+## Cross-Platform Compatibility
+
+The build system is designed for maximum portability:
+
+### Compiler Abstraction
+- Automatic platform detection
+- Conditional compilation flags
+- Path separator handling
+- Library linking adaptation
+
+### Template System
+- Platform-specific code generation
+- Conditional include statements
+- Runtime environment detection
+- Cross-platform type definitions
+
+## Troubleshooting
+
+### Build Failures
+1. **Verify Prerequisites**: Check Python 3.7+ and GCC installation
+2. **Path Issues**: Ensure all paths use forward slashes or proper escaping
+3. **Permission Problems**: Check write permissions for output directory
+4. **Template Errors**: Verify template files are present and readable
+
+### Runtime Issues
+1. **Executable Not Found**: Check compilation completed successfully
+2. **Permission Denied**: Run `chmod +x output/xinu_core` on Unix systems
+3. **Library Errors**: Ensure all required libraries are installed
+4. **Simulation Crashes**: Check for memory allocation or pointer issues
+
+### Getting Help
+1. **Enable Verbose Logging**: Use `--verbose` flag for detailed output
+2. **Check Log Files**: Review `compilation.txt` for specific error messages
+3. **Verify Environment**: Ensure all prerequisites are properly installed
+4. **Clean Build**: Try `--clean` flag to remove potentially corrupted artifacts
+
+## Contributing
+
+This project is part of the CIS657 graduate coursework. For issues, improvements, or contributions:
+
+1. Document any problems in the build process
+2. Provide detailed error logs and system information
+3. Test changes across multiple platforms when possible
+4. Maintain compatibility with existing XINU OS source code
+
+## License
+
+This project is developed for educational purposes as part of graduate-level operating systems coursework.
