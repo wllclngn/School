@@ -3,7 +3,8 @@
  * Generated on: {{ timestamp }}
  * By user: {{ user }}
  */
-#include "xinu_includes.h"
+
+/* First, include standard C headers to ensure types are defined */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,33 +12,65 @@
 #include <ctype.h>
 #include <time.h>
 
+/* Then include our XINU simulation headers */
+#include "xinu_sim_declarations.h"
+#include "xinu_includes.h"
+
 /* Standard IO redirects */
 int xinu_printf_sim_redirect(const char *format, ...) {
-    va_list args; int ret; va_start(args, format); ret = vprintf(format, args); va_end(args); fflush(stdout); return ret;
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vprintf(format, args);
+    va_end(args);
+    fflush(stdout);
+    return ret;
 }
 
 int xinu_fprintf_sim_redirect(void *stream, const char *format, ...) {
-    FILE *f = (FILE*)stream;
-    va_list args; int ret; va_start(args, format); ret = vfprintf(f, format, args); va_end(args); 
-    if (f) fflush(f); 
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vfprintf((FILE*)stream, format, args);
+    va_end(args);
+    if (stream) fflush((FILE*)stream);
     return ret;
 }
 
 int xinu_sprintf_sim_redirect(char *buffer, const char *format, ...) {
-    va_list args; int ret; va_start(args, format); ret = vsprintf(buffer, format, args); va_end(args); return ret;
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vsprintf(buffer, format, args);
+    va_end(args);
+    return ret;
 }
 
 int xinu_scanf_sim_redirect(const char *format, ...) {
-    va_list args; int ret; va_start(args, format); ret = vscanf(format, args); va_end(args); return ret;
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vscanf(format, args);
+    va_end(args);
+    return ret;
 }
 
 int xinu_fscanf_sim_redirect(void *stream, const char *format, ...) {
-    FILE *f = (FILE*)stream;
-    va_list args; int ret; va_start(args, format); ret = vfscanf(f, format, args); va_end(args); return ret;
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vfscanf((FILE*)stream, format, args);
+    va_end(args);
+    return ret;
 }
 
 int xinu_sscanf_sim_redirect(const char *buffer, const char *format, ...) {
-    va_list args; int ret; va_start(args, format); ret = vsscanf(buffer, format, args); va_end(args); return ret;
+    va_list args;
+    int ret;
+    va_start(args, format);
+    ret = vsscanf(buffer, format, args);
+    va_end(args);
+    return ret;
 }
 
 int xinu_getchar_sim_redirect(void) { 

@@ -6,6 +6,9 @@
 #ifndef _XINU_SIM_DECLARATIONS_H_
 #define _XINU_SIM_DECLARATIONS_H_
 
+/* Include standard headers first to ensure types like FILE are defined */
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <stddef.h>
 

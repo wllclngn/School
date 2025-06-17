@@ -7,6 +7,7 @@
 
 #include "xinu_stddefs.h"
 #include <stddef.h>
+#include <stdio.h>
 
 /* Process table declarations */
 extern struct procent {
@@ -17,12 +18,18 @@ extern struct procent {
     int  prio;               /* Process priority                       */
     int  quantum;            /* Quantum (ticks until rescheduling)     */
     int  ppid;               /* Parent pid                             */
+    void *prdesc[3];         /* Standard I/O descriptors for stdin, stdout, stderr */
 } proctab[];
 
 /* External declarations for system variables */
 extern pid32 currpid;        /* Currently executing process ID         */
 extern unsigned long clktime;/* Current time in seconds since boot     */
 extern unsigned long count1000;/* Milliseconds since last clock tick   */
+
+/* Define standard I/O streams */
+#define stdin  ((FILE *)(proctab[currpid].prdesc[0]))
+#define stdout ((FILE *)(proctab[currpid].prdesc[1]))
+#define stderr ((FILE *)(proctab[currpid].prdesc[2]))
 
 /* Include all other header files */
 /// [[[ BEGIN DYNAMIC XINU MODULE INCLUDES ]]]
