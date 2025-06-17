@@ -96,20 +96,20 @@ class XinuCompiler:
                 log(f"Excluding libxc source for shimmed function: {src_path}")
             else:
                 filtered_srcfiles.append(src_path)
-                        
-                log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
-                return filtered_srcfiles
                 
-            def _parse_makefile_for_sources(self, makefile_path):
-                """Parse Makefile for source file lists"""
-                srcfiles = []
-                
-                try:
-                    with open(makefile_path, 'r') as f:
-                        makefile_content = f.read()
-                
+        log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
+        return filtered_srcfiles
+    
+    def _parse_makefile_for_sources(self, makefile_path):
+        """Parse Makefile for source file lists"""
+        srcfiles = []
+        
+        try:
+            with open(makefile_path, 'r') as f:
+                makefile_content = f.read()
+            
             # Define source file variables to look for
-            vvar_patternsar_patterns = {
+            var_patterns = {
                 "SYSTEM_CFILES": self.config.system_dir,
                 "TTY_CFILES": os.path.join(self.config.project_dir, "device/tty"),
                 "SHELL_CFILES": self.config.shell_dir,
@@ -173,12 +173,6 @@ class XinuCompiler:
         # Setup compiler options
         base_includes = f"-I{self.config.include_dir} -I{self.config.project_dir}"
         gcc_force_includes = f"-include {self.config.includes_h}"
-
-
-
-        # Setup compiler options
-        base_includes = f"-I{self.config.include_dir} -I{self.config.project_dir}"
-        gcc_force_includes = f"-include {self.config.includes_h}"
         pre_header_path = os.path.abspath(os.path.join(self.config.project_dir, "xinu_builder/templates/xinu_pre.h"))
 
         for src in srcfiles:
@@ -189,7 +183,6 @@ class XinuCompiler:
                 cmd = f"gcc -c {src} {compile_options} -o {obj}"
             else:
                 cmd = f"gcc -c {src} {gcc_force_includes} {compile_options} -include {pre_header_path} -o {obj}"
-
             
             # Run the compilation
             try:

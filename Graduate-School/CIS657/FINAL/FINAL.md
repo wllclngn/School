@@ -1,6 +1,3 @@
-
-Hey, Copilot. Here's the prompt for the Final. I'll give you the compile ERRORs once you've analyzed the repo and the prompt.
-
 Final Exam
 Due: single PDF file and one video file submitted by
 Friday 06/13 at 11 PM EST

@@ -1,11 +1,12 @@
 """
 generator.py - XINU file generator
+NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
 """
 
 import os
 import re
 import glob
-from datetime import datetime
+import datetime
 from xinu_builder.utils.logger import log
 
 class XinuGenerator:
@@ -24,13 +25,45 @@ class XinuGenerator:
             "memcmp", "memset"
         ]
         
-        # Load the master template file
+        # Load the templates
         self.templates = {}
         self._load_templates()
         
     def _load_templates(self):
-        """Load all templates from the master template file"""
+        """Load all templates from individual template files"""
+        templates_dir = os.path.join(self.config.project_dir, "xinu_builder/templates")
+        template_files = {
+            "XINU_STDDEFS_H": os.path.join(templates_dir, "XINU_STDDEFS_H.tmpl"),
+            "XINU_H": os.path.join(templates_dir, "XINU_H.tmpl"),
+            "XINU_INCLUDES_H": os.path.join(templates_dir, "XINU_INCLUDES_H.tmpl"),
+            "XINU_SIM_DECLARATIONS_H": os.path.join(templates_dir, "XINU_SIM_DECLARATIONS_H.tmpl"),
+            "XINU_SIMULATION_C": os.path.join(templates_dir, "XINU_SIMULATION_C.tmpl"),
+            "XINU_CORE_C": os.path.join(templates_dir, "XINU_CORE_C.tmpl")
+        }
+        
+        # Load each template file
+        for template_name, template_path in template_files.items():
+            try:
+                with open(template_path, 'r') as f:
+                    self.templates[template_name] = f.read()
+                log(f"Loaded template: {template_name}")
+            except FileNotFoundError:
+                log(f"WARNING: Template file not found: {template_path}")
+                # Fall back to loading from the combined template
+                self._try_load_from_combined()
+                return
+            except Exception as e:
+                log(f"ERROR: Failed to load template from {template_path}: {str(e)}")
+                # Fall back to loading from the combined template
+                self._try_load_from_combined()
+                return
+        
+        log(f"Loaded {len(self.templates)} template files")
+        
+    def _try_load_from_combined(self):
+        """Try to load templates from combined template file as fallback"""
         master_template_path = os.path.join(self.config.project_dir, "xinu_builder/templates/xinu_templates.tmpl")
+        log(f"Attempting to load templates from combined file: {master_template_path}")
         
         try:
             with open(master_template_path, 'r') as f:
@@ -117,10 +150,10 @@ typedef int status;
             
         template = self.templates[template_name]
         
-        # Add standard context variables
+        # Add standard context variables - ALWAYS USE SYSTEM INFORMATION
         full_context = {
             "generator": "xinu_generator.py",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "user": os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         }
         full_context.update(context)
