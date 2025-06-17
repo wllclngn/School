@@ -1,5 +1,8 @@
 NEXT STEPS TO FINALIZE BUILD
 
+1) Terminal messages are not outputting.
+2) XINU Shell is not compiling, etal
+
 Phase #3 Implementation Plan: Review Linking and Executable Generation
 Step 1: Fix Template Files (1-2 hours)
 Address xinu_simulation.c Issues:
