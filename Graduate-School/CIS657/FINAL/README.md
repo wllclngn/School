@@ -104,6 +104,3 @@ python main.py -d "/path/to/your/xinu_project" --clean --run -v
 
 The build process generates two log files:
 - `compilation.txt`: Located in the specified output directory (e.g., `XINU SIM/output/compilation.txt`). Contains detailed logs of the file generation and compilation process.
-- `compilation_summary.txt`: A summary of the build is temporarily created and then appended to `compilation.txt`.
-
-These logs are useful for debugging build issues.
