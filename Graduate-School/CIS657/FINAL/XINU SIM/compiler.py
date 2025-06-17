@@ -8,7 +8,7 @@ import datetime
 from xinu_sim.utils.logger import log
 
 class XinuCompiler:
-    """Compiler for XINU simulation"""
+    # Compiler for XINU simulation
     
     def __init__(self, config):
         self.config = config
@@ -28,13 +28,13 @@ class XinuCompiler:
         ]
         
     def build(self):
-        """Build XINU simulation"""
+        # Build XINU simulation
         # Ensure output directories exist
         os.makedirs(self.config.obj_dir, exist_ok=True)
         
         # Start compilation log
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._log(f"=== XINU Compilation Log ===")
+        self._log(f"##### XINU Compilation Log #####")
         self._log(f"Started: {os.environ.get('USER', 'unknown')} at {timestamp}")
         self._log(f"Project directory: {self.config.project_dir}")
         self._log(f"System directory: {self.config.system_dir}")
@@ -111,11 +111,11 @@ class XinuCompiler:
         return True
         
     def _log(self, message):
-        """Add a message to the compilation log"""
+        # Add a message to the compilation log
         self.compilation_log.append(message)
         
     def _save_compilation_log(self):
-        """Save compilation log to file"""
+        # Save compilation log to file
         log_file = self.config.compilation_log
         try:
             with open(log_file, 'w') as f:
@@ -125,7 +125,7 @@ class XinuCompiler:
             log(f"Error saving compilation log: {str(e)}")
         
     def _collect_minimal_source_files(self):
-        """Collect only the minimal source files needed for a basic simulation"""
+        # Collect only the minimal source files needed for a basic simulation
         srcfiles = []
         
         # Only include the generated files
@@ -144,9 +144,9 @@ class XinuCompiler:
         return srcfiles
         
     def collect_source_files(self):
-        """Collect XINU C source files for full compilation"""
+        # Collect XINU C source files for full compilation
         log("Collecting XINU C source files...")
-        self._log("\n=== Source Files ===")
+        self._log("\n##### Source Files #####")
         
         srcfiles = []
         
@@ -188,7 +188,7 @@ class XinuCompiler:
         return filtered_srcfiles
         
     def _scan_directories_for_sources(self):
-        """Scan directories for source files"""
+        # Scan directories for source files
         srcfiles = []
         
         # Define directories to scan
@@ -219,9 +219,9 @@ class XinuCompiler:
         return srcfiles
         
     def compile_files(self, srcfiles, makefile_parser=None):
-        """Compile all source files"""
+        # Compile all source files
         log("Building XINU Core Process...")
-        self._log("\n=== Compilation ===")
+        self._log("\n##### Compilation #####")
         obj_files = []
         error_count = 0
         
@@ -317,14 +317,14 @@ class XinuCompiler:
         return obj_files
         
     def link_files(self, obj_files, makefile_parser=None):
-        """Link object files into executable"""
+        # Link object files into executable
         if not obj_files:
             log("No object files to link.")
             self._log("No object files to link.")
             return False
             
         log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
-        self._log(f"\n=== Linking ===")
+        self._log(f"\n##### Linking #####")
         self._log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
         
         # Get linker flags from Makefile if available

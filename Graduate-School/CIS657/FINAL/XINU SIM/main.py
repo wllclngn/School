@@ -55,10 +55,10 @@ class XinuBuilder:
         
         # Banner display
         banner = [
-            "=======================================",
+            "######################################",
             f"XINU Builder v1.0 - {self.timestamp}",
             f"User: {self.username} on {self.system} {platform.release()}",
-            "======================================="
+            "######################################"
         ]
         for line in banner:
             self.log(line)
@@ -201,7 +201,7 @@ class XinuBuilder:
         self.log("Building XINU Core Process...")
         
         # Prepare compilation log
-        compilation_log = f"=== XINU Compilation Log ===\n"
+        compilation_log = f"##### XINU Compilation Log #####\n"
         compilation_log += f"Started: {self.username} at {self.timestamp}\n"
         compilation_log += f"Project directory: {self.project_dir}\n"
         compilation_log += f"System directory: {self.xinu_os_dir}/system\n"
@@ -269,7 +269,7 @@ class XinuBuilder:
             compilation_log += f"Added core file: {src_file}\n"
         compilation_log += f"Using total of {len(sources)} source files for simulation\n\n"
         
-        compilation_log += "=== Compilation ===\n\n"
+        compilation_log += "##### Compilation #####\n\n"
         
         # Create object files
         object_files = []
@@ -342,7 +342,7 @@ class XinuBuilder:
             return False
         
         # Link object files
-        compilation_log += "=== Linking ===\n"
+        compilation_log += "##### Linking #####\n"
         
         # Use linker flags from Makefile if available
         if use_makefile and 'linker_flags' in locals():
@@ -401,8 +401,17 @@ class XinuBuilder:
         self.log(f"Running XINU simulation: {self.output_files['executable']}")
         
         try:
-            # Use subprocess.call() to wait for the process and properly handle I/O
-            return subprocess.call(self.output_files["executable"]) == 0
+            # Use Popen but connect directly to the terminal I/O
+            process = subprocess.Popen(
+                self.output_files["executable"],
+                shell=False,
+                # Keep standard I/O connected to the terminal
+                stdin=None,
+                stdout=None,
+                stderr=None
+            )
+            # Wait for the process to complete
+            return process.wait() == 0
         except Exception as e:
             self.log(f"Error running simulation: {str(e)}")
             return False

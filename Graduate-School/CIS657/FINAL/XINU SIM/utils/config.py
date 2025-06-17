@@ -7,7 +7,7 @@ import platform
 from xinu_sim.utils.logger import log
 
 class XinuConfig:
-    """Configuration and path management for XINU builder"""
+    # Configuration and path management for XINU builder
     
     def __init__(self, project_dir="."):
         self.project_dir = os.path.abspath(project_dir)
@@ -61,7 +61,7 @@ class XinuConfig:
         self._ensure_directories()
         
     def _ensure_directories(self):
-        """Ensure necessary directories exist"""
+        # Ensure necessary directories exist
         dirs = [
             self.output_dir,
             self.obj_dir,
@@ -72,7 +72,7 @@ class XinuConfig:
             os.makedirs(directory, exist_ok=True)
             
     def clean_build_files(self):
-        """Clean generated and build files"""
+        # Clean generated and build files
         # Remove generated files
         files_to_clean = [
             self.stddefs_h,
@@ -109,25 +109,33 @@ class XinuConfig:
         os.makedirs(self.obj_dir, exist_ok=True)
         
     def is_windows(self):
-        """Check if running on Windows"""
+        # Check if running on Windows
         return platform.system() == "Windows"
         
-    def run_simulation(self, args=[]):
-        """Run the XINU simulation"""
+    def run_simulation(self):
+        # Run the XINU simulation with interactive I/O
         if not os.path.exists(self.xinu_core_output):
             log(f"Error: Cannot run simulation. {self.xinu_core_output} not found.")
-            return 1
+            return False
             
         if not os.access(self.xinu_core_output, os.X_OK) and not self.is_windows():
             log(f"Error: {self.xinu_core_output} is not executable.")
-            return 1
+            return False
             
-        log(f"Running XINU simulation: {self.xinu_core_output} {' '.join(args)}")
+        log(f"Running XINU simulation: {self.xinu_core_output}")
         
         try:
-            cmd = [self.xinu_core_output] + args
-            process = subprocess.Popen(cmd)
-            return process.wait()
+            # Use Popen but connect directly to the terminal I/O
+            process = subprocess.Popen(
+                self.xinu_core_output,
+                shell=False,
+                # Keep standard I/O connected to the terminal
+                stdin=None,
+                stdout=None,
+                stderr=None
+            )
+            # Wait for the process to complete
+            return process.wait() == 0
         except Exception as e:
             log(f"Error running simulation: {str(e)}")
-            return 1
+            return False
