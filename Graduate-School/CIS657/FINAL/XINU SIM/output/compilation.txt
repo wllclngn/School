@@ -1,5 +1,5 @@
-=== XINU Compilation Log ===
-Started: mod at 2025-06-17 14:11:41
+##### XINU Compilation Log #####
+Started: mod at 2025-06-17 14:41:22
 Project directory: /home/mod/School/Graduate-School/CIS657/FINAL
 System directory: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/system
 Output directory: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output
@@ -108,7 +108,7 @@ Added core file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/system/ev
 Added core file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/system/pci.c
 Using total of 102 source files for simulation
 
-=== Compilation ===
+##### Compilation #####
 
 Compiling /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c -> /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
 Command: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c -I/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output -I/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/include -I/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include -I/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/system/include -I/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/shell -Wall -g -O0 -fno-builtin -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
