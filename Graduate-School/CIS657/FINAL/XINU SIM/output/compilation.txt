@@ -1,0 +1,25 @@
+=== XINU Compilation Log ===
+Started: mod at 2025-06-17 00:36:34
+Project directory: /home/mod/School/Graduate-School/CIS657/FINAL
+System directory: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/system
+Output directory: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output
+Added core file: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core.c
+Added core file: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_simulation.c
+Using minimal set of 2 source files for simulation
+
+=== Compilation ===
+
+Compiling /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core.c -> /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_core.o
+Command: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core.c -I/home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output -I/home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/include -Wall -Wextra -g -O0 -w -fno-builtin -o /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_core.o
+Successfully compiled /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core.c
+
+Compiling /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_simulation.c -> /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_simulation.o
+Command: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_simulation.c -I/home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output -I/home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/include -Wall -Wextra -g -O0 -w -fno-builtin -o /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_simulation.o
+Successfully compiled /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_simulation.c
+
+=== Linking ===
+Linking 2 objects to /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core
+Command: gcc /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_core.o /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/obj/xinu_simulation.o -o /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core -lm
+Made /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core executable
+SUCCESS: Build completed with 0 errors and 0 unique warning(s).
+XINU core executable: /home/mod/School/Graduate-School/CIS657/FINAL/xinu_builder/output/xinu_core

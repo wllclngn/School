@@ -1,1 +1,0 @@
-/* Fallback xinu_sim_declarations.h template */

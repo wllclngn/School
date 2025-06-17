@@ -1,1 +1,0 @@
-/* Fallback xinu_simulation.c template */
