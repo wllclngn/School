@@ -23,8 +23,8 @@ class XinuBuilder:
         self.project_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
         self.xinu_os_dir = os.path.join(self.project_dir, "XINU OS")
         self.output_dir = os.path.join(self.project_dir, "XINU SIM", "output")
-        self.template_dir = os.path.join(self.project_dir, "xinu_sim", "templates")
-        self.include_dir = os.path.join(self.project_dir, "xinu_sim", "include")
+        self.template_dir = os.path.join(self.project_dir, "XINU SIM", "templates")
+        self.include_dir = os.path.join(self.project_dir, "XINU SIM", "include")
         self.obj_dir = os.path.join(self.output_dir, "obj")
         
         # Create directories if they don't exist
