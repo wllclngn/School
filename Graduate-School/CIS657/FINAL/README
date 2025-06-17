@@ -1,0 +1,16 @@
+# XINU OS Simulation Build System
+
+## Overview
+
+This project provides a cross-platform build system for simulating the XINU operating system. XINU (Xinu Is Not Unix) is a small, educational operating system originally designed at Purdue University. This simulation framework allows XINU to be built and run on modern systems without requiring specialized hardware.
+
+## Features
+
+- Cross-platform support (Windows, Linux, macOS)
+- Automated generation of simulation files
+- Compilation of XINU source code for simulation environments
+- Runtime simulation of XINU core processes
+- Support for testing starvation scenarios
+- Verbose logging and build diagnostics
+
+## Project Structure
