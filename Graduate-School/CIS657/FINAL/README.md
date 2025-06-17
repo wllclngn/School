@@ -69,11 +69,7 @@ To run the simulation after building:
 ```bash
 python main.py --run
 ```
-
-You can also pass arguments to the simulation, for example, a starvation test argument:
-```bash
-python main.py --run --starvation <argument_value>
-```
+Once compiled, XINU's live environment will run automatically just like as if launched by VirtualBox within the terminal that the Python script was compiled in.
 
 ### 4. Cleaning the Build
 
@@ -104,6 +100,3 @@ python main.py -d "/path/to/your/xinu_project" --clean --run -v
 
 The build process generates two log files:
 - `compilation.txt`: Located in the specified output directory (e.g., `XINU SIM/output/compilation.txt`). Contains detailed logs of the file generation and compilation process.
-- `compilation_summary.txt`: A summary of the build is temporarily created and then appended to `compilation.txt`.
-
-These logs are useful for debugging build issues.
