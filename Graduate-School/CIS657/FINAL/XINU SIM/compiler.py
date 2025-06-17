@@ -8,6 +8,9 @@ import datetime
 import sys
 from xinu_sim.utils.logger import log
 
+# Force unbuffered output for print statements
+sys.stdout.reconfigure(line_buffering=True)
+
 class XinuCompiler:
     # Compiler for XINU simulation
     
@@ -33,25 +36,31 @@ class XinuCompiler:
         # Ensure output directories exist
         os.makedirs(self.config.obj_dir, exist_ok=True)
         
+        # Direct output to terminal
+        print("##### STARTING XINU BUILD #####", flush=True)
+        
         # Start compilation log
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._log_and_print(f"##### XINU Compilation Log #####")
-        self._log_and_print(f"Started: {os.environ.get('USER', 'unknown')} at {timestamp}")
-        self._log_and_print(f"Project directory: {self.config.project_dir}")
-        self._log_and_print(f"System directory: {self.config.system_dir}")
-        self._log_and_print(f"Output directory: {self.config.output_dir}")
+        self._log(f"##### XINU Compilation Log #####")
+        self._log(f"Started: {os.environ.get('USER', 'unknown')} at {timestamp}")
+        self._log(f"Project directory: {self.config.project_dir}")
+        self._log(f"System directory: {self.config.system_dir}")
+        self._log(f"Output directory: {self.config.output_dir}")
         
         # Try parsing the Makefile for build instructions
         from xinu_sim.makefile_parser import MakefileParser
         makefile_parser = MakefileParser(self.config)
         if makefile_parser.parse_makefile():
-            self._log_and_print("Using build instructions from Makefile: {0}".format(
-                os.path.join(self.config.compile_dir, "Makefile")))
+            log("Successfully parsed Makefile for build instructions")
+            self._log("Using build instructions from Makefile")
+            print("Using build instructions from Makefile", flush=True)
             
             # Get source files from Makefile
             makefile_sources = makefile_parser.get_resolved_source_files()
             if makefile_sources:
-                self._log_and_print(f"Found {len(makefile_sources)} source files defined in Makefile")
+                log(f"Found {len(makefile_sources)} source files defined in Makefile")
+                self._log(f"Found {len(makefile_sources)} source files defined in Makefile")
+                print(f"Found {len(makefile_sources)} source files defined in Makefile", flush=True)
                 
                 # Add our core files
                 core_files = [
@@ -62,43 +71,57 @@ class XinuCompiler:
                 for file_path in core_files:
                     if os.path.exists(file_path) and file_path not in makefile_sources:
                         makefile_sources.append(file_path)
-                        self._log_and_print(f"Added core file: {file_path}")
+                        self._log(f"Added core file: {file_path}")
                 
                 # Use Makefile sources
                 srcfiles = makefile_sources
             else:
                 # Fall back to collecting sources normally
-                self._log_and_print("No source files found in Makefile, falling back to source scanning")
+                log("No source files found in Makefile, falling back to source scanning")
+                self._log("No source files found in Makefile, falling back to source scanning")
+                print("No source files found in Makefile, falling back to source scanning", flush=True)
                 srcfiles = self.collect_source_files()
         else:
             # Fall back to collecting sources normally
-            self._log_and_print("Makefile not found or couldn't be parsed, falling back to source scanning")
+            log("Makefile not found or couldn't be parsed, falling back to source scanning")
+            self._log("Makefile not found or couldn't be parsed, falling back to source scanning")
+            print("Makefile not found or couldn't be parsed, falling back to source scanning", flush=True)
             srcfiles = self.collect_source_files()
         
         if not srcfiles:
-            self._log_and_print("ERROR: No source files found to compile.")
+            log("No source files found to compile.")
+            self._log("ERROR: No source files found to compile.")
+            print("ERROR: No source files found to compile.", flush=True)
             self._save_compilation_log()
             return False
         
         # Compile each file
+        print(f"##### Compiling {len(srcfiles)} source files #####", flush=True)
         obj_files = self.compile_files(srcfiles, makefile_parser if makefile_parser.parse_makefile() else None)
         if not obj_files:
-            self._log_and_print("ERROR: No object files generated. Compilation failed.")
+            log("No object files generated. Compilation failed.")
+            self._log("ERROR: No object files generated. Compilation failed.")
+            print("ERROR: No object files generated. Compilation failed.", flush=True)
             self._save_compilation_log()
             return False
         
         # Link object files
+        print(f"##### Linking {len(obj_files)} object files #####", flush=True)
         success = self.link_files(obj_files, makefile_parser if makefile_parser.parse_makefile() else None)
         if not success:
-            self._log_and_print("ERROR: Linking failed.")
+            log("Linking failed.")
+            self._log("ERROR: Linking failed.")
+            print("ERROR: Linking failed.", flush=True)
             self._save_compilation_log()
             return False
             
         # Final summary
         num_warnings = len(self.warnings)
         success_msg = f"SUCCESS: Build completed with 0 errors and {num_warnings} unique warning(s)."
-        self._log_and_print(success_msg)
-        self._log_and_print(f"XINU core executable: {self.config.xinu_core_output}")
+        log(success_msg)
+        self._log(success_msg)
+        print(f"##### {success_msg} #####", flush=True)
+        print(f"XINU core executable: {self.config.xinu_core_output}", flush=True)
         
         # Save compilation log
         self._save_compilation_log()
@@ -107,13 +130,8 @@ class XinuCompiler:
     def _log(self, message):
         # Add a message to the compilation log
         self.compilation_log.append(message)
-        
-    def _log_and_print(self, message):
-        # Add message to log and also print to terminal
-        self._log(message)
-        # Ensure terminal output by using sys.stdout directly
-        sys.stdout.write(message + "\n")
-        sys.stdout.flush()
+        # Also print to terminal
+        print(message, flush=True)
         
     def _save_compilation_log(self):
         # Save compilation log to file
@@ -121,9 +139,11 @@ class XinuCompiler:
         try:
             with open(log_file, 'w') as f:
                 f.write('\n'.join(self.compilation_log))
-            self._log_and_print(f"Compilation log saved to {log_file}")
+            log(f"Compilation log saved to {log_file}")
+            print(f"Compilation log saved to {log_file}", flush=True)
         except Exception as e:
-            self._log_and_print(f"Error saving compilation log: {str(e)}")
+            log(f"Error saving compilation log: {str(e)}")
+            print(f"Error saving compilation log: {str(e)}", flush=True)
         
     def _collect_minimal_source_files(self):
         # Collect only the minimal source files needed for a basic simulation
@@ -138,19 +158,23 @@ class XinuCompiler:
         for file_path in core_files:
             if os.path.exists(file_path):
                 srcfiles.append(file_path)
-                self._log_and_print(f"Added core file: {file_path}")
+                self._log(f"Added core file: {file_path}")
         
-        self._log_and_print(f"Using minimal set of {len(srcfiles)} source files for simulation")
+        log(f"Using minimal set of {len(srcfiles)} source files for simulation")
+        self._log(f"Using minimal set of {len(srcfiles)} source files for simulation")
         return srcfiles
         
     def collect_source_files(self):
         # Collect XINU C source files for full compilation
-        self._log_and_print("\n##### Source Files #####")
+        log("Collecting XINU C source files...")
+        print("Collecting XINU C source files...", flush=True)
+        self._log("\n##### Source Files #####")
         
         srcfiles = []
         
         # Use XINU OS directories directly
-        self._log_and_print("Scanning directories for source files...")
+        self._log("Scanning directories for source files...")
+        print("Scanning directories for source files...", flush=True)
         srcfiles = self._scan_directories_for_sources()
         
         # Always include these files if they exist
@@ -162,7 +186,7 @@ class XinuCompiler:
         for file_path in core_files:
             if os.path.exists(file_path) and file_path not in srcfiles:
                 srcfiles.append(file_path)
-                self._log_and_print(f"Added core file: {file_path}")
+                self._log(f"Added core file: {file_path}")
                 
         # Filter out assembly files and library functions that will be shimmed
         filtered_srcfiles = []
@@ -171,16 +195,20 @@ class XinuCompiler:
             basename_no_ext = os.path.splitext(basename)[0]
             
             if basename.endswith(('.S', '.s', '.asm')):
-                self._log_and_print(f"Skipping assembly file: {src_path}")
+                log(f"Skipping assembly file: {src_path}")
+                self._log(f"Skipping assembly file: {src_path}")
                 continue
                 
             if basename_no_ext in self.exclude_funcs and os.path.dirname(src_path) == self.config.libxc_dir:
-                self._log_and_print(f"Excluding libxc source for shimmed function: {src_path}")
+                log(f"Excluding libxc source for shimmed function: {src_path}")
+                self._log(f"Excluding libxc source for shimmed function: {src_path}")
             else:
                 filtered_srcfiles.append(src_path)
-                self._log_and_print(f"Adding source file: {src_path}")
+                self._log(f"Adding source file: {src_path}")
                 
-        self._log_and_print(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
+        log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
+        self._log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
+        print(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}", flush=True)
         return filtered_srcfiles
         
     def _scan_directories_for_sources(self):
@@ -201,22 +229,27 @@ class XinuCompiler:
         # Find all .c files
         for directory in dirs_to_scan:
             if os.path.exists(directory):
-                self._log_and_print(f"Scanning directory: {directory}")
+                self._log(f"Scanning directory: {directory}")
+                print(f"Scanning directory: {directory}", flush=True)
                 count = 0
                 for root, _, files in os.walk(directory):
                     for file in files:
                         if file.endswith('.c'):
                             srcfiles.append(os.path.join(root, file))
                             count += 1
-                self._log_and_print(f"  Found {count} .c files")
+                self._log(f"  Found {count} .c files")
+                print(f"  Found {count} .c files", flush=True)
             else:
-                self._log_and_print(f"Directory does not exist: {directory}")
+                self._log(f"Directory does not exist: {directory}")
+                print(f"Directory does not exist: {directory}", flush=True)
                             
         return srcfiles
         
     def compile_files(self, srcfiles, makefile_parser=None):
         # Compile all source files
-        self._log_and_print("\n##### Compilation #####")
+        log("Building XINU Core Process...")
+        print("Building XINU Core Process...", flush=True)
+        self._log("\n##### Compilation #####")
         obj_files = []
         error_count = 0
         
@@ -257,14 +290,15 @@ class XinuCompiler:
             f.write("typedef int pid32;\n")
         
         # Compile each source file
-        for src in srcfiles:
+        for i, src in enumerate(srcfiles):
             obj = os.path.join(self.config.obj_dir, os.path.basename(src).replace('.c', '.o'))
-            self._log_and_print(f"\nCompiling {src} -> {obj}")
+            print(f"Compiling {i+1}/{len(srcfiles)}: {os.path.basename(src)}", flush=True)
+            self._log(f"\nCompiling {src} -> {obj}")
             
             compile_options = f"{include_opts} {compiler_opts}"
             cmd = f"gcc -c {src} {compile_options} -o {obj}"
             
-            self._log_and_print(f"Command: {cmd}")
+            self._log(f"Command: {cmd}")
             
             try:
                 process = subprocess.Popen(
@@ -280,27 +314,37 @@ class XinuCompiler:
                 errors_in_file = 0
                 for line in stderr.splitlines():
                     if "error:" in line.lower():
-                        self._log_and_print(f"ERROR: {line}")
+                        print(f"ERROR: {line}", flush=True)
+                        log(line)
+                        self._log(f"ERROR: {line}")
                         errors_in_file += 1
                     elif "warning:" in line.lower():
                         warning_key = line.strip()
                         if warning_key not in self.warnings:
-                            self._log_and_print(f"WARNING: {line}")
+                            print(f"WARNING: {line}", flush=True)
+                            log(line)
+                            self._log(f"WARNING: {line}")
                             self.warnings[warning_key] = True
                 
                 # Check if compilation succeeded
                 if process.returncode == 0:
                     obj_files.append(obj)
-                    self._log_and_print(f"Successfully compiled {src}")
+                    self._log(f"Successfully compiled {src}")
+                    print(f"Successfully compiled {src}", flush=True)
                 else:
-                    self._log_and_print(f"Failed to compile {src}")
+                    self._log(f"Failed to compile {src}")
+                    print(f"Failed to compile {src}", flush=True)
                     
                 error_count += errors_in_file
                 if error_count >= self.error_limit:
-                    self._log_and_print(f"Compilation aborted after {error_count} errors (limit: {self.error_limit}).")
+                    log(f"Compilation aborted after {error_count} errors (limit: {self.error_limit}).")
+                    self._log(f"Compilation aborted after {error_count} errors (limit: {self.error_limit}).")
+                    print(f"Compilation aborted after {error_count} errors (limit: {self.error_limit}).", flush=True)
                     return []
             except Exception as e:
-                self._log_and_print(f"Error compiling {src}: {str(e)}")
+                log(f"Error compiling {src}: {str(e)}")
+                self._log(f"Error compiling {src}: {str(e)}")
+                print(f"Error compiling {src}: {str(e)}", flush=True)
                 error_count += 1
         
         return obj_files
@@ -308,11 +352,15 @@ class XinuCompiler:
     def link_files(self, obj_files, makefile_parser=None):
         # Link object files into executable
         if not obj_files:
-            self._log_and_print("No object files to link.")
+            log("No object files to link.")
+            self._log("No object files to link.")
+            print("No object files to link.", flush=True)
             return False
             
-        self._log_and_print(f"\n##### Linking #####")
-        self._log_and_print(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
+        log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
+        self._log(f"\n##### Linking #####")
+        self._log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
+        print(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}", flush=True)
         
         # Get linker flags from Makefile if available
         linker_flags = ""
@@ -323,7 +371,8 @@ class XinuCompiler:
         
         # Construct the link command
         link_cmd = f"gcc {' '.join(obj_files)} -o {self.config.xinu_core_output} {linker_flags}"
-        self._log_and_print(f"Command: {link_cmd}")
+        self._log(f"Command: {link_cmd}")
+        print(f"Command: {link_cmd}", flush=True)
         
         try:
             process = subprocess.Popen(
@@ -340,24 +389,33 @@ class XinuCompiler:
             
             for line in stderr.splitlines():
                 if "error:" in line.lower():
-                    self._log_and_print(f"ERROR: {line}")
+                    print(f"ERROR: {line}", flush=True)
+                    log(line)
+                    self._log(f"ERROR: {line}")
                     link_errors += 1
                 elif "warning:" in line.lower():
                     warning_key = line.strip()
                     if warning_key not in self.warnings:
-                        self._log_and_print(f"WARNING: {line}")
+                        print(f"WARNING: {line}", flush=True)
+                        log(line)
+                        self._log(f"WARNING: {line}")
                         self.warnings[warning_key] = True
             
             if link_errors > 0:
-                self._log_and_print(f"Linking failed with {link_errors} errors.")
+                log(f"Linking failed with {link_errors} errors.")
+                self._log(f"Linking failed with {link_errors} errors.")
+                print(f"Linking failed with {link_errors} errors.", flush=True)
                 return False
                 
             # Make the output executable (Unix-like systems)
             if not self.config.is_windows() and os.path.exists(self.config.xinu_core_output):
                 os.chmod(self.config.xinu_core_output, 0o755)
-                self._log_and_print(f"Made {self.config.xinu_core_output} executable")
+                self._log(f"Made {self.config.xinu_core_output} executable")
+                print(f"Made {self.config.xinu_core_output} executable", flush=True)
                 
             return process.returncode == 0
         except Exception as e:
-            self._log_and_print(f"Error during linking: {str(e)}")
+            log(f"Error during linking: {str(e)}")
+            self._log(f"Error during linking: {str(e)}")
+            print(f"Error during linking: {str(e)}", flush=True)
             return False

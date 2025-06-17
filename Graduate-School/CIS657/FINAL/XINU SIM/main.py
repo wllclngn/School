@@ -11,12 +11,22 @@ import argparse
 import platform
 import glob
 
+# Force unbuffered output for all print statements
+print("##### XINU SIM Build System Start #####", flush=True)
+sys.stdout.reconfigure(line_buffering=True)
+
 class XinuBuilder:
     def __init__(self, verbose=False):
         self.verbose = verbose
         self.timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.username = getpass.getuser()
         self.system = platform.system()
+        
+        # Print directly to terminal
+        print(f"##### XINU Builder v1.0 #####", flush=True)
+        print(f"User: {self.username} on {self.system}", flush=True)
+        print(f"Time: {self.timestamp}", flush=True)
+        print("-" * 40, flush=True)
         
         # Project directories
         self.project_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -52,22 +62,16 @@ class XinuBuilder:
             "executable": os.path.join(self.output_dir, "xinu_core"),
             "compilation_log": os.path.join(self.output_dir, "compilation.txt"),
         }
-        
-        # Banner display
-        banner = [
-            "######################################",
-            f"XINU Builder v1.0 - {self.timestamp}",
-            f"User: {self.username} on {self.system} {platform.release()}",
-            "######################################"
-        ]
-        for line in banner:
-            self.log(line)
     
     def log(self, message):
         """Print log message with timestamp if verbose mode is enabled"""
         if self.verbose:
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print(f"{current_time}  - {message}")
+            print(f"{current_time}  - {message}", flush=True)
+        
+        # Always print critical messages
+        else:
+            print(message, flush=True)
     
     def clean(self):
         """Clean previous build artifacts"""
@@ -129,7 +133,7 @@ class XinuBuilder:
     
     def generate_files(self):
         """Generate XINU simulation files"""
-        self.log("Generating XINU simulation files...")
+        self.log("##### Generating XINU simulation files #####")
         
         # Load templates
         templates = self.load_templates()
@@ -198,7 +202,7 @@ class XinuBuilder:
     
     def compile(self, sources):
         """Compile XINU simulation"""
-        self.log("Building XINU Core Process...")
+        self.log("##### Building XINU Core Process #####")
         
         # Prepare compilation log
         compilation_log = f"##### XINU Compilation Log #####\n"
@@ -295,7 +299,7 @@ class XinuBuilder:
             compile_flags = ["-Wall", "-g", "-O0", "-fno-builtin"]
         
         # Compile each source file
-        for src_file in sources:
+        for i, src_file in enumerate(sources):
             base_name = os.path.basename(src_file)
             obj_file = os.path.join(self.obj_dir, f"{os.path.splitext(base_name)[0]}.o")
             object_files.append(obj_file)
@@ -306,6 +310,9 @@ class XinuBuilder:
             # Log the compile command
             compilation_log += f"Compiling {src_file} -> {obj_file}\n"
             compilation_log += f"Command: {' '.join(compile_cmd)}\n"
+            
+            # Print progress to terminal
+            print(f"Compiling {i+1}/{len(sources)}: {os.path.basename(src_file)}", flush=True)
             
             # Execute compilation
             try:
@@ -343,6 +350,7 @@ class XinuBuilder:
         
         # Link object files
         compilation_log += "##### Linking #####\n"
+        self.log("##### Linking object files #####")
         
         # Use linker flags from Makefile if available
         if use_makefile and 'linker_flags' in locals():
@@ -354,6 +362,7 @@ class XinuBuilder:
         # Log the link command
         compilation_log += f"Linking {len(object_files)} objects to {self.output_files['executable']}\n"
         compilation_log += f"Command: {' '.join(link_cmd)}\n"
+        self.log(f"Linking {len(object_files)} objects to {self.output_files['executable']}")
         
         # Execute linking
         try:
@@ -373,6 +382,7 @@ class XinuBuilder:
                 # Make executable
                 os.chmod(self.output_files["executable"], 0o755)
                 compilation_log += f"Made {self.output_files['executable']} executable\n"
+                self.log(f"Made {self.output_files['executable']} executable")
         except Exception as e:
             compilation_log += f"Exception during linking: {str(e)}\n"
             self.log(f"Exception during linking: {str(e)}")
@@ -387,7 +397,7 @@ class XinuBuilder:
         with open(self.output_files["compilation_log"], "w") as f:
             f.write(compilation_log)
         
-        self.log(f"SUCCESS: Build completed with {error_count} errors and {warning_count} unique warning(s).")
+        self.log(f"##### SUCCESS: Build completed with {error_count} errors and {warning_count} unique warning(s). #####")
         self.log(f"Compilation log saved to {self.output_files['compilation_log']}")
         
         return True
@@ -398,7 +408,7 @@ class XinuBuilder:
             self.log(f"ERROR: Executable {self.output_files['executable']} not found.")
             return False
         
-        self.log(f"Running XINU simulation: {self.output_files['executable']}")
+        self.log(f"##### Running XINU simulation: {self.output_files['executable']} #####")
         
         try:
             # Use Popen but connect directly to the terminal I/O
@@ -418,7 +428,7 @@ class XinuBuilder:
     
     def build_and_run(self, clean=False, run=False):
         """Complete build and run process"""
-        self.log("Starting XINU Build Process...")
+        self.log("##### Starting XINU Build Process #####")
         self.log(f"Project directory: {self.project_dir}")
         self.log(f"Output directory: {self.output_dir}")
         
@@ -438,18 +448,21 @@ class XinuBuilder:
                 self.log("Failed to run simulation.")
                 return False
         
-        self.log("XINU Build Process Completed Successfully.")
+        self.log("##### XINU Build Process Completed Successfully #####")
         return success
 
 
 def main():
     """Main entry point"""
+    print("Starting XINU Builder...", flush=True)
     parser = argparse.ArgumentParser(description='XINU Builder - Build and run XINU OS simulations')
     parser.add_argument('--clean', action='store_true', help='Clean previous build artifacts')
     parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     parser.add_argument('--run', action='store_true', help='Run the simulation after building')
     
     args = parser.parse_args()
+    
+    print(f"Command line arguments: clean={args.clean}, verbose={args.verbose}, run={args.run}", flush=True)
     
     # Create builder instance
     builder = XinuBuilder(verbose=args.verbose)
@@ -460,8 +473,11 @@ def main():
         run=args.run
     )
     
+    # Exit with appropriate code
+    print("XINU Builder exiting with status: " + ("SUCCESS" if success else "FAILURE"), flush=True)
     sys.exit(0 if success else 1)
 
 
 if __name__ == "__main__":
+    print("Python script starting", flush=True)
     main()
