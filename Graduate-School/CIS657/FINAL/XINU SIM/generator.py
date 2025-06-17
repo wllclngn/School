@@ -7,7 +7,7 @@ import os
 import re
 import glob
 import datetime
-from xinu_builder.utils.logger import log
+from xinu_sim.utils.logger import log
 
 class XinuGenerator:
     """Generator for XINU simulation files"""

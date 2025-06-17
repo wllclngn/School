@@ -4,7 +4,7 @@ import os
 import glob
 import subprocess
 import platform
-from xinu_builder.utils.logger import log
+from xinu_sim.utils.logger import log
 
 class XinuConfig:
     """Configuration and path management for XINU builder"""
@@ -29,7 +29,7 @@ class XinuConfig:
         self.compile_dir = os.path.join(self.xinu_os_dir, "compile")
             
         # Output paths
-        self.builder_dir = os.path.join(self.project_dir, "xinu_builder")
+        self.builder_dir = os.path.join(self.project_dir, "xinu_sim")
         self.output_dir = os.path.join(self.builder_dir, "output")
         self.obj_dir = os.path.join(self.output_dir, "obj")
         
@@ -46,7 +46,7 @@ class XinuConfig:
         # Default xinu.h location
         self.xinu_h = os.path.join(self.include_dir, "xinu.h")
         
-        # Check if xinu_builder has its own include dir
+        # Check if xinu_sim has its own include dir
         self.builder_include_dir = os.path.join(self.builder_dir, "include")
         if os.path.exists(self.builder_include_dir):
             # If builder has its own include directory, use it for our generated xinu.h

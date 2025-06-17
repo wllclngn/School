@@ -4,7 +4,7 @@ This project is a cross-platform build system for a XINU Operating System simula
 
 ## Project Overview
 
-The XINU SIM Builder (`xinu_builder`) provides a suite of Python scripts to manage the lifecycle of a XINU OS simulation. It is designed to:
+The XINU SIM Builder (`xinu_sim`) provides a suite of Python scripts to manage the lifecycle of a XINU OS simulation. It is designed to:
 - Generate necessary header files and C source files for the simulation.
 - Compile the XINU OS source code along with the simulation-specific files using GCC.
 - Provide a clean build process.
@@ -92,7 +92,7 @@ The `main.py` script accepts several command-line arguments:
 - `--no-compile`: Generate necessary files but skip the compilation step.
 - `-d <directory>`, `--directory <directory>`: Specify the project directory. Defaults to the current directory (`.`).
 - `-v`, `--verbose`: Enable verbose output during the build process.
-- `-o <output_directory>`, `--output-dir <output_directory>`: Specify a custom output directory for generated files, object files, and the executable. Defaults to `xinu_builder/output/`.
+- `-o <output_directory>`, `--output-dir <output_directory>`: Specify a custom output directory for generated files, object files, and the executable. Defaults to `xinu_sim/output/`.
 
 **Example combining options:**
 Clean, build, and run with verbose output, specifying a project directory:

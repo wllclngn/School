@@ -7,7 +7,7 @@ import re
 import glob
 import subprocess
 import datetime
-from xinu_builder.utils.logger import log
+from xinu_sim.utils.logger import log
 
 class XinuCompiler:
     """Compiler for XINU simulation"""
