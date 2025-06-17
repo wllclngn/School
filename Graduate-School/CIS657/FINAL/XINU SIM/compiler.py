@@ -1,6 +1,4 @@
-"""
-compiler.py - Compile and link XINU source files
-"""
+# compiler.py - Compile and link XINU source files
 
 import os
 import re
@@ -42,8 +40,43 @@ class XinuCompiler:
         self._log(f"System directory: {self.config.system_dir}")
         self._log(f"Output directory: {self.config.output_dir}")
         
-        # Collect source files, but only use the generated files for now
-        srcfiles = self._collect_minimal_source_files()
+        # Try parsing the Makefile for build instructions
+        from xinu_sim.makefile_parser import MakefileParser
+        makefile_parser = MakefileParser(self.config)
+        if makefile_parser.parse_makefile():
+            log("Successfully parsed Makefile for build instructions")
+            self._log("Using build instructions from Makefile")
+            
+            # Get source files from Makefile
+            makefile_sources = makefile_parser.get_resolved_source_files()
+            if makefile_sources:
+                log(f"Found {len(makefile_sources)} source files defined in Makefile")
+                self._log(f"Found {len(makefile_sources)} source files defined in Makefile")
+                
+                # Add our core files
+                core_files = [
+                    self.config.xinu_core_c,
+                    self.config.sim_helper_c
+                ]
+                
+                for file_path in core_files:
+                    if os.path.exists(file_path) and file_path not in makefile_sources:
+                        makefile_sources.append(file_path)
+                        self._log(f"Added core file: {file_path}")
+                
+                # Use Makefile sources
+                srcfiles = makefile_sources
+            else:
+                # Fall back to collecting sources normally
+                log("No source files found in Makefile, falling back to source scanning")
+                self._log("No source files found in Makefile, falling back to source scanning")
+                srcfiles = self.collect_source_files()
+        else:
+            # Fall back to collecting sources normally
+            log("Makefile not found or couldn't be parsed, falling back to source scanning")
+            self._log("Makefile not found or couldn't be parsed, falling back to source scanning")
+            srcfiles = self.collect_source_files()
+        
         if not srcfiles:
             log("No source files found to compile.")
             self._log("ERROR: No source files found to compile.")
@@ -51,7 +84,7 @@ class XinuCompiler:
             return False
         
         # Compile each file
-        obj_files = self.compile_files(srcfiles)
+        obj_files = self.compile_files(srcfiles, makefile_parser if makefile_parser.parse_makefile() else None)
         if not obj_files:
             log("No object files generated. Compilation failed.")
             self._log("ERROR: No object files generated. Compilation failed.")
@@ -59,7 +92,7 @@ class XinuCompiler:
             return False
         
         # Link object files
-        success = self.link_files(obj_files)
+        success = self.link_files(obj_files, makefile_parser if makefile_parser.parse_makefile() else None)
         if not success:
             log("Linking failed.")
             self._log("ERROR: Linking failed.")
@@ -185,23 +218,37 @@ class XinuCompiler:
                             
         return srcfiles
         
-    def compile_files(self, srcfiles):
+    def compile_files(self, srcfiles, makefile_parser=None):
         """Compile all source files"""
         log("Building XINU Core Process...")
         self._log("\n=== Compilation ===")
         obj_files = []
         error_count = 0
         
-        # Setup compiler options - Make sure to use the right include paths
-        # Ensure we're including all possible locations
-        include_dirs = [
-            self.config.output_dir,                      # For generated files
-            os.path.dirname(self.config.xinu_h),         # For xinu.h location
-            self.config.include_dir.replace(" ", "\\ ")  # For XINU OS include files
-        ]
+        # Setup compiler options
+        include_dirs = []
+        compiler_flags = []
         
-        # Special handling for spaces in paths
+        # If we have Makefile info, use it
+        if makefile_parser:
+            include_dirs = makefile_parser.get_resolved_include_dirs()
+            compiler_flags = makefile_parser.get_compiler_flags()
+        
+        # If no Makefile info or it's incomplete, add our standard include dirs
+        if not include_dirs:
+            include_dirs = [
+                self.config.output_dir,                      # For generated files
+                os.path.dirname(self.config.xinu_h),         # For xinu.h location
+                self.config.include_dir.replace(" ", "\\ ")  # For XINU OS include files
+            ]
+        
+        # If no Makefile compiler flags, use our defaults
+        if not compiler_flags:
+            compiler_flags = ["-Wall", "-Wextra", "-g", "-O0", "-w", "-fno-builtin"]
+        
+        # Build include options
         include_opts = " ".join(f"-I{d}" for d in include_dirs if os.path.exists(d))
+        compiler_opts = " ".join(compiler_flags)
                 
         pre_header_path = os.path.join(self.config.output_dir, "xinu_pre.h")
         # Create a simple pre-header if it doesn't exist
@@ -219,7 +266,7 @@ class XinuCompiler:
             obj = os.path.join(self.config.obj_dir, os.path.basename(src).replace('.c', '.o'))
             self._log(f"\nCompiling {src} -> {obj}")
             
-            compile_options = f"{include_opts} -Wall -Wextra -g -O0 -w -fno-builtin"
+            compile_options = f"{include_opts} {compiler_opts}"
             cmd = f"gcc -c {src} {compile_options} -o {obj}"
             
             self._log(f"Command: {cmd}")
@@ -269,7 +316,7 @@ class XinuCompiler:
         
         return obj_files
         
-    def link_files(self, obj_files):
+    def link_files(self, obj_files, makefile_parser=None):
         """Link object files into executable"""
         if not obj_files:
             log("No object files to link.")
@@ -280,8 +327,15 @@ class XinuCompiler:
         self._log(f"\n=== Linking ===")
         self._log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
         
+        # Get linker flags from Makefile if available
+        linker_flags = ""
+        if makefile_parser:
+            linker_flags = " ".join(makefile_parser.get_linker_flags())
+        else:
+            linker_flags = "-lm"  # Default to just math library if no Makefile
+        
         # Construct the link command
-        link_cmd = f"gcc {' '.join(obj_files)} -o {self.config.xinu_core_output} -lm"
+        link_cmd = f"gcc {' '.join(obj_files)} -o {self.config.xinu_core_output} {linker_flags}"
         self._log(f"Command: {link_cmd}")
         
         try:

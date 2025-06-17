@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-XINU Builder - A build system for compiling and running XINU OS simulations
-"""
+# XINU SIM - A build system for compiling and running XINU OS simulations
+
 import os
 import sys
 import shutil
@@ -112,23 +111,19 @@ class XinuBuilder:
         """Find XINU OS source files needed for compilation"""
         source_files = []
         
-        # Add starvation test files
+        # Add shell files
         for root, dirs, files in os.walk(os.path.join(self.xinu_os_dir, "shell")):
             for file in files:
-                if "starvation" in file.lower() and file.endswith(".c"):
+                if file.endswith(".c"):
                     source_files.append(os.path.join(root, file))
-                    self.log(f"Found starvation test source: {os.path.join(root, file)}")
+                    self.log(f"Found shell source: {os.path.join(root, file)}")
                     
-        # Add shell structure files if needed for starvation tests
-        shell_structure_files = [
-            os.path.join(self.xinu_os_dir, "shell", "shell.c"),
-            os.path.join(self.xinu_os_dir, "shell", "shellcmd.c")
-        ]
-        
-        for file in shell_structure_files:
-            if os.path.exists(file):
-                source_files.append(file)
-                self.log(f"Found shell structure file: {file}")
+        # Add system files
+        for root, dirs, files in os.walk(os.path.join(self.xinu_os_dir, "system")):
+            for file in files:
+                if file.endswith(".c"):
+                    source_files.append(os.path.join(root, file))
+                    self.log(f"Found system source: {os.path.join(root, file)}")
         
         return source_files
     
@@ -183,7 +178,7 @@ class XinuBuilder:
         self.log(f"Generated UNIX-like simulation helper at: {self.output_files['simulation']}")
         sources.append(self.output_files["simulation"])
         
-        # Find XINU starvation test files
+        # Find XINU source files
         xinu_sources = self.find_xinu_source_files()
         
         # Generate xinu_core.c
@@ -212,10 +207,67 @@ class XinuBuilder:
         compilation_log += f"System directory: {self.xinu_os_dir}/system\n"
         compilation_log += f"Output directory: {self.output_dir}\n"
         
+        # Check for Makefile first
+        makefile_path = os.path.join(self.xinu_os_dir, "compile", "Makefile")
+        use_makefile = os.path.exists(makefile_path)
+        
+        if use_makefile:
+            self.log(f"Found Makefile at {makefile_path}, parsing for build instructions")
+            compilation_log += f"Using build instructions from Makefile: {makefile_path}\n"
+            
+            # Import the Makefile parser
+            sys.path.append(os.path.join(self.project_dir, "XINU SIM"))
+            try:
+                from makefile_parser import MakefileParser
+                
+                # Setup config object
+                class Config:
+                    def __init__(self):
+                        self.compile_dir = os.path.join(self.xinu_os_dir, "compile")
+                        self.xinu_os_dir = self.xinu_os_dir
+                        self.include_dir = os.path.join(self.xinu_os_dir, "include")
+                        self.output_dir = self.output_dir
+                        self.xinu_h = os.path.join(self.include_dir, "xinu.h")
+                
+                config = Config()
+                config.compile_dir = os.path.dirname(makefile_path)
+                config.xinu_os_dir = self.xinu_os_dir
+                config.include_dir = self.include_dir
+                config.output_dir = self.output_dir
+                config.xinu_h = os.path.join(self.include_dir, "xinu.h")
+                
+                parser = MakefileParser(config)
+                if parser.parse_makefile():
+                    # Get source files from Makefile
+                    makefile_sources = parser.get_resolved_source_files()
+                    if makefile_sources:
+                        self.log(f"Found {len(makefile_sources)} source files in Makefile")
+                        # Add our generated files
+                        makefile_sources.append(self.output_files["simulation"])
+                        makefile_sources.append(self.output_files["core"])
+                        sources = makefile_sources
+                        
+                        # Get include directories
+                        include_dirs = parser.get_resolved_include_dirs()
+                        
+                        # Get compiler flags
+                        compiler_flags = parser.get_compiler_flags()
+                        
+                        # Get linker flags
+                        linker_flags = parser.get_linker_flags()
+                        
+                        compilation_log += f"Using {len(sources)} source files from Makefile\n"
+                        compilation_log += f"Using {len(include_dirs)} include directories from Makefile\n"
+                        compilation_log += f"Using compiler flags: {' '.join(compiler_flags)}\n"
+                        compilation_log += f"Using linker flags: {' '.join(linker_flags)}\n\n"
+            except ImportError:
+                self.log("Makefile parser module not found, falling back to standard compilation")
+                use_makefile = False
+        
         # Add source files to log
         for src_file in sources:
             compilation_log += f"Added core file: {src_file}\n"
-        compilation_log += f"Using minimal set of {len(sources)} source files for simulation\n\n"
+        compilation_log += f"Using total of {len(sources)} source files for simulation\n\n"
         
         compilation_log += "=== Compilation ===\n\n"
         
@@ -225,13 +277,22 @@ class XinuBuilder:
         error_count = 0
         
         # Include paths for compilation
-        include_paths = [
-            f"-I{self.output_dir}",
-            f"-I{self.include_dir}",
-            f"-I{os.path.join(self.xinu_os_dir, 'include')}",
-            f"-I{os.path.join(self.xinu_os_dir, 'system', 'include')}",
-            f"-I{os.path.join(self.xinu_os_dir, 'shell')}"
-        ]
+        if use_makefile and 'include_dirs' in locals():
+            include_paths = [f"-I{d}" for d in include_dirs]
+        else:
+            include_paths = [
+                f"-I{self.output_dir}",
+                f"-I{self.include_dir}",
+                f"-I{os.path.join(self.xinu_os_dir, 'include')}",
+                f"-I{os.path.join(self.xinu_os_dir, 'system', 'include')}",
+                f"-I{os.path.join(self.xinu_os_dir, 'shell')}"
+            ]
+        
+        # Compiler flags
+        if use_makefile and 'compiler_flags' in locals():
+            compile_flags = compiler_flags
+        else:
+            compile_flags = ["-Wall", "-g", "-O0", "-fno-builtin"]
         
         # Compile each source file
         for src_file in sources:
@@ -240,7 +301,7 @@ class XinuBuilder:
             object_files.append(obj_file)
             
             # Build compilation command
-            compile_cmd = ["gcc", "-c", src_file] + include_paths + ["-o", obj_file]
+            compile_cmd = ["gcc", "-c", src_file] + include_paths + compile_flags + ["-o", obj_file]
             
             # Log the compile command
             compilation_log += f"Compiling {src_file} -> {obj_file}\n"
@@ -282,7 +343,13 @@ class XinuBuilder:
         
         # Link object files
         compilation_log += "=== Linking ===\n"
-        link_cmd = ["gcc"] + object_files + ["-o", self.output_files["executable"]]
+        
+        # Use linker flags from Makefile if available
+        if use_makefile and 'linker_flags' in locals():
+            link_flags = linker_flags
+            link_cmd = ["gcc"] + object_files + ["-o", self.output_files["executable"]] + link_flags
+        else:
+            link_cmd = ["gcc"] + object_files + ["-o", self.output_files["executable"], "-lm"]
         
         # Log the link command
         compilation_log += f"Linking {len(object_files)} objects to {self.output_files['executable']}\n"
@@ -291,9 +358,9 @@ class XinuBuilder:
         # Execute linking
         try:
             result = subprocess.run(link_cmd, 
-                                  stdout=subprocess.PIPE, 
-                                  stderr=subprocess.PIPE,
-                                  text=True)
+                              stdout=subprocess.PIPE, 
+                              stderr=subprocess.PIPE,
+                              text=True)
             
             if result.returncode != 0:
                 compilation_log += f"Error linking:\n{result.stderr}\n"
@@ -325,24 +392,22 @@ class XinuBuilder:
         
         return True
     
-    def run_simulation(self, args=None):
-        """Run the XINU simulation"""
+    def run_simulation(self):
+        """Run the XINU simulation with interactive I/O"""
         if not os.path.exists(self.output_files["executable"]):
             self.log(f"ERROR: Executable {self.output_files['executable']} not found.")
             return False
         
-        if args:
-            self.log(f"Running XINU simulation with args: {args}")
-            cmd = [self.output_files["executable"]] + args
-            self.log(f"Running XINU simulation: {' '.join(cmd)}")
-            subprocess.run(cmd)
-        else:
-            self.log(f"Running XINU simulation: {self.output_files['executable']}")
-            subprocess.run([self.output_files["executable"]])
+        self.log(f"Running XINU simulation: {self.output_files['executable']}")
         
-        return True
+        try:
+            # Use subprocess.call() to wait for the process and properly handle I/O
+            return subprocess.call(self.output_files["executable"]) == 0
+        except Exception as e:
+            self.log(f"Error running simulation: {str(e)}")
+            return False
     
-    def build_and_run(self, clean=False, run=False, starvation_test=None):
+    def build_and_run(self, clean=False, run=False):
         """Complete build and run process"""
         self.log("Starting XINU Build Process...")
         self.log(f"Project directory: {self.project_dir}")
@@ -359,11 +424,8 @@ class XinuBuilder:
         
         # Run if requested and compilation succeeded
         if success and run:
-            run_args = []
-            if starvation_test:
-                run_args = [starvation_test]
-            
-            if not self.run_simulation(run_args):
+            # Run with no arguments - let user interact with XINU shell
+            if not self.run_simulation():
                 self.log("Failed to run simulation.")
                 return False
         
@@ -377,7 +439,6 @@ def main():
     parser.add_argument('--clean', action='store_true', help='Clean previous build artifacts')
     parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     parser.add_argument('--run', action='store_true', help='Run the simulation after building')
-    parser.add_argument('--starvation', metavar='TEST', help='Run specific starvation test (test1 or test2)')
     
     args = parser.parse_args()
     
@@ -387,8 +448,7 @@ def main():
     # Build and optionally run
     success = builder.build_and_run(
         clean=args.clean,
-        run=args.run,
-        starvation_test=args.starvation
+        run=args.run
     )
     
     sys.exit(0 if success else 1)

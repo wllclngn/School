@@ -1,7 +1,5 @@
-"""
-generator.py - XINU file generator
-NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
-"""
+# generator.py - XINU file generator
+# NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
 
 import os
 import re
