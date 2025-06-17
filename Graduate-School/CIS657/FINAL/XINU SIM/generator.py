@@ -5,6 +5,7 @@ import os
 import re
 import glob
 import datetime
+import sys
 from xinu_sim.utils.logger import log
 
 class XinuGenerator:
@@ -26,6 +27,11 @@ class XinuGenerator:
         # Load the templates
         self.templates = {}
         self._load_templates()
+        
+    def _print(self, message):
+        # Print directly to terminal for real-time feedback
+        sys.stdout.write(message + "\n")
+        sys.stdout.flush()
         
     def _load_templates(self):
         # Load all templates from individual template files
@@ -49,8 +55,10 @@ class XinuGenerator:
                     with open(template_path, 'r') as f:
                         self.templates[template_name] = f.read()
                     log(f"Loaded template: {template_name}")
+                    self._print(f"Loaded template: {template_name}")
                 except FileNotFoundError:
                     log(f"WARNING: Template file not found: {template_path}")
+                    self._print(f"WARNING: Template file not found: {template_path}")
                     raise  # Re-raise to trigger fallback
         except Exception:
             # Fall back to loading from the combined template
@@ -58,6 +66,7 @@ class XinuGenerator:
         
         if self.templates:
             log(f"Loaded {len(self.templates)} template files")
+            self._print(f"Loaded {len(self.templates)} template files")
         
     def _try_load_from_combined(self):
         # Try to load templates from combined template file as fallback
@@ -71,6 +80,7 @@ class XinuGenerator:
         for master_template_path in template_locations:
             if os.path.exists(master_template_path):
                 log(f"Attempting to load templates from combined file: {master_template_path}")
+                self._print(f"Attempting to load templates from combined file: {master_template_path}")
                 try:
                     with open(master_template_path, 'r') as f:
                         content = f.read()
@@ -85,14 +95,17 @@ class XinuGenerator:
                         self.templates[section_name] = section_content
                         
                     log(f"Loaded {len(self.templates)} template sections from {master_template_path}")
+                    self._print(f"Loaded {len(self.templates)} template sections from {master_template_path}")
                     loaded = True
                     break
                 except Exception as e:
                     log(f"ERROR: Failed to load templates from {master_template_path}: {str(e)}")
+                    self._print(f"ERROR: Failed to load templates from {master_template_path}: {str(e)}")
         
         # If we get here and haven't loaded anything, use hardcoded templates
         if not loaded:
             log("Using fallback hardcoded templates")
+            self._print("Using fallback hardcoded templates")
             self._setup_fallback_templates()
     
     def _setup_fallback_templates(self):
@@ -218,6 +231,7 @@ int main(int argc, char **argv) {
         # Make sure we have the template
         if template_name not in self.templates:
             log(f"ERROR: Template '{template_name}' not found")
+            self._print(f"ERROR: Template '{template_name}' not found")
             return f"/* Error: Template {template_name} not found */"
             
         template = self.templates[template_name]
@@ -240,6 +254,7 @@ int main(int argc, char **argv) {
       
     def generate_files(self):
         # Generate all XINU simulation files
+        self._print("\n##### Generating XINU Simulation Files #####")
         self.generate_stddefs()
         self.generate_xinu_h()
         self.generate_includes_h()
@@ -255,6 +270,7 @@ int main(int argc, char **argv) {
             f.write(content)
             
         log(f"Generated XINU stddefs: {self.config.stddefs_h}")
+        self._print(f"Generated XINU stddefs: {self.config.stddefs_h}")
         
     def generate_xinu_h(self):
         # Update or create xinu.h with dynamic module includes
@@ -266,6 +282,7 @@ int main(int argc, char **argv) {
         with open(xinu_h_path, 'w') as f:
             f.write(content)
         log(f"Created/updated {xinu_h_path}")
+        self._print(f"Created/updated {xinu_h_path}")
         
     def generate_includes_h(self):
         # Generate xinu_includes.h wrapper
@@ -275,6 +292,7 @@ int main(int argc, char **argv) {
             f.write(content)
             
         log(f"Generated UNIX-like simulation includes wrapper at: {self.config.includes_h}")
+        self._print(f"Generated UNIX-like simulation includes wrapper at: {self.config.includes_h}")
  
     def generate_sim_declarations(self):
         # Generate xinu_sim_declarations.h with function declarations
@@ -284,6 +302,7 @@ int main(int argc, char **argv) {
             f.write(content)
             
         log(f"Generated UNIX-like simulation declarations at: {self.config.sim_decls_h}")
+        self._print(f"Generated UNIX-like simulation declarations at: {self.config.sim_decls_h}")
 
     def generate_sim_helper(self):
         # Generate xinu_simulation.c with function implementations
@@ -293,6 +312,7 @@ int main(int argc, char **argv) {
             f.write(content)
             
         log(f"Generated UNIX-like simulation helper at: {self.config.sim_helper_c}")
+        self._print(f"Generated UNIX-like simulation helper at: {self.config.sim_helper_c}")
 
     def generate_xinu_core(self):
         # Generate a simple xinu_core.c if it doesn't exist
@@ -305,3 +325,4 @@ int main(int argc, char **argv) {
             f.write(content)
             
         log(f"Generated minimal XINU core at: {xinu_core_path}")
+        self._print(f"Generated minimal XINU core at: {xinu_core_path}")
