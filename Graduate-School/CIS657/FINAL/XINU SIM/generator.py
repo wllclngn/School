@@ -9,7 +9,7 @@ import sys
 from utils.logger import log
 
 class XinuGenerator:
-    """Generator for XINU simulation files using g++ preprocessing."""
+    # Generator for XINU simulation files using g++ preprocessing.
     
     def __init__(self, config):
         self.config = config
@@ -17,17 +17,24 @@ class XinuGenerator:
         self._load_templates()
         self.preprocessed_content = None
         self.extracted_symbols = {}
+        self.missing_types = []
         
     def _print(self, message):
         sys.stdout.write(message + "\n")
         sys.stdout.flush()
         
     def _load_templates(self):
-        # Same template loading code as before
-        templates_dir = os.path.join(self.config.builder_dir, "templates")
+        # Try to find templates in the project directory first
+        templates_dir = os.path.join(self.config.project_dir, "templates")
         if not os.path.exists(templates_dir):
-            templates_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "templates")
+            # Create templates directory if it doesn't exist
+            try:
+                os.makedirs(templates_dir, exist_ok=True)
+                log(f"Created templates directory: {templates_dir}")
+            except Exception as e:
+                log(f"Error creating templates directory: {str(e)}")
             
+        # Define template files mapping
         template_files = {
             "XINU_STDDEFS_H": os.path.join(templates_dir, "xinu_stdefs_h.tmpl"),
             "XINU_H": os.path.join(templates_dir, "xinu_h.tmpl"),
@@ -53,11 +60,83 @@ class XinuGenerator:
             self._setup_fallback_templates()
     
     def _setup_fallback_templates(self):
-        # Reduced fallback templates for brevity
-        pass
+        # Setup basic fallback templates when files are not found
+        self.templates["XINU_STDDEFS_H"] = """/* xinu_stddefs.h - Generated {{ timestamp }} by {{ user }} */
+#ifndef _XINU_STDDEFS_H_
+#define _XINU_STDDEFS_H_
+
+/* Basic type definitions for XINU simulation */
+typedef int bool;
+typedef int pid32;
+typedef int sid32;
+typedef int qid16;
+typedef int int32;
+typedef unsigned int uint32;
+typedef int intmask;
+typedef int status;
+typedef int message;
+typedef int did32;
+typedef void (*interrupt_handler_t)();
+typedef int syscall;
+typedef void (*exchandler)();
+typedef unsigned int memblk;
+
+/* Constants */
+#define TRUE        1
+#define FALSE       0
+#define SYSERR     (-1)
+#define OK          1
+#define READY       1
+#define SUSPENDED   2
+#define WAITING     3
+
+#endif /* _XINU_STDDEFS_H_ */
+"""
+
+        self.templates["XINU_H"] = """/* xinu.h - Generated {{ timestamp }} by {{ user }} */
+#ifndef _XINU_H_
+#define _XINU_H_
+
+#include "xinu_stddefs.h"
+
+/* Core XINU structure and function declarations */
+struct procent {
+    void    *prstkptr;      /* Saved stack pointer                */
+    int     prio;           /* Process priority                   */
+    int     prstate;        /* Process state: READY or SUSPENDED  */
+    char    prname[16];     /* Process name                       */
+    int     prsem;          /* Semaphore on which process waits   */
+    pid32   prparent;       /* ID of the creating process         */
+    int     prnxtkin;       /* Next-of-kin notified of death      */
+};
+
+#endif /* _XINU_H_ */
+"""
+
+        self.templates["XINU_INCLUDES_H"] = """/* xinu_includes.h - Generated {{ timestamp }} by {{ user }} */
+#ifndef _XINU_INCLUDES_H_
+#define _XINU_INCLUDES_H_
+
+#include "xinu_stddefs.h"
+#include "xinu.h"
+
+/* Additional includes will be added dynamically */
+
+#endif /* _XINU_INCLUDES_H_ */
+"""
+
+        # Add other fallback templates as needed
+        log("Setup fallback templates completed")
+        
+    def add_missing_types(self, type_list):
+        # Add missing types to be included in next generation
+        for type_name in type_list:
+            if type_name not in self.missing_types:
+                self.missing_types.append(type_name)
+                log(f"Added type {type_name} to missing types list")
         
     def preprocess_headers(self):
-        """Use g++ to preprocess XINU headers and extract definitions."""
+        # Use g++ to preprocess XINU headers and extract definitions.
         self._print("\n##### Preprocessing XINU Headers with g++ #####")
         
         # Find main XINU header
@@ -77,17 +156,17 @@ class XinuGenerator:
             temp_path = temp_file.name
             temp_file.write(f"#include \"{xinu_h_path}\"\n".encode('utf-8'))
         
-        # Build include paths
+        # Build include paths with proper quoting to handle spaces
         include_paths = [
             self.config.include_dir,
             os.path.join(self.config.xinu_os_dir, "include"),
             os.path.dirname(xinu_h_path)
         ]
-        include_opts = " ".join(f"-I{p}" for p in include_paths if os.path.exists(p))
+        include_opts = " ".join(f'-I"{p}"' for p in include_paths if os.path.exists(p))
         
-        # Run g++ preprocessor
+        # Run g++ preprocessor with properly quoted paths
         try:
-            cmd = f"g++ -E {include_opts} {temp_path}"
+            cmd = f'g++ -E {include_opts} "{temp_path}"'
             self._print(f"Running: {cmd}")
             process = subprocess.Popen(
                 cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -97,7 +176,7 @@ class XinuGenerator:
             
             if process.returncode != 0:
                 log(f"ERROR: g++ preprocessing failed: {stderr}")
-                self._print(f"ERROR: g++ preprocessing failed")
+                self._print(f"ERROR: g++ preprocessing failed: {stderr}")
                 return False
             
             # Store preprocessed output
@@ -113,7 +192,7 @@ class XinuGenerator:
             return False
     
     def extract_symbols(self):
-        """Extract symbols from preprocessed content."""
+        # Extract symbols from preprocessed content.
         if not self.preprocessed_content:
             return False
         
@@ -147,7 +226,7 @@ class XinuGenerator:
         return True
     
     def _add_missing_symbols(self):
-        """Add essential symbols if they're missing from extraction."""
+        # Add essential symbols if they're missing from extraction.
         # Essential typedefs to ensure are defined
         essential_types = {
             'bool8': 'int', 'shellcmd': 'int', 'intmask': 'int',
@@ -158,15 +237,20 @@ class XinuGenerator:
         
         # Add any missing essential types
         for name, type_def in essential_types.items():
-            if name not in self.extracted_symbols['typedefs']:
+            if name not in self.extracted_symbols.get('typedefs', {}):
+                if 'typedefs' not in self.extracted_symbols:
+                    self.extracted_symbols['typedefs'] = {}
                 self.extracted_symbols['typedefs'][name] = type_def
                 log(f"Added missing type: {name}")
         
-        # Add any other missing essential symbols...
-        # Similar logic for defines, structs, etc.
+        # Add any user-requested missing types
+        for type_name in self.missing_types:
+            if type_name not in self.extracted_symbols.get('typedefs', {}):
+                self.extracted_symbols['typedefs'][type_name] = 'int'
+                log(f"Added user-requested type: {type_name}")
     
     def generate_files(self):
-        """Generate all XINU simulation files."""
+        # Generate all XINU simulation files.
         # Use g++ preprocessing to extract symbols
         if not self.preprocess_headers():
             # Fall back to template-based generation if preprocessing fails
@@ -185,13 +269,16 @@ class XinuGenerator:
         self.generate_xinu_core()
     
     def generate_stddefs(self):
-        """Generate xinu_stddefs.h with type definitions."""
+        # Generate xinu_stddefs.h with type definitions.
         # Generate content from extracted symbols if available
         if self.extracted_symbols:
             content = self._generate_stddefs_from_symbols()
         else:
             # Fall back to template rendering
             content = self._render_template("XINU_STDDEFS_H")
+        
+        # Make sure output directory exists
+        os.makedirs(os.path.dirname(self.config.stddefs_h), exist_ok=True)
         
         with open(self.config.stddefs_h, 'w') as f:
             f.write(content)
@@ -200,7 +287,7 @@ class XinuGenerator:
         self._print(f"Generated XINU stddefs: {self.config.stddefs_h}")
     
     def _generate_stddefs_from_symbols(self):
-        """Generate stddefs content from extracted symbols."""
+        # Generate stddefs content from extracted symbols.
         # Build content from extracted symbols
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
@@ -213,30 +300,137 @@ class XinuGenerator:
         
         # Add typedefs
         content += "/* Basic type definitions */\n"
-        for name, type_def in self.extracted_symbols['typedefs'].items():
+        for name, type_def in self.extracted_symbols.get('typedefs', {}).items():
             content += f"typedef {type_def} {name};\n"
         
         # Add defines
         content += "\n/* Constant definitions */\n"
-        for name, value in self.extracted_symbols['defines'].items():
+        for name, value in self.extracted_symbols.get('defines', {}).items():
             content += f"#define {name} {value}\n"
         
         content += "\n#endif /* _XINU_STDDEFS_H_ */\n"
         return content
     
-    # Similar methods for other file generations...
+    def generate_xinu_h(self):
+        # Generate xinu.h with basic XINU declarations
+        if self.extracted_symbols and 'structs' in self.extracted_symbols:
+            content = self._generate_xinu_h_from_symbols()
+        else:
+            content = self._render_template("XINU_H")
+            
+        with open(self.config.xinu_h, 'w') as f:
+            f.write(content)
+            
+        log(f"Generated XINU header: {self.config.xinu_h}")
+        self._print(f"Generated XINU header: {self.config.xinu_h}")
+    
+    def _generate_xinu_h_from_symbols(self):
+        # Generate xinu.h content from extracted symbols
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        
+        content = f"/* xinu.h - Generated from XINU headers */\n"
+        content += f"/* Generated on: {timestamp} */\n"
+        content += f"/* By user: {username} */\n"
+        content += "#ifndef _XINU_H_\n"
+        content += "#define _XINU_H_\n\n"
+        content += "#include \"xinu_stddefs.h\"\n\n"
+        
+        # Add key structure definitions
+        content += "/* Structure definitions */\n"
+        if 'procent' in self.extracted_symbols['structs']:
+            content += f"struct procent {{\n{self.extracted_symbols['structs']['procent']}\n}};\n\n"
+        else:
+            # Add a default procent structure
+            content += """struct procent {
+    void    *prstkptr;      /* Saved stack pointer                */
+    int     prio;           /* Process priority                   */
+    int     prstate;        /* Process state: READY or SUSPENDED  */
+    char    prname[16];     /* Process name                       */
+};\n\n"""
+        
+        # Add more structures as needed
+        
+        content += "#endif /* _XINU_H_ */\n"
+        return content
+    
+    def generate_includes_h(self):
+        # Generate includes.h with all necessary includes
+        dynamic_includes = self._generate_dynamic_includes()
+        context = {'dynamic_includes': dynamic_includes}
+        
+        content = self._render_template("XINU_INCLUDES_H", context)
+        
+        with open(self.config.includes_h, 'w') as f:
+            f.write(content)
+            
+        log(f"Generated XINU includes: {self.config.includes_h}")
+        self._print(f"Generated XINU includes: {self.config.includes_h}")
+    
+    def _generate_dynamic_includes(self):
+        # Generate include statements for headers.
+        include_statements = ""
+        if hasattr(self.config, 'include_dir') and os.path.exists(self.config.include_dir):
+            for filename in os.listdir(self.config.include_dir):
+                if filename.endswith(".h") and filename != "xinu_stddefs.h":
+                    include_statements += f"#include \"{filename}\"\n"
+        return include_statements
+    
+    def generate_sim_declarations(self):
+        # Generate simulation declarations header
+        content = self._render_template("XINU_SIM_DECLARATIONS_H")
+        
+        with open(self.config.sim_decls_h, 'w') as f:
+            f.write(content)
+            
+        log(f"Generated simulation declarations: {self.config.sim_decls_h}")
+        self._print(f"Generated simulation declarations: {self.config.sim_decls_h}")
+    
+    def generate_sim_helper(self):
+        # Generate simulation helper C file
+        content = self._render_template("XINU_SIMULATION_C")
+        
+        with open(self.config.sim_helper_c, 'w') as f:
+            f.write(content)
+            
+        log(f"Generated simulation helper: {self.config.sim_helper_c}")
+        self._print(f"Generated simulation helper: {self.config.sim_helper_c}")
+    
+    def generate_xinu_core(self):
+        # Generate XINU core C file
+        context = {'extracted_functions': self._get_extracted_function_list()}
+        content = self._render_template("XINU_CORE_C", context)
+        
+        with open(self.config.xinu_core_c, 'w') as f:
+            f.write(content)
+            
+        log(f"Generated XINU core: {self.config.xinu_core_c}")
+        self._print(f"Generated XINU core: {self.config.xinu_core_c}")
+    
+    def _get_extracted_function_list(self):
+        # Get list of extracted functions for template rendering
+        if not self.extracted_symbols or 'functions' not in self.extracted_symbols:
+            return "/* No functions extracted */"
+            
+        result = "/* Extracted function prototypes */\n"
+        for name, func_info in self.extracted_symbols['functions'].items():
+            result += f"{func_info['return_type']} {name}({func_info['params']});\n"
+            
+        return result
     
     def _render_template(self, template_name, context=None):
-        """Render a template with variable replacements."""
+        # Render a template with variable replacements.
         if context is None:
             context = {}
             
         if template_name not in self.templates:
             log(f"ERROR: Template '{template_name}' not found")
+            self._print(f"ERROR: Template '{template_name}' not found")
             return f"/* Error: Template {template_name} not found */"
             
         template = self.templates[template_name]
         
+        # Get current timestamp and username from system
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         full_context = {
             "generator": "xinu_generator.py",
@@ -250,14 +444,3 @@ class XinuGenerator:
             result = result.replace(f"{{{{ {key} }}}}", str(value))
             
         return result
-    
-    # Implement other generation methods similarly
-    
-    def _generate_dynamic_includes(self):
-        """Generate include statements for headers."""
-        include_statements = ""
-        if hasattr(self.config, 'include_dir') and os.path.exists(self.config.include_dir):
-            for filename in os.listdir(self.config.include_dir):
-                if filename.endswith(".h") and filename != "xinu_stddefs.h":
-                    include_statements += f"#include <{filename}>\n"
-        return include_statements

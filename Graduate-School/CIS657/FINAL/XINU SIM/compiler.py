@@ -13,7 +13,7 @@ import tempfile
 from utils.logger import log
 
 class XinuCompiler:
-    """Enhanced XINU compiler with g++ integration and dynamic adaptation."""
+    # Enhanced XINU compiler with g++ integration and dynamic adaptation.
     
     def __init__(self, config):
         self.config = config
@@ -29,7 +29,7 @@ class XinuCompiler:
         sys.stdout.flush()
         
     def _get_system_info(self):
-        """Get detailed system information for compilation parameters."""
+        # Get detailed system information for compilation parameters.
         system = platform.system().lower()
         info = {
             'system': system,
@@ -79,7 +79,7 @@ class XinuCompiler:
         return info
     
     def _setup_environment(self):
-        """Setup the compilation environment."""
+        # Setup the compilation environment.
         # Initialize include paths
         self.include_paths = []
         
@@ -106,7 +106,7 @@ class XinuCompiler:
         self._print(f"Setup environment with include paths: {self.include_paths}")
     
     def compile(self):
-        """Compile the XINU simulation project with g++ integration."""
+        # Compile the XINU simulation project with g++ integration.
         self._print("\n##### Compiling XINU Simulation #####")
         
         # Analyze the XINU headers to detect structure names and adaptations needed
@@ -131,7 +131,7 @@ class XinuCompiler:
             return False
     
     def _analyze_for_adaptations(self):
-        """Use g++ preprocessing to analyze headers for structure adaptations."""
+        # Use g++ preprocessing to analyze headers for structure adaptations.
         self._print("\n##### Analyzing Headers for Structure Adaptations #####")
         
         # Create a temporary file for preprocessing
@@ -139,12 +139,12 @@ class XinuCompiler:
             temp_path = temp_file.name
             temp_file.write(f"#include \"{self.config.includes_h}\"\n".encode('utf-8'))
         
-        # Build include paths for preprocessing
-        include_opts = " ".join(f"-I{p}" for p in self.include_paths if os.path.exists(p))
+        # Build include paths for preprocessing - properly quote paths to handle spaces
+        include_opts = " ".join(f'-I"{p}"' for p in self.include_paths if os.path.exists(p))
         
-        # Run g++ preprocessor
+        # Run g++ preprocessor with properly quoted paths
         try:
-            cmd = f"g++ -E {include_opts} {temp_path}"
+            cmd = f'g++ -E {include_opts} "{temp_path}"'
             self._print(f"Running preprocessor: {cmd}")
             process = subprocess.Popen(
                 cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -166,7 +166,7 @@ class XinuCompiler:
             self._print(f"Warning: Error during header analysis")
     
     def _scan_for_struct_variations(self, preprocessed_content):
-        """Scan preprocessed content for structure variations."""
+        # Scan preprocessed content for structure variations.
         # Find process structure
         proc_structs = re.findall(r'struct\s+(\w+)\s*{(.*?)};', preprocessed_content, re.DOTALL)
         
@@ -188,7 +188,7 @@ class XinuCompiler:
         log(f"Structure adaptations: {self.structure_adaptations}")
     
     def _find_additional_sources(self):
-        """Find additional source files to compile."""
+        # Find additional source files to compile.
         sources = []
         
         # Check for any C files in the XINU SIM directory
@@ -215,7 +215,7 @@ class XinuCompiler:
         return sources
     
     def _compile_sources(self, sources):
-        """Compile source files to object files."""
+        # Compile source files to object files.
         objects = []
         
         for source in sources:
@@ -226,14 +226,14 @@ class XinuCompiler:
         return objects
     
     def _get_object_path(self, source_path):
-        """Get the path for an object file based on source file."""
+        # Get the path for an object file based on source file.
         base_name = os.path.basename(source_path)
         name_without_ext = os.path.splitext(base_name)[0]
         obj_ext = self.system_info['obj_ext']
         return os.path.join(self.config.obj_dir, f"{name_without_ext}{obj_ext}")
     
     def _compile_file(self, source_path, obj_path):
-        """Compile a single source file with adaptations."""
+        # Compile a single source file with adaptations.
         self._print(f"Compiling {os.path.basename(source_path)}...")
         
         # Check if the source file exists
@@ -247,21 +247,21 @@ class XinuCompiler:
         if self.structure_adaptations:
             adapted_source = self._adapt_source(source_path)
         
-        # Build include paths
-        include_opts = " ".join(f"-I{p}" for p in self.include_paths if os.path.exists(p))
+        # Build include paths with proper quoting to handle spaces in paths
+        include_opts = " ".join(f'-I"{p}"' for p in self.include_paths if os.path.exists(p))
         
         # Build command based on source type
         compiler = self.system_info['c_compiler'] if source_path.endswith(".c") else self.system_info['compiler']
         flags = self.system_info['c_flags'] if source_path.endswith(".c") else self.system_info['cpp_flags']
         
-        cmd = f"{compiler} {flags} {include_opts} -c"
+        cmd = f'{compiler} {flags} {include_opts} -c'
         
         # If we have an adapted source, compile that instead of the original
         if adapted_source:
-            cmd += f" {adapted_source} -o {obj_path}"
+            cmd += f' "{adapted_source}" -o "{obj_path}"'
             source_to_compile = adapted_source
         else:
-            cmd += f" {source_path} -o {obj_path}"
+            cmd += f' "{source_path}" -o "{obj_path}"'
             source_to_compile = source_path
         
         try:
@@ -305,7 +305,7 @@ class XinuCompiler:
             return False
     
     def _adapt_source(self, source_path):
-        """Create an adapted version of the source with structure adaptations."""
+        # Create an adapted version of the source with structure adaptations.
         try:
             # Create a temporary file for the adapted source
             fd, adapted_path = tempfile.mkstemp(suffix=".c", prefix="xinu_adapted_")
@@ -333,7 +333,7 @@ class XinuCompiler:
             return None
     
     def _parse_compilation_errors(self, error_output):
-        """Parse compilation errors for diagnosis."""
+        # Parse compilation errors for diagnosis.
         # Look for common error patterns
         missing_types = re.findall(r"'(\w+)' was not declared in this scope", error_output)
         missing_fields = re.findall(r"no member named '(\w+)' in", error_output)
@@ -348,7 +348,7 @@ class XinuCompiler:
             self._print(f"Detected missing structure field: {field_name}")
     
     def _link_executable(self, object_files):
-        """Link object files into executable."""
+        # Link object files into executable.
         if not object_files:
             log("Error: No object files to link")
             self._print("Error: No object files to link")
@@ -358,11 +358,11 @@ class XinuCompiler:
         exe_name = "xinu_sim" + self.system_info['exe_ext']
         exe_path = os.path.join(self.config.bin_dir, exe_name)
         
-        # Build object files list
-        obj_list = " ".join(object_files)
+        # Build object files list with proper quoting to handle spaces in paths
+        obj_list = " ".join(f'"{obj}"' for obj in object_files)
         
-        # Link command
-        cmd = f"{self.system_info['compiler']} {obj_list} -o {exe_path}"
+        # Link command with properly quoted paths
+        cmd = f'{self.system_info["compiler"]} {obj_list} -o "{exe_path}"'
         
         self._print(f"Linking executable: {exe_path}")
         self._print(f"Running: {cmd}")
@@ -393,5 +393,5 @@ class XinuCompiler:
             return False
     
     def get_compile_errors(self):
-        """Get list of compilation errors detected."""
+        # Get list of compilation errors detected.
         return self.detected_compile_errors

@@ -14,29 +14,29 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import local modules
 from utils.logger import log, setup_logger
-
-# Define setup_logging to maintain compatibility with existing code
-def setup_logging(level='INFO'):
-    """Wrapper for setup_logger to maintain API compatibility"""
-    verbose = level.lower() == 'debug'
-    return setup_logger(verbose=verbose)
-
 from generator import XinuGenerator
 from compiler import XinuCompiler
 
+# Define setup_logging to maintain compatibility with existing code
+def setup_logging(level='INFO'):
+    # Wrapper for setup_logger to maintain API compatibility
+    verbose = level.lower() == 'debug'
+    return setup_logger(verbose=verbose)
+
 class XinuConfig:
-    """Configuration class for XINU simulation."""
+    # Configuration class for XINU simulation.
     
     def __init__(self):
         # Initialize with default values
         self.project_dir = os.path.abspath(os.path.dirname(__file__))
+        
         # Point to the correct XINU OS directory which is one level up
         self.xinu_os_dir = os.path.abspath(os.path.join(self.project_dir, "..", "XINU OS"))
         self.output_dir = os.path.join(self.project_dir, "output")
         self.obj_dir = os.path.join(self.output_dir, "obj")
         self.bin_dir = os.path.join(self.output_dir, "bin")
         self.include_dir = os.path.join(self.xinu_os_dir, "include")
-        self.builder_dir = os.path.join(self.project_dir, "xinu_sim")
+        self.builder_dir = self.project_dir  # Use current directory as builder_dir
         
         # Output file paths
         self.stddefs_h = os.path.join(self.output_dir, "xinu_stddefs.h")
@@ -56,7 +56,7 @@ class XinuConfig:
         self.source_dirs = []
         
     def check_environment(self):
-        """Check for required environment components."""
+        # Check for required environment components.
         # Check if g++ is available
         try:
             result = subprocess.run(['g++', '--version'], 
@@ -76,7 +76,7 @@ class XinuConfig:
         return True  # Continue anyway, fallback mechanisms will handle it
     
     def check_xinu_os(self):
-        """Check if XINU OS directory is valid."""
+        # Check if XINU OS directory is valid.
         # Check if the XINU OS directory exists
         if not os.path.exists(self.xinu_os_dir):
             log(f"Warning: XINU OS directory not found at: {self.xinu_os_dir}")
@@ -103,7 +103,7 @@ class XinuConfig:
         return True
     
     def setup_directories(self):
-        """Set up required directories for the build."""
+        # Set up required directories for the build.
         # Create output directories
         os.makedirs(self.output_dir, exist_ok=True)
         os.makedirs(self.obj_dir, exist_ok=True)
@@ -132,7 +132,7 @@ class XinuConfig:
             log("Cleaned output directories for complete rebuild")
             
     def load_from_args(self, args):
-        """Load configuration from command-line arguments."""
+        # Load configuration from command-line arguments.
         if args.xinu_dir:
             self.xinu_os_dir = os.path.abspath(args.xinu_dir)
             self.include_dir = os.path.join(self.xinu_os_dir, "include")
@@ -171,7 +171,7 @@ class XinuConfig:
 
 
 class XinuSimMain:
-    """Main class for XINU simulation."""
+    # Main class for XINU simulation.
     
     def __init__(self):
         self.config = XinuConfig()
@@ -184,7 +184,7 @@ class XinuSimMain:
         sys.stdout.flush()
         
     def setup_args(self):
-        """Parse command-line arguments."""
+        # Parse command-line arguments.
         parser = argparse.ArgumentParser(
             description='XINU OS Simulation System',
             epilog='Dynamically creates a simulation environment for XINU OS.'
@@ -219,7 +219,7 @@ class XinuSimMain:
         return args
     
     def initialize(self):
-        """Initialize the XINU simulation system."""
+        # Initialize the XINU simulation system.
         # Parse command-line arguments
         args = self.setup_args()
         self.config.load_from_args(args)
@@ -228,14 +228,18 @@ class XinuSimMain:
         log_level = 'DEBUG' if self.config.debug else 'INFO'
         setup_logging(log_level)
         
+        # Use the specific date/time and user as requested
+        current_time = "2025-06-18 02:05:41"  # UTC time as requested
+        username = "wllclngn"  # Specific username as requested
+        
         # Display welcome message
-        self._print("\n============================================")
-        self._print("  XINU Simulation System with g++ Integration")
-        self._print("============================================")
-        self._print(f"Date/Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        self._print(f"User: {os.environ.get('USER', os.environ.get('USERNAME', 'unknown'))}")
+        self._print("\n##############################################")
+        self._print("#  XINU Simulation System with g++ Integration")
+        self._print("##############################################")
+        self._print(f"Date/Time: {current_time}")
+        self._print(f"User: {username}")
         self._print(f"System: {platform.system()} {platform.release()}")
-        self._print("--------------------------------------------\n")
+        self._print("##############################################\n")
         
         # Check environment
         if not self.config.check_environment():
@@ -258,13 +262,13 @@ class XinuSimMain:
         return True
     
     def run(self):
-        """Run the XINU simulation system."""
+        # Run the XINU simulation system.
         # Generate simulation files
-        self._print("\n=== Generating XINU Simulation Files ===")
+        self._print("\n### Generating XINU Simulation Files ###")
         self.generator.generate_files()
         
         # Compile simulation
-        self._print("\n=== Compiling XINU Simulation ===")
+        self._print("\n### Compiling XINU Simulation ###")
         compile_result = self.compiler.compile()
         
         # Check compilation result
@@ -284,7 +288,7 @@ class XinuSimMain:
             
         # Report final result
         if compile_result:
-            self._print("\n=== Build Successful ===")
+            self._print("\n### Build Successful ###")
             exe_path = os.path.join(self.config.bin_dir, "xinu_sim")
             if platform.system() == "Windows":
                 exe_path += ".exe"
@@ -294,12 +298,12 @@ class XinuSimMain:
             self._print(f"  {exe_path}")
             return True
         else:
-            self._print("\n=== Build Failed ===")
+            self._print("\n### Build Failed ###")
             self._print("\nPlease check the error messages above and fix any issues.")
             return False
     
     def _resolve_compilation_issues(self):
-        """Attempt to resolve compilation issues automatically."""
+        # Attempt to resolve compilation issues automatically.
         # Get detected compilation errors
         errors = self.compiler.get_compile_errors()
         missing_types = [err.split(": ")[1] for err in errors if err.startswith("Missing type")]

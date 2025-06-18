@@ -1,17 +1,31 @@
-2025-06-17 20:57:22 - Cleaned output directories for complete rebuild
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_stdefs_h.tmpl
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_h.tmpl
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_includes_h.tmpl
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_sim_declarations_h.tmpl
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_simulation_c.tmpl
-2025-06-17 20:57:22 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\templates\xinu_core_c.tmpl
-2025-06-17 20:57:22 - Using fallback hardcoded templates
-2025-06-17 20:57:22 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-17 20:57:22 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
-2025-06-17 20:57:22 - ERROR: g++ preprocessing failed: g++: error: OS\include: No such file or directory
-g++: error: OS\include: No such file or directory
-g++: error: OS\include: No such file or directory
+2025-06-17 21:16:50 - Cleaned output directories for complete rebuild
+2025-06-17 21:16:50 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\templates\xinu_stdefs_h.tmpl
+2025-06-17 21:16:50 - Loaded template: XINU_H
+2025-06-17 21:16:50 - Loaded template: XINU_INCLUDES_H
+2025-06-17 21:16:50 - Loaded template: XINU_SIM_DECLARATIONS_H
+2025-06-17 21:16:50 - Loaded template: XINU_SIMULATION_C
+2025-06-17 21:16:50 - Loaded template: XINU_CORE_C
+2025-06-17 21:16:50 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
+2025-06-17 21:16:50 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
+2025-06-17 21:16:52 - ERROR: g++ preprocessing failed: In file included from C:\Users\mol\AppData\Local\Temp\tmpj1l86pnk.c:1:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu.h:13:85: fatal error: xinu_stddefs.h: No such file or directory
+ #include "xinu_stddefs.h" // This path assumes xinu_stddefs.h is in the project root
+                                                                                     ^
+compilation terminated.
 
-2025-06-17 20:57:22 - WARNING: Falling back to template-based file generation
-2025-06-17 20:57:22 - ERROR: Template 'XINU_STDDEFS_H' not found
-2025-06-17 20:57:22 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-17 21:16:52 - WARNING: Falling back to template-based file generation
+2025-06-17 21:16:52 - ERROR: Template 'XINU_STDDEFS_H' not found
+2025-06-17 21:16:52 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-17 21:16:52 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
+2025-06-17 21:16:52 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-17 21:16:52 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
+2025-06-17 21:16:52 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-17 21:16:52 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
+2025-06-17 21:16:52 - Structure adaptations: {}
+2025-06-17 21:16:52 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
+gcc: error: /W4: No such file or directory
+
+2025-06-17 21:16:52 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
+gcc: error: /W4: No such file or directory
+
+2025-06-17 21:16:52 - Error: No object files to link
