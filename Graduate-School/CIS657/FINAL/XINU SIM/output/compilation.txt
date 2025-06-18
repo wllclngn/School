@@ -1,281 +1,83 @@
-2025-06-17 22:51:56 - Cleaned output directories for complete rebuild
-2025-06-17 22:51:56 - Loaded template: XINU_STDDEFS_H
-2025-06-17 22:51:56 - Loaded template: XINU_H
-2025-06-17 22:51:56 - Loaded template: XINU_INCLUDES_H
-2025-06-17 22:51:56 - Loaded template: XINU_SIM_DECLARATIONS_H
-2025-06-17 22:51:56 - Loaded template: XINU_SIMULATION_C
-2025-06-17 22:51:56 - Loaded template: XINU_CORE_C
-2025-06-17 22:51:56 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-17 22:51:56 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\templates']
-2025-06-17 22:51:56 - Fixed include paths in bufpool.h
-2025-06-17 22:51:56 - Fixed include paths in clock.h
-2025-06-17 22:51:56 - Fixed include paths in conf.h
-2025-06-17 22:51:56 - Fixed include paths in ctype.h
-2025-06-17 22:51:56 - Fixed include paths in date.h
-2025-06-17 22:51:56 - Fixed include paths in device.h
-2025-06-17 22:51:56 - Fixed include paths in i386.h
-2025-06-17 22:51:56 - Fixed include paths in icu.h
-2025-06-17 22:51:56 - Fixed include paths in interrupt.h
-2025-06-17 22:51:56 - Fixed include paths in kernel.h
-2025-06-17 22:51:56 - Fixed include paths in mark.h
-2025-06-17 22:51:56 - Fixed include paths in memory.h
-2025-06-17 22:51:56 - Fixed include paths in pci.h
-2025-06-17 22:51:56 - Fixed include paths in ports.h
-2025-06-17 22:51:56 - Fixed include paths in process.h
-2025-06-17 22:51:56 - Fixed include paths in prototypes.h
-2025-06-17 22:51:56 - Fixed include paths in pstarv.h
-2025-06-17 22:51:56 - Fixed include paths in queue.h
-2025-06-17 22:51:56 - Fixed include paths in sched.h
-2025-06-17 22:51:56 - Fixed include paths in semaphore.h
-2025-06-17 22:51:56 - Fixed include paths in shell.h
-2025-06-17 22:51:56 - Fixed include paths in sscanf_fix.h
-2025-06-17 22:51:56 - Fixed include paths in stdarg.h
-2025-06-17 22:51:56 - Fixed include paths in stdio.h
-2025-06-17 22:51:56 - Fixed include paths in stdlib.h
-2025-06-17 22:51:56 - Fixed include paths in string.h
-2025-06-17 22:51:56 - Fixed include paths in tty.h
-2025-06-17 22:51:56 - Fixed include paths in uart.h
-2025-06-17 22:51:56 - Fixed include paths in xinu.h
-2025-06-17 22:51:56 - Created temporary xinu_stddefs.h for preprocessing
-2025-06-17 22:51:56 - Added missing type: exchandler
-2025-06-17 22:51:56 - Added missing type: message
-2025-06-17 22:51:56 - Added missing type: bool32
-2025-06-17 22:51:56 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-17 22:51:56 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
-2025-06-17 22:51:56 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-17 22:51:56 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
-2025-06-17 22:51:56 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-17 22:51:56 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
-2025-06-17 22:51:56 - Structure adaptations: {}
-2025-06-17 22:51:57 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
+2025-06-17 23:12:27 - Cleaned output directories for complete rebuild
+2025-06-17 23:12:27 - Loaded template: XINU_STDDEFS_H
+2025-06-17 23:12:27 - Loaded template: XINU_H
+2025-06-17 23:12:27 - Loaded template: XINU_INCLUDES_H
+2025-06-17 23:12:27 - Loaded template: XINU_SIM_DECLARATIONS_H
+2025-06-17 23:12:27 - Loaded template: XINU_SIMULATION_C
+2025-06-17 23:12:27 - Loaded template: XINU_CORE_C
+2025-06-17 23:12:27 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
+2025-06-17 23:12:27 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\templates']
+2025-06-17 23:12:27 - Added missing type: bool8
+2025-06-17 23:12:27 - Added missing type: shellcmd
+2025-06-17 23:12:27 - Added missing type: intmask
+2025-06-17 23:12:27 - Added missing type: exchandler
+2025-06-17 23:12:27 - Added missing type: message
+2025-06-17 23:12:27 - Added missing type: syscall
+2025-06-17 23:12:27 - Added missing type: process
+2025-06-17 23:12:27 - Added missing type: bool32
+2025-06-17 23:12:27 - Added missing type: did32
+2025-06-17 23:12:27 - Added missing type: status
+2025-06-17 23:12:27 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-17 23:12:27 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
+2025-06-17 23:12:27 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-17 23:12:27 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
+2025-06-17 23:12:27 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-17 23:12:27 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
+2025-06-17 23:12:28 - Structure adaptations: {}
+2025-06-17 23:12:28 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:24:16: error: conflicting types for 'qid16'
+ typedef int16  qid16;
+                ^~~~~
 In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:8:9: error: unknown type name 'int32'
- typedef int32 pid32;
-         ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:9:9: error: unknown type name 'int32'
- typedef int32 sid32;
-         ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:15:3: error: conflicting types for 'max_align_t'
- } max_align_t;
-   ^~~~~~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:3:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:429:3: note: previous declaration of 'max_align_t' was here
- } max_align_t;
-   ^~~~~~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: error: function definition declared 'typedef'
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: return type defaults to 'int' [-Wimplicit-int]
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h: In function 'decltype':
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:27: error: expected declaration specifiers before 'nullptr_t'
- typedef decltype(nullptr) nullptr_t;
-                           ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: error: storage class specified for parameter 'wint_t'
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: error: storage class specified for parameter 'int8_t'
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: error: storage class specified for parameter 'uint8_t'
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: error: storage class specified for parameter 'int16_t'
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: error: storage class specified for parameter 'uint16_t'
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: error: storage class specified for parameter 'int32_t'
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: error: storage class specified for parameter 'uint32_t'
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: error: storage class specified for parameter 'int64_t'
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: error: storage class specified for parameter 'uint64_t'
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: error: storage class specified for parameter 'int_least8_t'
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: error: storage class specified for parameter 'uint_least8_t'
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: error: storage class specified for parameter 'int_least16_t'
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: error: storage class specified for parameter 'uint_least16_t'
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: error: storage class specified for parameter 'int_least32_t'
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: error: storage class specified for parameter 'uint_least32_t'
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: error: storage class specified for parameter 'int_least64_t'
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: error: storage class specified for parameter 'uint_least64_t'
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: error: storage class specified for parameter 'int_fast8_t'
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: error: storage class specified for parameter 'uint_fast8_t'
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: error: storage class specified for parameter 'int_fast16_t'
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: error: storage class specified for parameter 'uint_fast16_t'
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: error: storage class specified for parameter 'int_fast32_t'
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: error: storage class specified for parameter 'uint_fast32_t'
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: error: storage class specified for parameter 'int_fast64_t'
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: error: storage class specified for parameter 'uint_fast64_t'
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:42:13: error: storage class specified for parameter '__intptr_t'
- typedef int __intptr_t;
-             ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:43:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'intptr_t'
- typedef __intptr_t intptr_t;
-                    ^~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:44:22: error: storage class specified for parameter '__uintptr_t'
- typedef unsigned int __uintptr_t;
-                      ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:45:21: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uintptr_t'
- typedef __uintptr_t uintptr_t;
-                     ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: error: storage class specified for parameter 'intmax_t'
- typedef long long intmax_t;
-                   ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: error: storage class specified for parameter 'uintmax_t'
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: error: storage class specified for parameter 'int32'
- typedef int int32;
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:13: note: previous declaration of 'qid16' was here
+ typedef int qid16;
              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: error: storage class specified for parameter 'uint32'
- typedef unsigned int uint32;
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: error: storage class specified for parameter 'int16'
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: error: storage class specified for parameter 'uint16'
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: error: storage class specified for parameter 'int8'
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: error: storage class specified for parameter 'uint8'
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:54:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'qid16'
- typedef int16 qid16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:55:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'bpid32'
- typedef int32 bpid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:9: error: unknown type name 'byte'
- typedef byte bool8;
-         ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: error: storage class specified for parameter 'bool8'
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: error: storage class specified for parameter 'byte'
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: error: storage class specified for parameter 'word'
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: error: storage class specified for parameter 'dword'
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: error: storage class specified for parameter 'uint64'
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:61:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'did32'
- typedef int32 did32;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:62:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pri16'
- typedef int16 pri16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:63:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'umsg32'
- typedef uint32 umsg32;
-                ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:64:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'intmask'
- typedef uint16 intmask;
-                ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:65:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ibid32'
- typedef int32 ibid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:66:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'dbid32'
- typedef int32 dbid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:67:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'syscall'
- typedef int32 syscall;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:68:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'devcall'
- typedef int32 devcall;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:69:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'shellcmd'
- typedef int32 shellcmd;
-               ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:70:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'process'
- typedef int32 process;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: storage class specified for parameter 'interrupt'
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:72:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'status'
- typedef int32 status;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:73:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'marker'
- typedef uint32 marker[1];
-                ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:74:97: warning: file "C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/xinu.h" linemarker ignored due to incorrect nesting
- # 61 "C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/xinu.h" 2
-                                                                                                 ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:75:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13,
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/memory.h:34:2: error: expected specifier-qualifier-list before 'uint32'
-  uint32 mlength;  /* size of blk (includes memblk)*/
-  ^~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:121:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13,
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:24:2: error: unknown type name 'byte'
+  byte    dvirq;
+  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
+ typedef char                int8;
+                             ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
+ typedef int8_t   int8;
+                  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:27:15: error: conflicting types for 'pri16'
+ typedef int16 pri16;  /* process priority   */
+               ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:13: note: previous declaration of 'pri16' was here
+ typedef int pri16;
+             ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:31:16: error: conflicting types for 'intmask'
+ typedef uint16 intmask; /* saved interrupt mask   */
+                ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:12:13: note: previous declaration of 'intmask' was here
+ typedef int intmask;
+             ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
@@ -289,496 +91,158 @@ In file included from c:\mingw\include\stdint.h:54:0,
 c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
  #define NULL ((void *)0)
  
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: type of 'nullptr' defaults to 'int' [-Wimplicit-int]
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: parameter 'interrupt' has incomplete type
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: declaration for parameter 'interrupt' but no such parameter
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: error: declaration for parameter 'uint64' but no such parameter
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: error: declaration for parameter 'dword' but no such parameter
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: error: declaration for parameter 'word' but no such parameter
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: error: declaration for parameter 'byte' but no such parameter
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: error: declaration for parameter 'bool8' but no such parameter
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: error: declaration for parameter 'uint8' but no such parameter
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: error: declaration for parameter 'int8' but no such parameter
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: error: declaration for parameter 'uint16' but no such parameter
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: error: declaration for parameter 'int16' but no such parameter
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: error: declaration for parameter 'uint32' but no such parameter
- typedef unsigned int uint32;
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: error: declaration for parameter 'int32' but no such parameter
- typedef int int32;
-             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: error: declaration for parameter 'uintmax_t' but no such parameter
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: error: declaration for parameter 'intmax_t' but no such parameter
- typedef long long intmax_t;
-                   ^~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:44:22: error: declaration for parameter '__uintptr_t' but no such parameter
- typedef unsigned int __uintptr_t;
-                      ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:42:13: error: declaration for parameter '__intptr_t' but no such parameter
- typedef int __intptr_t;
-             ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: error: declaration for parameter 'uint_fast64_t' but no such parameter
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: error: declaration for parameter 'int_fast64_t' but no such parameter
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: error: declaration for parameter 'uint_fast32_t' but no such parameter
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: error: declaration for parameter 'int_fast32_t' but no such parameter
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: error: declaration for parameter 'uint_fast16_t' but no such parameter
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: error: declaration for parameter 'int_fast16_t' but no such parameter
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: error: declaration for parameter 'uint_fast8_t' but no such parameter
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: error: declaration for parameter 'int_fast8_t' but no such parameter
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: error: declaration for parameter 'uint_least64_t' but no such parameter
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: error: declaration for parameter 'int_least64_t' but no such parameter
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: error: declaration for parameter 'uint_least32_t' but no such parameter
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: error: declaration for parameter 'int_least32_t' but no such parameter
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: error: declaration for parameter 'uint_least16_t' but no such parameter
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: error: declaration for parameter 'int_least16_t' but no such parameter
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: error: declaration for parameter 'uint_least8_t' but no such parameter
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: error: declaration for parameter 'int_least8_t' but no such parameter
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: error: declaration for parameter 'uint64_t' but no such parameter
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: error: declaration for parameter 'int64_t' but no such parameter
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: error: declaration for parameter 'uint32_t' but no such parameter
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: error: declaration for parameter 'int32_t' but no such parameter
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: error: declaration for parameter 'uint16_t' but no such parameter
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: error: declaration for parameter 'int16_t' but no such parameter
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: error: declaration for parameter 'uint8_t' but no such parameter
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: error: declaration for parameter 'int8_t' but no such parameter
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: error: declaration for parameter 'wint_t' but no such parameter
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: unused parameter 'nullptr' [-Wunused-parameter]
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: warning: unused parameter 'interrupt' [-Wunused-parameter]
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: warning: unused parameter 'uint64' [-Wunused-parameter]
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: warning: unused parameter 'dword' [-Wunused-parameter]
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: warning: unused parameter 'word' [-Wunused-parameter]
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: warning: unused parameter 'byte' [-Wunused-parameter]
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: warning: unused parameter 'bool8' [-Wunused-parameter]
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: warning: unused parameter 'uint8' [-Wunused-parameter]
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: warning: unused parameter 'int8' [-Wunused-parameter]
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: warning: unused parameter 'uint16' [-Wunused-parameter]
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: warning: unused parameter 'int16' [-Wunused-parameter]
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: warning: unused parameter 'uint32' [-Wunused-parameter]
- typedef unsigned int uint32;
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: warning: unused parameter 'int32' [-Wunused-parameter]
- typedef int int32;
-             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: warning: unused parameter 'uintmax_t' [-Wunused-parameter]
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: warning: unused parameter 'intmax_t' [-Wunused-parameter]
- typedef long long intmax_t;
-                   ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: warning: unused parameter 'uint_fast64_t' [-Wunused-parameter]
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: warning: unused parameter 'int_fast64_t' [-Wunused-parameter]
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: warning: unused parameter 'uint_fast32_t' [-Wunused-parameter]
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: warning: unused parameter 'int_fast32_t' [-Wunused-parameter]
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: warning: unused parameter 'uint_fast16_t' [-Wunused-parameter]
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: warning: unused parameter 'int_fast16_t' [-Wunused-parameter]
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: warning: unused parameter 'uint_fast8_t' [-Wunused-parameter]
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: warning: unused parameter 'int_fast8_t' [-Wunused-parameter]
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: warning: unused parameter 'uint_least64_t' [-Wunused-parameter]
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: warning: unused parameter 'int_least64_t' [-Wunused-parameter]
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: warning: unused parameter 'uint_least32_t' [-Wunused-parameter]
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: warning: unused parameter 'int_least32_t' [-Wunused-parameter]
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: warning: unused parameter 'uint_least16_t' [-Wunused-parameter]
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: warning: unused parameter 'int_least16_t' [-Wunused-parameter]
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: warning: unused parameter 'uint_least8_t' [-Wunused-parameter]
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: warning: unused parameter 'int_least8_t' [-Wunused-parameter]
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: warning: unused parameter 'uint64_t' [-Wunused-parameter]
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: warning: unused parameter 'int64_t' [-Wunused-parameter]
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: warning: unused parameter 'uint32_t' [-Wunused-parameter]
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: warning: unused parameter 'int32_t' [-Wunused-parameter]
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: warning: unused parameter 'uint16_t' [-Wunused-parameter]
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: warning: unused parameter 'int16_t' [-Wunused-parameter]
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: warning: unused parameter 'uint8_t' [-Wunused-parameter]
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: warning: unused parameter 'int8_t' [-Wunused-parameter]
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: warning: unused parameter 'wint_t' [-Wunused-parameter]
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:4:0: warning: control reaches end of non-void function [-Wreturn-type]
- #include <stdlib.h>
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:59:0: warning: "OK" redefined
+ #define OK ( 1)  /* normal system call return  */
  
-
-2025-06-17 22:51:57 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
 In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:8:9: error: unknown type name 'int32'
- typedef int32 pid32;
-         ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:9:9: error: unknown type name 'int32'
- typedef int32 sid32;
-         ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:15:3: error: conflicting types for 'max_align_t'
- } max_align_t;
-   ^~~~~~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:3:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:429:3: note: previous declaration of 'max_align_t' was here
- } max_align_t;
-   ^~~~~~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:0: note: this is the location of the previous definition
+ #define OK          1
+ 
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: error: function definition declared 'typedef'
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: return type defaults to 'int' [-Wimplicit-int]
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h: In function 'decltype':
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:27: error: expected declaration specifiers before 'nullptr_t'
- typedef decltype(nullptr) nullptr_t;
-                           ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: error: storage class specified for parameter 'wint_t'
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: error: storage class specified for parameter 'int8_t'
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: error: storage class specified for parameter 'uint8_t'
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: error: storage class specified for parameter 'int16_t'
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: error: storage class specified for parameter 'uint16_t'
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: error: storage class specified for parameter 'int32_t'
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: error: storage class specified for parameter 'uint32_t'
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: error: storage class specified for parameter 'int64_t'
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: error: storage class specified for parameter 'uint64_t'
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: error: storage class specified for parameter 'int_least8_t'
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: error: storage class specified for parameter 'uint_least8_t'
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: error: storage class specified for parameter 'int_least16_t'
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: error: storage class specified for parameter 'uint_least16_t'
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: error: storage class specified for parameter 'int_least32_t'
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: error: storage class specified for parameter 'uint_least32_t'
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: error: storage class specified for parameter 'int_least64_t'
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: error: storage class specified for parameter 'uint_least64_t'
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: error: storage class specified for parameter 'int_fast8_t'
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: error: storage class specified for parameter 'uint_fast8_t'
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: error: storage class specified for parameter 'int_fast16_t'
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: error: storage class specified for parameter 'uint_fast16_t'
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: error: storage class specified for parameter 'int_fast32_t'
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: error: storage class specified for parameter 'uint_fast32_t'
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: error: storage class specified for parameter 'int_fast64_t'
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: error: storage class specified for parameter 'uint_fast64_t'
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:42:13: error: storage class specified for parameter '__intptr_t'
- typedef int __intptr_t;
-             ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:43:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'intptr_t'
- typedef __intptr_t intptr_t;
-                    ^~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:44:22: error: storage class specified for parameter '__uintptr_t'
- typedef unsigned int __uintptr_t;
-                      ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:45:21: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uintptr_t'
- typedef __uintptr_t uintptr_t;
-                     ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: error: storage class specified for parameter 'intmax_t'
- typedef long long intmax_t;
-                   ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: error: storage class specified for parameter 'uintmax_t'
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: error: storage class specified for parameter 'int32'
- typedef int int32;
-             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: error: storage class specified for parameter 'uint32'
- typedef unsigned int uint32;
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
+ extern syscall putc(did32, char);
+                ^~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                                  ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                                   ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                 ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                                                 ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
+ extern int32 fscanf(int32, char *, int32);
+              ^~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:7:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:16:1: error: expected identifier or '(' before '{' token
+ {{ system_structures }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:19:1: error: expected identifier or '(' before '{' token
+ {{ system_variables }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:22:1: error: expected identifier or '(' before '{' token
+ {{ process_structure }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:28:1: error: expected identifier or '(' before '{' token
+ {{ additional_structures }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:11:1: error: expected identifier or '(' before '{' token
+ {{ test_forward_declarations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'main':
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: implicit declaration of function 'getenv' [-Wimplicit-function-declaration]
+         char *user = getenv("USER");
                       ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: error: storage class specified for parameter 'int16'
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: error: storage class specified for parameter 'uint16'
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: error: storage class specified for parameter 'int8'
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: error: storage class specified for parameter 'uint8'
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:54:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'qid16'
- typedef int16 qid16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:55:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'bpid32'
- typedef int32 bpid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:9: error: unknown type name 'byte'
- typedef byte bool8;
-         ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: error: storage class specified for parameter 'bool8'
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: error: storage class specified for parameter 'byte'
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: error: storage class specified for parameter 'word'
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: error: storage class specified for parameter 'dword'
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: error: storage class specified for parameter 'uint64'
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:61:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'did32'
- typedef int32 did32;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:62:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pri16'
- typedef int16 pri16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:63:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'umsg32'
- typedef uint32 umsg32;
-                ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:64:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'intmask'
- typedef uint16 intmask;
-                ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:65:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ibid32'
- typedef int32 ibid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:66:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'dbid32'
- typedef int32 dbid32;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:67:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'syscall'
- typedef int32 syscall;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:68:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'devcall'
- typedef int32 devcall;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:69:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'shellcmd'
- typedef int32 shellcmd;
-               ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:70:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'process'
- typedef int32 process;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: storage class specified for parameter 'interrupt'
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:72:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'status'
- typedef int32 status;
-               ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:73:16: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'marker'
- typedef uint32 marker[1];
-                ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:74:97: warning: file "C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/xinu.h" linemarker ignored due to incorrect nesting
- # 61 "C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/xinu.h" 2
-                                                                                                 ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:75:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13,
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:28:18: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             user = getenv("USERNAME"); /* For Windows */
+                  ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: error: 'test_execution_switch' undeclared (first use in this function)
+         {{ test_execution_switch }}
+            ^~~~~~~~~~~~~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: note: each undeclared identifier is reported only once for each function it appears in
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:34: error: expected ';' before '}' token
+         {{ test_execution_switch }}
+                                  ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'initialize_simulation':
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: implicit declaration of function 'strcpy' [-Wimplicit-function-declaration]
+             strcpy(proctab[i].prname, "NULLPROC");
+             ^~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: incompatible implicit declaration of built-in function 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: note: include '<string.h>' or provide a declaration of 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:55:23: error: 'struct procent' has no member named 'prio'; did you mean 'prprio'?
+             proctab[i].prio = 0;
+                       ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: warning: incompatible implicit declaration of built-in function 'strcpy'
+             strcpy(proctab[i].prname, "UNUSED");
+             ^~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: note: include '<string.h>' or provide a declaration of 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:64:5: error: 'count1000' undeclared (first use in this function)
+     count1000 = 0;
+     ^~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:8: error: 'custom_initialization' undeclared (first use in this function)
+     {{ custom_initialization }}
+        ^~~~~~~~~~~~~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:30: error: expected ';' before '}' token
+     {{ custom_initialization }}
+                              ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: At top level:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:75:1: error: expected identifier or '(' before '{' token
+ {{ test_implementations }}
+ ^
+
+2025-06-17 23:12:28 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:24:16: error: conflicting types for 'qid16'
+ typedef int16  qid16;
+                ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:/Users/mol/Desktop/School/Graduate-School/CIS657/FINAL/XINU SIM/output/include/memory.h:34:2: error: expected specifier-qualifier-list before 'uint32'
-  uint32 mlength;  /* size of blk (includes memblk)*/
-  ^~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:121:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13,
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:13: note: previous declaration of 'qid16' was here
+ typedef int qid16;
+             ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:24:2: error: unknown type name 'byte'
+  byte    dvirq;
+  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
+ typedef char                int8;
+                             ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
+ typedef int8_t   int8;
+                  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:27:15: error: conflicting types for 'pri16'
+ typedef int16 pri16;  /* process priority   */
+               ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:13: note: previous declaration of 'pri16' was here
+ typedef int pri16;
+             ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:31:16: error: conflicting types for 'intmask'
+ typedef uint16 intmask; /* saved interrupt mask   */
+                ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:12:13: note: previous declaration of 'intmask' was here
+ typedef int intmask;
+             ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
@@ -792,265 +256,140 @@ In file included from c:\mingw\include\stdint.h:54:0,
 c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
  #define NULL ((void *)0)
  
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: type of 'nullptr' defaults to 'int' [-Wimplicit-int]
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: parameter 'interrupt' has incomplete type
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: error: declaration for parameter 'interrupt' but no such parameter
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: error: declaration for parameter 'uint64' but no such parameter
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: error: declaration for parameter 'dword' but no such parameter
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: error: declaration for parameter 'word' but no such parameter
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: error: declaration for parameter 'byte' but no such parameter
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: error: declaration for parameter 'bool8' but no such parameter
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: error: declaration for parameter 'uint8' but no such parameter
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: error: declaration for parameter 'int8' but no such parameter
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: error: declaration for parameter 'uint16' but no such parameter
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: error: declaration for parameter 'int16' but no such parameter
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: error: declaration for parameter 'uint32' but no such parameter
- typedef unsigned int uint32;
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: error: declaration for parameter 'int32' but no such parameter
- typedef int int32;
-             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: error: declaration for parameter 'uintmax_t' but no such parameter
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: error: declaration for parameter 'intmax_t' but no such parameter
- typedef long long intmax_t;
-                   ^~~~~~~~
-In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:44:22: error: declaration for parameter '__uintptr_t' but no such parameter
- typedef unsigned int __uintptr_t;
-                      ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:42:13: error: declaration for parameter '__intptr_t' but no such parameter
- typedef int __intptr_t;
-             ^
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: error: declaration for parameter 'uint_fast64_t' but no such parameter
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: error: declaration for parameter 'int_fast64_t' but no such parameter
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: error: declaration for parameter 'uint_fast32_t' but no such parameter
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: error: declaration for parameter 'int_fast32_t' but no such parameter
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: error: declaration for parameter 'uint_fast16_t' but no such parameter
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: error: declaration for parameter 'int_fast16_t' but no such parameter
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: error: declaration for parameter 'uint_fast8_t' but no such parameter
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: error: declaration for parameter 'int_fast8_t' but no such parameter
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: error: declaration for parameter 'uint_least64_t' but no such parameter
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: error: declaration for parameter 'int_least64_t' but no such parameter
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: error: declaration for parameter 'uint_least32_t' but no such parameter
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: error: declaration for parameter 'int_least32_t' but no such parameter
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: error: declaration for parameter 'uint_least16_t' but no such parameter
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: error: declaration for parameter 'int_least16_t' but no such parameter
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: error: declaration for parameter 'uint_least8_t' but no such parameter
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: error: declaration for parameter 'int_least8_t' but no such parameter
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: error: declaration for parameter 'uint64_t' but no such parameter
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: error: declaration for parameter 'int64_t' but no such parameter
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: error: declaration for parameter 'uint32_t' but no such parameter
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: error: declaration for parameter 'int32_t' but no such parameter
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: error: declaration for parameter 'uint16_t' but no such parameter
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: error: declaration for parameter 'int16_t' but no such parameter
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: error: declaration for parameter 'uint8_t' but no such parameter
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: error: declaration for parameter 'int8_t' but no such parameter
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: error: declaration for parameter 'wint_t' but no such parameter
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:9: warning: unused parameter 'nullptr' [-Wunused-parameter]
- typedef decltype(nullptr) nullptr_t;
-         ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:71:14: warning: unused parameter 'interrupt' [-Wunused-parameter]
- typedef void interrupt;
-              ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:60:28: warning: unused parameter 'uint64' [-Wunused-parameter]
- typedef unsigned long long uint64;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:59:23: warning: unused parameter 'dword' [-Wunused-parameter]
- typedef unsigned long dword;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:58:22: warning: unused parameter 'word' [-Wunused-parameter]
- typedef unsigned int word;
-                      ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:57:23: warning: unused parameter 'byte' [-Wunused-parameter]
- typedef unsigned char byte;
-                       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:56:14: warning: unused parameter 'bool8' [-Wunused-parameter]
- typedef byte bool8;
-              ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:53:23: warning: unused parameter 'uint8' [-Wunused-parameter]
- typedef unsigned char uint8;
-                       ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:52:14: warning: unused parameter 'int8' [-Wunused-parameter]
- typedef char int8;
-              ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:51:24: warning: unused parameter 'uint16' [-Wunused-parameter]
- typedef unsigned short uint16;
-                        ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:50:15: warning: unused parameter 'int16' [-Wunused-parameter]
- typedef short int16;
-               ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:49:22: warning: unused parameter 'uint32' [-Wunused-parameter]
- typedef unsigned int uint32;
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:48:13: warning: unused parameter 'int32' [-Wunused-parameter]
- typedef int int32;
-             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:47:28: warning: unused parameter 'uintmax_t' [-Wunused-parameter]
- typedef unsigned long long uintmax_t;
-                            ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:46:19: warning: unused parameter 'intmax_t' [-Wunused-parameter]
- typedef long long intmax_t;
-                   ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:41:28: warning: unused parameter 'uint_fast64_t' [-Wunused-parameter]
- typedef unsigned long long uint_fast64_t;
-                            ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:40:19: warning: unused parameter 'int_fast64_t' [-Wunused-parameter]
- typedef long long int_fast64_t;
-                   ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:39:22: warning: unused parameter 'uint_fast32_t' [-Wunused-parameter]
- typedef unsigned int uint_fast32_t;
-                      ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:38:13: warning: unused parameter 'int_fast32_t' [-Wunused-parameter]
- typedef int int_fast32_t;
-             ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:37:24: warning: unused parameter 'uint_fast16_t' [-Wunused-parameter]
- typedef unsigned short uint_fast16_t;
-                        ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:36:15: warning: unused parameter 'int_fast16_t' [-Wunused-parameter]
- typedef short int_fast16_t;
-               ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:35:23: warning: unused parameter 'uint_fast8_t' [-Wunused-parameter]
- typedef unsigned char uint_fast8_t;
-                       ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:34:21: warning: unused parameter 'int_fast8_t' [-Wunused-parameter]
- typedef signed char int_fast8_t;
-                     ^~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:33:28: warning: unused parameter 'uint_least64_t' [-Wunused-parameter]
- typedef unsigned long long uint_least64_t;
-                            ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:32:19: warning: unused parameter 'int_least64_t' [-Wunused-parameter]
- typedef long long int_least64_t;
-                   ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:31:18: warning: unused parameter 'uint_least32_t' [-Wunused-parameter]
- typedef unsigned uint_least32_t;
-                  ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:30:13: warning: unused parameter 'int_least32_t' [-Wunused-parameter]
- typedef int int_least32_t;
-             ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:29:24: warning: unused parameter 'uint_least16_t' [-Wunused-parameter]
- typedef unsigned short uint_least16_t;
-                        ^~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:15: warning: unused parameter 'int_least16_t' [-Wunused-parameter]
- typedef short int_least16_t;
-               ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:27:23: warning: unused parameter 'uint_least8_t' [-Wunused-parameter]
- typedef unsigned char uint_least8_t;
-                       ^~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:26:21: warning: unused parameter 'int_least8_t' [-Wunused-parameter]
- typedef signed char int_least8_t;
-                     ^~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:28: warning: unused parameter 'uint64_t' [-Wunused-parameter]
- typedef unsigned long long uint64_t;
-                            ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:24:19: warning: unused parameter 'int64_t' [-Wunused-parameter]
- typedef long long int64_t;
-                   ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:23:18: warning: unused parameter 'uint32_t' [-Wunused-parameter]
- typedef unsigned uint32_t;
-                  ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:13: warning: unused parameter 'int32_t' [-Wunused-parameter]
- typedef int int32_t;
-             ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:21:24: warning: unused parameter 'uint16_t' [-Wunused-parameter]
- typedef unsigned short uint16_t;
-                        ^~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:15: warning: unused parameter 'int16_t' [-Wunused-parameter]
- typedef short int16_t;
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:23: warning: unused parameter 'uint8_t' [-Wunused-parameter]
- typedef unsigned char uint8_t;
-                       ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:18:21: warning: unused parameter 'int8_t' [-Wunused-parameter]
- typedef signed char int8_t;
-                     ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:17:28: warning: unused parameter 'wint_t' [-Wunused-parameter]
- typedef short unsigned int wint_t;
-                            ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:4:0: warning: control reaches end of non-void function [-Wreturn-type]
- #include <stdlib.h>
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:59:0: warning: "OK" redefined
+ #define OK ( 1)  /* normal system call return  */
  
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:0: note: this is the location of the previous definition
+ #define OK          1
+ 
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
+ extern syscall putc(did32, char);
+                ^~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                                  ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                                   ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                 ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                                                 ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
+ extern int32 fscanf(int32, char *, int32);
+              ^~~~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:661:38: error: conflicting types for 'open'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int open (const char*, int, ...);
+                                      ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:167:16: note: previous declaration of 'open' was here
+ extern syscall open(did32, char *, char *);
+                ^~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:662:38: error: conflicting types for 'read'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int read (int, void*, unsigned int);
+                                      ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:203:16: note: previous declaration of 'read' was here
+ extern syscall read(did32, char *, uint32);
+                ^~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:668:38: error: conflicting types for 'write'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int write (int, const void*, unsigned int);
+                                      ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:319:16: note: previous declaration of 'write' was here
+ extern syscall write(did32, char *, uint32);
+                ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:0:
+c:\mingw\include\unistd.h:113:34: error: conflicting types for 'sleep'
+ unsigned __cdecl __MINGW_NOTHROW sleep( unsigned );
+                                  ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:258:16: note: previous declaration of 'sleep' was here
+ extern syscall sleep(uint32);
+                ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:9:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:12:1: error: expected identifier or '(' before '{' token
+ {{ stdio_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:15:1: error: expected identifier or '(' before '{' token
+ {{ stdlib_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:18:1: error: expected identifier or '(' before '{' token
+ {{ string_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:21:1: error: expected identifier or '(' before '{' token
+ {{ process_management }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:24:1: error: expected identifier or '(' before '{' token
+ {{ interrupt_management }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:27:1: error: expected identifier or '(' before '{' token
+ {{ simulation_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:30:1: error: expected identifier or '(' before '{' token
+ {{ dynamic_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:12:1: error: expected identifier or '(' before '{' token
+ {{ stdio_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:15:1: error: expected identifier or '(' before '{' token
+ {{ stdlib_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:18:1: error: expected identifier or '(' before '{' token
+ {{ string_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:21:1: error: expected identifier or '(' before '{' token
+ {{ process_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:24:1: error: expected identifier or '(' before '{' token
+ {{ interrupt_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:27:1: error: expected identifier or '(' before '{' token
+ {{ simulation_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:31:15: error: conflicting types for 'clktime'
+ unsigned long clktime = 0;/* Current time in seconds since boot */
+               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:51:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/clock.h:14:15: note: previous declaration of 'clktime' was here
+ extern uint32 clktime; /* current time in secs since boot */
+               ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:38:1: error: expected identifier or '(' before '{' token
+ {{ dynamic_implementations }}
+ ^
 
-2025-06-17 22:51:57 - Error: No object files to link
+2025-06-17 23:12:28 - Error: No object files to link

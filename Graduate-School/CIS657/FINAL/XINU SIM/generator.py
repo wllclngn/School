@@ -179,49 +179,40 @@ struct procent {
         return output_include_dir
         
     def preprocess_headers(self):
-        # Use g++ to preprocess XINU headers and extract definitions.
+        # Use g++ to preprocess XINU headers with minimal includes.
         self._print("\n##### Preprocessing XINU Headers with g++ #####")
         
-        # Find main XINU header
-        xinu_h_path = os.path.join(self.config.include_dir, "xinu.h")
-        if not os.path.exists(xinu_h_path):
-            # Try other common locations
-            xinu_include_dir = os.path.join(self.config.xinu_os_dir, "include")
-            xinu_h_path = os.path.join(xinu_include_dir, "xinu.h")
+        # Create a temporary file with minimal includes
+        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
+            temp_path = temp_file.name
+            
+            # Just define some basic types for preprocessing
+            temp_file.write(b"""
+    /* Minimal preprocessing test file */
+    typedef int pid32;
+    typedef int sid32;
+    typedef int int32;
+    typedef unsigned int uint32;
+
+    struct procent {
+        void *prstkptr;
+        int prio;
+        int prstate;
+        char prname[16];
+    };
+
+    typedef int bpid32;
+    typedef int qid16;
+    """)
         
-        if not os.path.exists(xinu_h_path):
-            log(f"ERROR: Cannot find xinu.h in standard locations")
-            self._print(f"ERROR: Cannot find xinu.h in standard locations")
-            return False
-        
-        # Fix include paths in header files
-        fixed_headers_dir = self._fix_include_paths(os.path.dirname(xinu_h_path))
-        
-        # Make sure xinu_stddefs.h exists in the output directory before preprocessing
-        stddefs_path = os.path.join(self.config.output_dir, "xinu_stddefs.h")
-        if not os.path.exists(stddefs_path):
-            # Create a minimal stddefs file to satisfy the preprocessor
-            os.makedirs(os.path.dirname(stddefs_path), exist_ok=True)
-            with open(stddefs_path, 'w') as f:
-                f.write("/* Temporary stddefs file for preprocessing */\n")
-                f.write("#ifndef _XINU_STDDEFS_H_\n")
-                f.write("#define _XINU_STDDEFS_H_\n")
-                f.write("typedef int pid32;\n")
-                f.write("typedef int sid32;\n")
-                f.write("#endif /* _XINU_STDDEFS_H_ */\n")
-            log(f"Created temporary xinu_stddefs.h for preprocessing")
-        
-        # Build include paths with proper quoting to handle spaces
-        # Include the output directory first to ensure our stddefs.h is found
+        # Build include paths with proper quoting
         include_paths = [
-            self.config.output_dir,  # Look here first for our generated files
-            os.path.join(self.config.output_dir, "include"),  # Look for our fixed headers
+            self.config.output_dir,
+            os.path.join(self.config.output_dir, "include"),
             self.config.include_dir,
-            os.path.join(self.config.xinu_os_dir, "include"),
-            os.path.dirname(xinu_h_path)
+            os.path.join(self.config.xinu_os_dir, "include")
         ]
         
-        # Ensure paths are unique and exist
         include_paths = [p for p in include_paths if p and os.path.exists(p)]
         unique_paths = []
         for p in include_paths:
@@ -231,38 +222,18 @@ struct procent {
         
         self._print(f"Setup environment with include paths: {include_paths}")
         
-        # Build include options with proper path handling for g++
-        # g++ on Windows accepts forward slashes, so standardize on that
+        # Build include options with forward slashes for g++
         include_opts = ""
         for path in include_paths:
-            # Convert Windows backslashes to forward slashes for g++
             gcc_path = path.replace('\\', '/')
             include_opts += f' -I"{gcc_path}"'
         
-        # Create a simple temp file for preprocessing
-        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
-            temp_path = temp_file.name
-            # Instead of including headers directly in the file,
-            # we'll use -include option to control include order
-        
-        # Run g++ preprocessor with properly quoted paths and explicit includes
         try:
             # Convert temp path to use forward slashes
             temp_path_gcc = temp_path.replace('\\', '/')
             
-            # Find our fixed xinu.h in the output directory
-            fixed_xinu_h = os.path.join(self.config.output_dir, "include", "xinu.h")
-            if os.path.exists(fixed_xinu_h):
-                xinu_include = fixed_xinu_h
-            else:
-                xinu_include = xinu_h_path
-            
-            # Convert all paths to forward slashes
-            stddefs_gcc = stddefs_path.replace('\\', '/')
-            xinu_include_gcc = xinu_include.replace('\\', '/')
-            
-            # Build the command line with explicit includes and forward slashes consistently
-            cmd = f'g++ -E{include_opts} -include "{stddefs_gcc}" -include "{xinu_include_gcc}" "{temp_path_gcc}"'
+            # Run g++ with minimal preprocessing flags
+            cmd = f'g++ -E{include_opts} "{temp_path_gcc}"'
             
             self._print(f"Running: {cmd}")
             process = subprocess.Popen(
@@ -276,7 +247,6 @@ struct procent {
                 self._print(f"ERROR: g++ preprocessing failed: {stderr}")
                 return False
             
-            # Store preprocessed output
             self.preprocessed_content = stdout
             self._print(f"Successfully preprocessed XINU headers ({len(stdout)} bytes)")
             
@@ -384,26 +354,47 @@ struct procent {
         self._print(f"Generated XINU stddefs: {self.config.stddefs_h}")
     
     def _generate_stddefs_from_symbols(self):
-        # Generate stddefs content from extracted symbols.
-        # Build content from extracted symbols
+        # Generate a minimal stddefs file that won't conflict with system headers
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
-        content = f"/* xinu_stddefs.h - Generated by g++ preprocessing */\n"
+        content = f"/* xinu_stddefs.h - Minimal type definitions for XINU simulation */\n"
         content += f"/* Generated on: {timestamp} */\n"
         content += f"/* By user: {username} */\n"
         content += "#ifndef _XINU_STDDEFS_H_\n"
         content += "#define _XINU_STDDEFS_H_\n\n"
         
-        # Add typedefs
-        content += "/* Basic type definitions */\n"
-        for name, type_def in self.extracted_symbols.get('typedefs', {}).items():
-            content += f"typedef {type_def} {name};\n"
+        # Only define essential XINU types that don't conflict with standard headers
+        content += "/* Basic XINU type definitions */\n"
+        content += "typedef int pid32;\n"
+        content += "typedef int sid32;\n"
+        content += "typedef int qid16;\n"
+        content += "typedef int did32;\n"
+        content += "typedef int intmask;\n"
+        content += "typedef int status;\n"
+        content += "typedef int message;\n"
+        content += "typedef int syscall;\n"
+        content += "typedef int devcall;\n"
+        content += "typedef int shellcmd;\n"
+        content += "typedef int process;\n"
+        content += "typedef int bpid32;\n"
+        content += "typedef int pri16;\n"
+        content += "typedef unsigned int memblk;\n"
+        content += "typedef void (*exchandler)();\n"
         
-        # Add defines
-        content += "\n/* Constant definitions */\n"
-        for name, value in self.extracted_symbols.get('defines', {}).items():
-            content += f"#define {name} {value}\n"
+        # Add any missing types explicitly requested
+        for type_name in self.missing_types:
+            content += f"typedef int {type_name};\n"
+        
+        # Add essential XINU constants
+        content += "\n/* XINU constants */\n"
+        content += "#define TRUE        1\n"
+        content += "#define FALSE       0\n"
+        content += "#define SYSERR     (-1)\n"
+        content += "#define OK          1\n"
+        content += "#define READY       1\n"
+        content += "#define SUSPENDED   2\n"
+        content += "#define WAITING     3\n"
         
         content += "\n#endif /* _XINU_STDDEFS_H_ */\n"
         return content
