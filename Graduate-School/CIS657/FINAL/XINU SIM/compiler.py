@@ -10,7 +10,7 @@ import platform
 import datetime
 import re
 import tempfile
-from xinu_sim.utils.logger import log
+from utils.logger import log
 
 class XinuCompiler:
     """Enhanced XINU compiler with g++ integration and dynamic adaptation."""

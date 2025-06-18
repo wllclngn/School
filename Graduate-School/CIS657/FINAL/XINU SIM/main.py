@@ -1,4 +1,4 @@
-#  main.py - XINU SIM main entry point with g++ integration
+# main.py - XINU SIM main entry point with g++ integration
 # NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
 
 import os
@@ -13,7 +13,14 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import local modules
-from logger import log, setup_logging
+from utils.logger import log, setup_logger
+
+# Define setup_logging to maintain compatibility with existing code
+def setup_logging(level='INFO'):
+    """Wrapper for setup_logger to maintain API compatibility"""
+    verbose = level.lower() == 'debug'
+    return setup_logger(verbose=verbose)
+
 from generator import XinuGenerator
 from compiler import XinuCompiler
 
@@ -23,7 +30,8 @@ class XinuConfig:
     def __init__(self):
         # Initialize with default values
         self.project_dir = os.path.abspath(os.path.dirname(__file__))
-        self.xinu_os_dir = os.path.join(self.project_dir, "xinu_os")
+        # Point to the correct XINU OS directory which is one level up
+        self.xinu_os_dir = os.path.abspath(os.path.join(self.project_dir, "..", "XINU OS"))
         self.output_dir = os.path.join(self.project_dir, "output")
         self.obj_dir = os.path.join(self.output_dir, "obj")
         self.bin_dir = os.path.join(self.output_dir, "bin")
@@ -194,6 +202,9 @@ class XinuSimMain:
         parser.add_argument('-r', '--rebuild-all', dest='rebuild_all',
                            action='store_true',
                            help='Force rebuild of all components')
+        parser.add_argument('-c', '--clean', dest='rebuild_all',  # Added clean alias
+                           action='store_true',
+                           help='Clean and rebuild (alias for --rebuild-all)')
         parser.add_argument('-v', '--verbose', dest='verbose',
                            action='store_true',
                            help='Enable verbose output')

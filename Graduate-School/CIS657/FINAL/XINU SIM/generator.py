@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import datetime
 import sys
-from xinu_sim.utils.logger import log
+from utils.logger import log
 
 class XinuGenerator:
     """Generator for XINU simulation files using g++ preprocessing."""
