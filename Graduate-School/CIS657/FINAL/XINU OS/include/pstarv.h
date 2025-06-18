@@ -1,24 +1,20 @@
-#include <xinu.h>
-/* pstarv.h - Header file for process starvation prevention */
+/* pstarv.h - Modified for XINU Final Project
+ * Last modified: 2025-06-15 05:35:28 UTC
+ * Modified by: wllclngn
+ */
 
 #ifndef _PSTARV_H_
 #define _PSTARV_H_
 
-/* External declarations */
-extern pid32 pstarv_pid;        /* PID of the process that might suffer starvation */
-extern bool8 enable_starvation_fix; /* Flag to enable/disable the starvation fix */
+#include <xinu.h>
+
+/* Global variable declarations */
+extern pid32 pstarv_pid;              /* PID of process to monitor for starvation */
+extern bool8 enable_starvation_fix;   /* Starvation prevention flag */
+extern uint32 pstarv_ready_time;      /* Time when pstarv entered ready queue */
+extern uint32 last_boost_time;        /* Last time priority was boosted */
 
 /* Function prototypes */
-syscall starvation_q1_init(void);  /* Initialize Q1 starvation prevention */
-syscall starvation_q2_init(void);  /* Initialize Q2 starvation prevention */
-
-/* Process function prototypes */
-process process_p1(void);      /* P1 - High priority process */
-process process_p2(void);      /* P2 - High priority process */
-process process_pstarv(void);  /* Pstarv - Lower priority process that might starve */
-
-/* Test function prototypes */
-process run_starvation_test_q1(void);  /* Run Q1 test (context switch based) */
-process run_starvation_test_q2(void);  /* Run Q2 test (time based) */
+extern void boost_pstarv_priority(void);
 
 #endif /* _PSTARV_H_ */

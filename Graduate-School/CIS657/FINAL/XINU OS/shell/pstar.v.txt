@@ -1,0 +1,9 @@
+#ifndef _PSTARV_H_
+#define _PSTARV_H_
+
+#include <xinu.h>
+
+extern bool8 enable_starvation_fix;
+extern pid32 pstarv_pid;
+
+#endif

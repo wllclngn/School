@@ -4,6 +4,7 @@
 
 #include <xinu.h>
 #include <string.h>
+#include <pstarv.h> // <--- ADD THIS INCLUDE
 
 extern	void	start(void);	/* start of Xinu code */
 extern	void	*_end;		/* end of Xinu code */
@@ -83,7 +84,7 @@ void	nulluser(void)
 
 	resume (
 	   create((void *)main, INITSTK, INITPRIO, "Main process", 20, 0,
-           NULL));
+            NULL));
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
@@ -198,6 +199,12 @@ static	void	sysinit(void)
 			(devptr->dvinit) (devptr);
 		}
 	}
+
+    // You might also want to initialize your pstarv variables here if needed,
+    // for example, if you have a specific setup function in pstarv.h/c
+    // e.g., initialize_pstarv_subsystem();
+    // For now, their global definitions with initial values are above.
+
 	return;
 }
 
