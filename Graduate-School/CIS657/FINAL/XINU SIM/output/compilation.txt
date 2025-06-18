@@ -1,78 +1,78 @@
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation.txt
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation_summary.txt
-2025-06-18 13:27:26 - Removed object files from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\windows_compat
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
-2025-06-18 13:27:26 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
-2025-06-18 13:27:26 - Created Windows compatibility header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
-2025-06-18 13:27:26 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-18 13:27:26 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
-2025-06-18 13:27:26 - Generating minimal XINU simulation files
-2025-06-18 13:27:26 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 13:27:26 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
-2025-06-18 13:27:26 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 13:27:26 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 13:27:26 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 13:27:26 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 13:27:26 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
-2025-06-18 13:27:26 - Setting up Windows environment for XINU compilation
-2025-06-18 13:27:26 - WARNING: Long paths support is not enabled in Windows registry.
-2025-06-18 13:27:26 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
-2025-06-18 13:27:26 - Created Windows helper functions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
-2025-06-18 13:27:26 - Created Windows compatibility layer in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output
-2025-06-18 13:27:26 - Created patched headers: conf.h, kernel.h, prototypes.h, stdio.h, xinu.h
-2025-06-18 13:27:26 - Created compiler wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
-2025-06-18 13:27:26 - Windows environment setup complete
-2025-06-18 13:27:26 - Use the generated compatibility headers and build scripts to compile XINU
-2025-06-18 13:27:26 - Windows environment setup complete
-2025-06-18 13:27:26 - XINU simulation file generation complete
-2025-06-18 13:27:26 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\Makefile
-2025-06-18 13:27:26 - Found definition: COMPILER_ROOT = /usr/bin/
-2025-06-18 13:27:26 - Found definition: CC = ${COMPILER_ROOT}gcc
-2025-06-18 13:27:26 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
-2025-06-18 13:27:26 - Found definition: AS = ${COMPILER_ROOT}as --32
-2025-06-18 13:27:26 - Found definition: LD = ${COMPILER_ROOT}ld
-2025-06-18 13:27:26 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
-2025-06-18 13:27:26 - Found definition: LIB = ../lib/libxc
-2025-06-18 13:27:27 - Found definition: XINU = ./xinu
-2025-06-18 13:27:27 - Found definition: MAKEDEP = gcc -M -MG
-2025-06-18 13:27:27 - Found definition: DEFS = -DBSDURG
-2025-06-18 13:27:27 - Found definition: CFLAGS_EXTRA = 
-2025-06-18 13:27:27 - Found definition: INCLUDE = -I../include
-2025-06-18 13:27:27 - Found definition: BRELOC = 0x150000
-2025-06-18 13:27:27 - Found definition: BOOTPLOC = 0x150000
-2025-06-18 13:27:27 - Found definition: SDEFS = -I../include
-2025-06-18 13:27:27 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
-2025-06-18 13:27:27 - Found definition: LDFLAGS = -m elf_i386
-2025-06-18 13:27:27 - Found definition: TOPDIR = ..
-2025-06-18 13:27:27 - Found definition: COMPS = system 							\
-2025-06-18 13:27:27 - Found definition: SRC_FILES = 
-2025-06-18 13:27:27 - Found definition: SYSTEM_SFILES = \
-2025-06-18 13:27:27 - Found definition: SYSTEM_CFILES = \
-2025-06-18 13:27:27 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-2025-06-18 13:27:27 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-2025-06-18 13:27:27 - Found definition: TTY_SFILES = \
-2025-06-18 13:27:27 - Found definition: TTY_CFILES = \
-2025-06-18 13:27:27 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-2025-06-18 13:27:27 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-2025-06-18 13:27:27 - Found definition: SHELL_CFILES = \
-2025-06-18 13:27:27 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
-2025-06-18 13:27:27 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-2025-06-18 13:27:27 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-2025-06-18 13:27:27 - Found source files: ['\\']
-2025-06-18 13:27:27 - Found source files: ['\\']
-2025-06-18 13:27:27 - Found source files: ['\\']
-2025-06-18 13:27:27 - Found compiled source: ../system/initialize.c
-2025-06-18 13:27:27 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
-2025-06-18 13:27:27 - Found LDFLAGS: ['-m', 'elf_i386']
-2025-06-18 13:27:27 - Found include directory from INCLUDE: ../include
-2025-06-18 13:27:27 - Successfully parsed Makefile: found 4 source files and 1 include directories
-2025-06-18 13:27:27 - Source files from Makefile: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\compile\\../system/initialize.c']
-2025-06-18 13:27:27 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation.txt
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation_summary.txt
+2025-06-18 14:23:09 - Removed object files from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\windows_compat
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
+2025-06-18 14:23:09 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
+2025-06-18 14:23:09 - Created Windows compatibility header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
+2025-06-18 14:23:09 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
+2025-06-18 14:23:09 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
+2025-06-18 14:23:09 - Generating minimal XINU simulation files
+2025-06-18 14:23:09 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-18 14:23:09 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
+2025-06-18 14:23:09 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 14:23:09 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 14:23:09 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 14:23:09 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 14:23:09 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
+2025-06-18 14:23:09 - Setting up Windows environment for XINU compilation
+2025-06-18 14:23:09 - WARNING: Long paths support is not enabled in Windows registry.
+2025-06-18 14:23:09 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
+2025-06-18 14:23:09 - Created Windows helper functions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
+2025-06-18 14:23:09 - Created Windows compatibility layer in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output
+2025-06-18 14:23:09 - Created patched headers: conf.h, kernel.h, prototypes.h, stdio.h, xinu.h
+2025-06-18 14:23:09 - Created compiler wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
+2025-06-18 14:23:09 - Windows environment setup complete
+2025-06-18 14:23:09 - Use the generated compatibility headers and build scripts to compile XINU
+2025-06-18 14:23:09 - Windows environment setup complete
+2025-06-18 14:23:09 - XINU simulation file generation complete
+2025-06-18 14:23:09 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\Makefile
+2025-06-18 14:23:09 - Found definition: COMPILER_ROOT = /usr/bin/
+2025-06-18 14:23:09 - Found definition: CC = ${COMPILER_ROOT}gcc
+2025-06-18 14:23:09 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
+2025-06-18 14:23:09 - Found definition: AS = ${COMPILER_ROOT}as --32
+2025-06-18 14:23:09 - Found definition: LD = ${COMPILER_ROOT}ld
+2025-06-18 14:23:09 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
+2025-06-18 14:23:09 - Found definition: LIB = ../lib/libxc
+2025-06-18 14:23:09 - Found definition: XINU = ./xinu
+2025-06-18 14:23:09 - Found definition: MAKEDEP = gcc -M -MG
+2025-06-18 14:23:09 - Found definition: DEFS = -DBSDURG
+2025-06-18 14:23:09 - Found definition: CFLAGS_EXTRA = 
+2025-06-18 14:23:09 - Found definition: INCLUDE = -I../include
+2025-06-18 14:23:09 - Found definition: BRELOC = 0x150000
+2025-06-18 14:23:09 - Found definition: BOOTPLOC = 0x150000
+2025-06-18 14:23:09 - Found definition: SDEFS = -I../include
+2025-06-18 14:23:09 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+2025-06-18 14:23:09 - Found definition: LDFLAGS = -m elf_i386
+2025-06-18 14:23:09 - Found definition: TOPDIR = ..
+2025-06-18 14:23:09 - Found definition: COMPS = system 							\
+2025-06-18 14:23:09 - Found definition: SRC_FILES = 
+2025-06-18 14:23:09 - Found definition: SYSTEM_SFILES = \
+2025-06-18 14:23:09 - Found definition: SYSTEM_CFILES = \
+2025-06-18 14:23:09 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
+2025-06-18 14:23:09 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
+2025-06-18 14:23:09 - Found definition: TTY_SFILES = \
+2025-06-18 14:23:09 - Found definition: TTY_CFILES = \
+2025-06-18 14:23:09 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+2025-06-18 14:23:09 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
+2025-06-18 14:23:09 - Found definition: SHELL_CFILES = \
+2025-06-18 14:23:09 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
+2025-06-18 14:23:09 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
+2025-06-18 14:23:09 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
+2025-06-18 14:23:09 - Found source files: ['\\']
+2025-06-18 14:23:09 - Found source files: ['\\']
+2025-06-18 14:23:09 - Found source files: ['\\']
+2025-06-18 14:23:09 - Found compiled source: ../system/initialize.c
+2025-06-18 14:23:09 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
+2025-06-18 14:23:09 - Found LDFLAGS: ['-m', 'elf_i386']
+2025-06-18 14:23:09 - Found include directory from INCLUDE: ../include
+2025-06-18 14:23:09 - Successfully parsed Makefile: found 4 source files and 1 include directories
+2025-06-18 14:23:09 - Source files from Makefile: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\compile\\../system/initialize.c']
+2025-06-18 14:23:09 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
 In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:12:0:
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:6:8: error: unknown type name 'int32'
  extern int32 _doscan(char *,int32 *, int32 (*)(void),
@@ -158,6 +158,6 @@ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.
  uint32 rand(void);
  ^~~~~~
 
-2025-06-18 13:27:27 - Linking error:
+2025-06-18 14:23:10 - Linking error:
 g++: error: elf_i386: No such file or directory
 

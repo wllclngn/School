@@ -1,5 +1,5 @@
 /* xinu_windows_compat.h - Compatibility layer for XINU on Windows
- * Generated on: 2025-06-18 13:27:26 by mol
+ * Generated on: 2025-06-18 14:23:09 by mol
  * AUTOMATICALLY GENERATED - DO NOT EDIT DIRECTLY
  */
 #ifndef _XINU_WINDOWS_COMPAT_H_

@@ -2,6 +2,9 @@
 #include "xinu_windows_compat.h"
 #endif
 
+#ifndef _XINU_H_  // Or any other unique guard name like __XINU_H__
+#define _XINU_H_
+
 /* xinu.h - include all system header files */
 
 #include <kernel.h>
@@ -24,3 +27,5 @@
 #include <prototypes.h>
 #include <i386.h>
 #include <pci.h>
+
+#endif /* _XINU_H_ */
