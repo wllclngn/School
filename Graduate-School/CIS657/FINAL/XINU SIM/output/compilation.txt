@@ -1,163 +1,200 @@
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation.txt
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation_summary.txt
-2025-06-18 14:58:49 - Removed object files from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\windows_compat
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
-2025-06-18 14:58:49 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
-2025-06-18 14:58:49 - Created Windows compatibility header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
-2025-06-18 14:58:49 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-18 14:58:49 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
-2025-06-18 14:58:49 - Generating minimal XINU simulation files
-2025-06-18 14:58:50 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 14:58:50 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
-2025-06-18 14:58:50 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 14:58:50 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 14:58:50 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 14:58:50 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 14:58:50 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
-2025-06-18 14:58:50 - Setting up Windows environment for XINU compilation
-2025-06-18 14:58:50 - WARNING: Long paths support is not enabled in Windows registry.
-2025-06-18 14:58:50 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
-2025-06-18 14:58:50 - Created Windows helper functions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
-2025-06-18 14:58:50 - Created Windows compatibility layer in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output
-2025-06-18 14:58:50 - Created patched headers: conf.h, kernel.h, prototypes.h, stdio.h, xinu.h
-2025-06-18 14:58:50 - Created compiler wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
-2025-06-18 14:58:50 - Windows environment setup complete
-2025-06-18 14:58:50 - Use the generated compatibility headers and build scripts to compile XINU
-2025-06-18 14:58:50 - Windows environment setup complete
-2025-06-18 14:58:50 - XINU simulation file generation complete
-2025-06-18 14:58:50 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\Makefile
-2025-06-18 14:58:50 - Found definition: COMPILER_ROOT = /usr/bin/
-2025-06-18 14:58:50 - Found definition: CC = ${COMPILER_ROOT}gcc
-2025-06-18 14:58:50 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
-2025-06-18 14:58:50 - Found definition: AS = ${COMPILER_ROOT}as --32
-2025-06-18 14:58:50 - Found definition: LD = ${COMPILER_ROOT}ld
-2025-06-18 14:58:50 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
-2025-06-18 14:58:50 - Found definition: LIB = ../lib/libxc
-2025-06-18 14:58:50 - Found definition: XINU = ./xinu
-2025-06-18 14:58:50 - Found definition: MAKEDEP = gcc -M -MG
-2025-06-18 14:58:50 - Found definition: DEFS = -DBSDURG
-2025-06-18 14:58:50 - Found definition: CFLAGS_EXTRA = 
-2025-06-18 14:58:50 - Found definition: INCLUDE = -I../include
-2025-06-18 14:58:50 - Found definition: BRELOC = 0x150000
-2025-06-18 14:58:50 - Found definition: BOOTPLOC = 0x150000
-2025-06-18 14:58:50 - Found definition: SDEFS = -I../include
-2025-06-18 14:58:50 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
-2025-06-18 14:58:50 - Found definition: LDFLAGS = -m elf_i386
-2025-06-18 14:58:50 - Found definition: TOPDIR = ..
-2025-06-18 14:58:50 - Found definition: COMPS = system 							\
-2025-06-18 14:58:50 - Found definition: SRC_FILES = 
-2025-06-18 14:58:50 - Found definition: SYSTEM_SFILES = \
-2025-06-18 14:58:50 - Found definition: SYSTEM_CFILES = \
-2025-06-18 14:58:50 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-2025-06-18 14:58:50 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-2025-06-18 14:58:50 - Found definition: TTY_SFILES = \
-2025-06-18 14:58:50 - Found definition: TTY_CFILES = \
-2025-06-18 14:58:50 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-2025-06-18 14:58:50 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-2025-06-18 14:58:50 - Found definition: SHELL_CFILES = \
-2025-06-18 14:58:50 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
-2025-06-18 14:58:50 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-2025-06-18 14:58:50 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-2025-06-18 14:58:50 - Found source files: ['\\']
-2025-06-18 14:58:50 - Found source files: ['\\']
-2025-06-18 14:58:50 - Found source files: ['\\']
-2025-06-18 14:58:50 - Found compiled source: ../system/initialize.c
-2025-06-18 14:58:50 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
-2025-06-18 14:58:50 - Found LDFLAGS: ['-m', 'elf_i386']
-2025-06-18 14:58:50 - Found include directory from INCLUDE: ../include
-2025-06-18 14:58:50 - Successfully parsed Makefile: found 4 source files and 1 include directories
-2025-06-18 14:58:50 - Source files from Makefile: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\compile\\../system/initialize.c']
-2025-06-18 14:58:50 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:12:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:6:8: error: unknown type name 'int32'
- extern int32 _doscan(char *,int32 *, int32 (*)(void),
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:6:29: error: unknown type name 'int32'
- extern int32 _doscan(char *,int32 *, int32 (*)(void),
-                             ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:6:38: error: unknown type name 'int32'
- extern int32 _doscan(char *,int32 *, int32 (*)(void),
-                                      ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:7:4: error: unknown type name 'int32'
-    int32 (*)(char), int32, int32);
-    ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:7:21: error: unknown type name 'int32'
-    int32 (*)(char), int32, int32);
-                     ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:7:28: error: unknown type name 'int32'
-    int32 (*)(char), int32, int32);
-                            ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:8:8: error: unknown type name 'int32'
- extern int32 sscanf(char *, char *, int32);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:8:37: error: unknown type name 'int32'
- extern int32 sscanf(char *, char *, int32);
-                                     ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:9:8: error: unknown type name 'int32'
- extern int32 fscanf(int32, char *, int32);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:9:28: error: expected ')' before 'char'
- extern int32 fscanf(int32, char *, int32);
-                            ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:23:8: error: unknown type name 'int32'
- extern int32 fprintf(int, char *, ...);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:24:8: error: unknown type name 'int32'
- extern int32 printf(const char *, ...);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:25:8: error: unknown type name 'int32'
- extern int32 sprintf(char *, char *, ...);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:30:8: error: unknown type name 'int32'
- extern int32 fgetc(int);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:31:28: error: unknown type name 'int32'
- extern char *fgets(char *, int32, int32);
-                            ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:31:35: error: unknown type name 'int32'
- extern char *fgets(char *, int32, int32);
-                                   ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:32:8: error: unknown type name 'int32'
- extern int32 fputc(int32, int32);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:32:1: warning: parameter names (without types) in function declaration
- extern int32 fputc(int32, int32);
- ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:33:8: error: unknown type name 'int32'
- extern int32 fputs(char *, int32);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:33:28: error: unknown type name 'int32'
- extern int32 fputs(char *, int32);
-                            ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:34:8: error: unknown type name 'int32'
- extern int32 putchar(int32 c);
-        ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:34:22: error: unknown type name 'int32'
- extern int32 putchar(int32 c);
-                      ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:35:8: error: unknown type name 'int32'
- extern int32 getchar(void);
-        ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:13:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.h:9:1: error: unknown type name 'int32'
- int32 labs(int32);
- ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.h:9:1: warning: parameter names (without types) in function declaration
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.h:9:7: warning: conflicting types for built-in function 'labs'
- int32 labs(int32);
-       ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.h:11:1: error: unknown type name 'int32'
- int32 atol(char *);
- ^~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdlib.h:14:1: error: unknown type name 'uint32'
- uint32 rand(void);
- ^~~~~~
+2025-06-18 18:20:20 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/compilation.txt
+2025-06-18 18:20:20 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_windows_compat.h
+2025-06-18 18:20:20 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 18:20:20 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/windows_compat
+2025-06-18 18:20:20 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 18:20:20 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
+2025-06-18 18:20:20 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output']
+2025-06-18 18:20:20 - Generating minimal XINU simulation files
+2025-06-18 18:20:20 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
+2025-06-18 18:20:20 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
+2025-06-18 18:20:20 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 18:20:20 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 18:20:20 - Generating simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 18:20:20 - Generated simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 18:20:20 - Warning: Could not compile object file: gcc: fatal error: input file ‘/home/mod/School/Graduate-School/CIS657/FINAL/XINU’ is the same as output file
+compilation terminated.
 
-2025-06-18 14:58:50 - Linking error:
-g++: error: elf_i386: No such file or directory
+2025-06-18 18:20:20 - Command was: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dummy.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
+2025-06-18 18:20:20 - Attempting fallback object file creation
+2025-06-18 18:20:20 - Created fallback object file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
+2025-06-18 18:20:20 - XINU simulation file generation complete
+2025-06-18 18:20:20 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/Makefile
+2025-06-18 18:20:20 - Found definition: COMPILER_ROOT = /usr/bin/
+2025-06-18 18:20:20 - Found definition: CC = ${COMPILER_ROOT}gcc
+2025-06-18 18:20:20 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
+2025-06-18 18:20:20 - Found definition: AS = ${COMPILER_ROOT}as --32
+2025-06-18 18:20:20 - Found definition: LD = ${COMPILER_ROOT}ld
+2025-06-18 18:20:20 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
+2025-06-18 18:20:20 - Found definition: LIB = ../lib/libxc
+2025-06-18 18:20:20 - Found definition: XINU = ./xinu
+2025-06-18 18:20:20 - Found definition: MAKEDEP = gcc -M -MG
+2025-06-18 18:20:20 - Found definition: DEFS = -DBSDURG
+2025-06-18 18:20:20 - Found definition: CFLAGS_EXTRA = 
+2025-06-18 18:20:20 - Found definition: INCLUDE = -I../include
+2025-06-18 18:20:20 - Found definition: BRELOC = 0x150000
+2025-06-18 18:20:20 - Found definition: BOOTPLOC = 0x150000
+2025-06-18 18:20:20 - Found definition: SDEFS = -I../include
+2025-06-18 18:20:20 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+2025-06-18 18:20:20 - Found definition: LDFLAGS = -m elf_i386
+2025-06-18 18:20:20 - Found definition: TOPDIR = ..
+2025-06-18 18:20:20 - Found definition: COMPS = system 							\
+2025-06-18 18:20:20 - Found definition: SRC_FILES = 
+2025-06-18 18:20:20 - Found definition: SYSTEM_SFILES = \
+2025-06-18 18:20:20 - Found definition: SYSTEM_CFILES = \
+2025-06-18 18:20:20 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
+2025-06-18 18:20:20 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
+2025-06-18 18:20:20 - Found definition: TTY_SFILES = \
+2025-06-18 18:20:20 - Found definition: TTY_CFILES = \
+2025-06-18 18:20:20 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+2025-06-18 18:20:20 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
+2025-06-18 18:20:20 - Found definition: SHELL_CFILES = \
+2025-06-18 18:20:20 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
+2025-06-18 18:20:20 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
+2025-06-18 18:20:20 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
+2025-06-18 18:20:20 - Found source files: ['\\']
+2025-06-18 18:20:20 - Found source files: ['\\']
+2025-06-18 18:20:20 - Found source files: ['\\']
+2025-06-18 18:20:20 - Found compiled source: ../system/initialize.c
+2025-06-18 18:20:20 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
+2025-06-18 18:20:20 - Found LDFLAGS: ['-m', 'elf_i386']
+2025-06-18 18:20:20 - Found include directory from INCLUDE: ../include
+2025-06-18 18:20:20 - Successfully parsed Makefile: found 4 source files and 1 include directories
+2025-06-18 18:20:20 - Source files from Makefile: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c']
+2025-06-18 18:20:20 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:7:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:32: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |                                ^~~~~
+      |                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:41: error: unknown type name ‘int32’; did you mean ‘int’?
+    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
+      |                                         ^~~~~
+      |                                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:25: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                         ^~~~~
+      |                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:42: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                                          ^~~~~
+      |                                          int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:49: error: unknown type name ‘int32’; did you mean ‘int’?
+    7 |                         int32 (*)(char), int32, int32);
+      |                                                 ^~~~~
+      |                                                 int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:8:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:8:40: error: unknown type name ‘int32’; did you mean ‘int’?
+    8 | extern  int32   sscanf(char *, char *, int32);
+      |                                        ^~~~~
+      |                                        int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:9:9: error: unknown type name ‘int32’; did you mean ‘int’?
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:9:30: error: expected ‘)’ before ‘char’
+    9 | extern  int32   fscanf(int32, char *, int32);
+      |                              ^~~~~
+      |                              )
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   23 | extern  int32   fprintf(int, char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:1:1: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+  +++ |+#include <stdio.h>
+    1 | /* stdio.h - definintions and constants for standard I/O functions */
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:24:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   24 | extern  int32   printf(const char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   25 | extern  int32   sprintf(char *, char *, ...);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: warning: mismatch in argument 2 type of built-in function ‘sprintf’; expected ‘const char *’ [-Wbuiltin-declaration-mismatch]
+   25 | extern  int32   sprintf(char *, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: note: ‘sprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   30 | extern  int32   fgetc(int);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:32: error: unknown type name ‘int32’; did you mean ‘int’?
+   31 | extern  char    *fgets(char *, int32, int32);
+      |                                ^~~~~
+      |                                int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:39: error: unknown type name ‘int32’; did you mean ‘int’?
+   31 | extern  char    *fgets(char *, int32, int32);
+      |                                       ^~~~~
+      |                                       int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   32 | extern  int32   fputc(int32, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+   32 | extern  int32   fputc(int32, int32);
+      | ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:17: warning: declaration of built-in function ‘fputc’ without a prototype; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   32 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:33:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   33 | extern  int32   fputs(char *, int32);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:33:31: error: unknown type name ‘int32’; did you mean ‘int’?
+   33 | extern  int32   fputs(char *, int32);
+      |                               ^~~~~
+      |                               int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:34:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   34 | extern  int32   putchar(int32 c);
+      |         ^~~~~
+      |         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:34:25: error: unknown type name ‘int32’; did you mean ‘int’?
+   34 | extern  int32   putchar(int32 c);
+      |                         ^~~~~
+      |                         int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:35:9: error: unknown type name ‘int32’; did you mean ‘int’?
+   35 | extern  int32   getchar(void);
+      |         ^~~~~
+      |         int
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:8:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:1: error: unknown type name ‘int32’; did you mean ‘int’?
+    9 | int32 labs(int32);
+      | ^~~~~
+      | int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:7: warning: conflicting types for built-in function ‘labs’; expected ‘long int(long int)’ [-Wbuiltin-declaration-mismatch]
+    9 | int32 labs(int32);
+      |       ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:1:1: note: ‘labs’ is declared in header ‘<stdlib.h>’
+  +++ |+#include <stdlib.h>
+    1 | /**
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:11:1: error: unknown type name ‘int32’; did you mean ‘int’?
+   11 | int32 atol(char *);
+      | ^~~~~
+      | int
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:12:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   12 | void bzero(void *, int);
+      |      ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:14:1: error: unknown type name ‘uint32’
+   14 | uint32 rand(void);
+      | ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:16:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   16 | void *malloc(unsigned int nbytes);
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:16:7: note: ‘malloc’ is declared in header ‘<stdlib.h>’
+
+2025-06-18 18:20:20 - Linking error:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o: file not recognized: file format not recognized
+collect2: error: ld returned 1 exit status
 
