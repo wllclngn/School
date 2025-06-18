@@ -1,19 +1,16 @@
-# compiler.py - XINU compilation system with g++ integration
-# NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
-
+# compiler.py - Direct compilation of XINU OS source files
 import os
 import sys
 import subprocess
-import shlex
-import glob
 import platform
 import datetime
 import re
 import tempfile
 from utils.logger import log
+from makefile_parser import MakefileParser
 
 class XinuCompiler:
-    # Enhanced XINU compiler with g++ integration and dynamic adaptation.
+    # XINU compiler that directly uses source files from the Makefile
     
     def __init__(self, config):
         self.config = config
@@ -21,6 +18,8 @@ class XinuCompiler:
         self.structure_adaptations = {}
         self.include_paths = []
         self.system_info = self._get_system_info()
+        self.makefile_parser = MakefileParser(config)
+        self.xinu_source_files = []
         self._setup_environment()
         
     def _print(self, message):
@@ -29,7 +28,7 @@ class XinuCompiler:
         sys.stdout.flush()
         
     def _get_system_info(self):
-        # Get detailed system information for compilation parameters.
+        # Get detailed system information for compilation parameters
         system = platform.system().lower()
         info = {
             'system': system,
@@ -39,7 +38,7 @@ class XinuCompiler:
             'user': os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         }
         
-        # Check for compiler availability and detect MinGW specifically
+        # Check for compiler availability
         try:
             process = subprocess.Popen(['g++', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
@@ -49,7 +48,7 @@ class XinuCompiler:
                 log(f"Found g++ compiler: {version}")
                 self._print(f"Found g++ compiler: {version}")
                 
-                # Check if this is MinGW (will contain "MinGW" in version string)
+                # Check if this is MinGW
                 is_mingw = "mingw" in version.lower()
             else:
                 log("Warning: g++ compiler not found")
@@ -61,7 +60,7 @@ class XinuCompiler:
             info['compiler_version'] = 'unknown'
             is_mingw = False
         
-        # Set OS-specific configuration - use GCC style flags for MinGW
+        # Set OS-specific configuration
         if system == 'darwin':
             info['os'] = 'macos'
             info['c_flags'] = '-Wall -Wextra'
@@ -69,30 +68,22 @@ class XinuCompiler:
             info['obj_ext'] = '.o'
             info['exe_ext'] = ''
         elif system == 'windows' and not is_mingw:
-            # Regular Windows MSVC compiler
             info['os'] = 'windows'
             info['c_flags'] = '/W4'
             info['cpp_flags'] = '/W4 /EHsc'
             info['obj_ext'] = '.obj'
             info['exe_ext'] = '.exe'
         else:  # Linux and others, including MinGW on Windows
-            # MinGW on Windows or GCC on Linux
             info['os'] = 'linux' if system != 'windows' else 'mingw'
             info['c_flags'] = '-Wall -Wextra'
             info['cpp_flags'] = '-Wall -Wextra -std=c++11'
             info['obj_ext'] = '.o'
             info['exe_ext'] = '.exe' if system == 'windows' else ''
             
-            # For Linux, add -fPIC flag
-            if system == 'linux':
-                info['c_flags'] += ' -fPIC'
-                info['cpp_flags'] += ' -fPIC'
-        
         return info
     
     def _setup_environment(self):
-        # Setup the compilation environment.
-        # Initialize include paths
+        # Setup the compilation environment
         self.include_paths = []
         
         # Add standard include paths
@@ -109,36 +100,35 @@ class XinuCompiler:
         if os.path.exists(output_include_dir):
             self.include_paths.append(output_include_dir)
             
-        # Add templates directory for fallback includes
-        templates_dir = os.path.join(self.config.project_dir, "templates")
-        if os.path.exists(templates_dir):
-            self.include_paths.append(templates_dir)
-            
-        # Create output directories if they don't exist
+        # Create output directories
         os.makedirs(self.config.output_dir, exist_ok=True)
         os.makedirs(self.config.obj_dir, exist_ok=True)
-        os.makedirs(self.config.bin_dir, exist_ok=True)
         
         log(f"Setup environment with include paths: {self.include_paths}")
         self._print(f"Setup environment with include paths: {self.include_paths}")
     
     def compile(self):
-        # Compile the XINU simulation project with g++ integration.
+        # Compile the XINU simulation
         self._print("\n##### Compiling XINU Simulation #####")
         
-        # Analyze the XINU headers to detect structure names and adaptations needed
-        self._analyze_for_adaptations()
+        # Parse Makefile to get original source files
+        self._parse_makefile()
         
-        # Compile core files
-        core_files = [self.config.xinu_core_c, self.config.sim_helper_c]
-        core_objects = self._compile_sources(core_files)
+        # Compile the simulation helper
+        sim_helper_path = os.path.join(self.config.output_dir, "xinu_simulation.c")
+        sim_helper_obj = self._get_object_path(sim_helper_path)
+        self._compile_file(sim_helper_path, sim_helper_obj)
         
-        # Find and compile additional C files
-        additional_sources = self._find_additional_sources()
-        additional_objects = self._compile_sources(additional_sources)
+        # Compile XINU OS source files from Makefile
+        xinu_objects = []
+        for source_file in self.xinu_source_files:
+            obj_file = self._get_object_path(source_file)
+            if self._compile_file(source_file, obj_file, force_include=self.config.includes_h):
+                xinu_objects.append(obj_file)
         
         # Link everything together
-        result = self._link_executable(core_objects + additional_objects)
+        all_objects = [sim_helper_obj] + xinu_objects
+        result = self._link_executable(all_objects)
         
         if result:
             self._print("\nXINU Simulation compilation successful!")
@@ -147,110 +137,59 @@ class XinuCompiler:
             self._print("\nXINU Simulation compilation failed!")
             return False
     
-    def _analyze_for_adaptations(self):
-        # Use g++ preprocessing to analyze headers for structure adaptations.
-        self._print("\n##### Analyzing Headers for Structure Adaptations #####")
+    def _parse_makefile(self):
+        # Parse XINU OS Makefile to get source files
+        self._print("\n##### Parsing XINU OS Makefile #####")
         
-        # Create a temporary file for preprocessing
-        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
-            temp_path = temp_file.name
-            temp_file.write(f"#include \"{self.config.includes_h}\"\n".encode('utf-8'))
+        if not self.makefile_parser.parse_makefile():
+            self._print("Warning: Failed to parse Makefile, falling back to source scanning")
+            self._scan_for_source_files()
+            return
         
-        # Build include paths for preprocessing - properly quote paths to handle spaces
-        include_opts = " ".join(f'-I"{p}"' for p in self.include_paths if os.path.exists(p))
+        # Get resolved source files from Makefile
+        self.xinu_source_files = self.makefile_parser.get_resolved_source_files()
         
-        # Run g++ preprocessor with properly quoted paths
-        try:
-            cmd = f'g++ -E {include_opts} "{temp_path}"'
-            self._print(f"Running preprocessor: {cmd}")
-            process = subprocess.Popen(
-                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                universal_newlines=True
-            )
-            stdout, stderr = process.communicate()
-            
-            if process.returncode != 0:
-                log(f"Warning: Failed to preprocess headers for adaptation: {stderr}")
-                self._print("Warning: Failed to preprocess headers for adaptation")
-            else:
-                # Scan for structure definitions
-                self._scan_for_struct_variations(stdout)
-            
-            # Clean up temp file
-            os.unlink(temp_path)
-        except Exception as e:
-            log(f"Warning: Error during header analysis: {str(e)}")
-            self._print(f"Warning: Error during header analysis")
+        # Update include paths with Makefile-defined includes
+        makefile_includes = self.makefile_parser.get_resolved_include_dirs()
+        for inc_dir in makefile_includes:
+            if inc_dir not in self.include_paths:
+                self.include_paths.append(inc_dir)
+        
+        self._print(f"Found {len(self.xinu_source_files)} source files from Makefile")
+        log(f"Source files from Makefile: {self.xinu_source_files}")
     
-    def _scan_for_struct_variations(self, preprocessed_content):
-        # Scan preprocessed content for structure variations.
-        # Find process structure
-        proc_structs = re.findall(r'struct\s+(\w+)\s*{(.*?)};', preprocessed_content, re.DOTALL)
+    def _scan_for_source_files(self):
+        # Fallback: scan for source files in XINU OS directory structure
+        self._print("Scanning XINU OS directory for source files")
         
-        # Look for key structures like procent
-        for name, body in proc_structs:
-            if "prstate" in body or "prio" in body or "prprio" in body:
-                self._print(f"Found process structure: {name}")
-                
-                # Detect key field variations
-                if "prio" in body and "prprio" not in body:
-                    self.structure_adaptations["prprio"] = "prio"
-                    log("Detected field variation: prprio -> prio")
-                    self._print("Detected field variation: prprio -> prio")
-                elif "prprio" in body and "prio" not in body:
-                    self.structure_adaptations["prio"] = "prprio"
-                    log("Detected field variation: prio -> prprio")
-                    self._print("Detected field variation: prio -> prprio")
+        self.xinu_source_files = []
         
-        log(f"Structure adaptations: {self.structure_adaptations}")
-    
-    def _find_additional_sources(self):
-        # Find additional source files to compile.
-        sources = []
+        # Check standard XINU directories
+        dirs_to_scan = [
+            os.path.join(self.config.xinu_os_dir, "system"),
+            os.path.join(self.config.xinu_os_dir, "device"),
+            os.path.join(self.config.xinu_os_dir, "shell"),
+            os.path.join(self.config.xinu_os_dir, "lib", "libxc")
+        ]
         
-        # Check for any C files in the XINU SIM directory
-        for root, dirs, files in os.walk(self.config.project_dir):
-            for file in files:
-                if file.endswith(".c") and not file.startswith("xinu_"):
-                    source_path = os.path.join(root, file)
-                    sources.append(source_path)
-        
-        # Look in specific directories if defined
-        if hasattr(self.config, 'source_dirs'):
-            for source_dir in self.config.source_dirs:
-                if os.path.exists(source_dir):
-                    for file in os.listdir(source_dir):
+        for dir_path in dirs_to_scan:
+            if os.path.exists(dir_path):
+                for root, _, files in os.walk(dir_path):
+                    for file in files:
                         if file.endswith(".c"):
-                            source_path = os.path.join(source_dir, file)
-                            if source_path not in sources:
-                                sources.append(source_path)
+                            self.xinu_source_files.append(os.path.join(root, file))
         
-        if sources:
-            self._print(f"Found {len(sources)} additional source files to compile")
-            log(f"Additional sources: {sources}")
-        
-        return sources
-    
-    def _compile_sources(self, sources):
-        # Compile source files to object files.
-        objects = []
-        
-        for source in sources:
-            obj_file = self._get_object_path(source)
-            if self._compile_file(source, obj_file):
-                objects.append(obj_file)
-        
-        return objects
+        self._print(f"Found {len(self.xinu_source_files)} source files from directory scan")
     
     def _get_object_path(self, source_path):
-        # Get the path for an object file based on source file.
+        # Get the path for an object file based on source file
         base_name = os.path.basename(source_path)
         name_without_ext = os.path.splitext(base_name)[0]
         obj_ext = self.system_info['obj_ext']
         return os.path.join(self.config.obj_dir, f"{name_without_ext}{obj_ext}")
     
-    def _compile_file(self, source_path, obj_path):
-        # Compile a single source file with adaptations.
+    def _compile_file(self, source_path, obj_path, force_include=None):
+        # Compile a source file to object file
         self._print(f"Compiling {os.path.basename(source_path)}...")
         
         # Check if the source file exists
@@ -259,27 +198,22 @@ class XinuCompiler:
             self._print(f"Error: Source file not found: {source_path}")
             return False
         
-        # Apply structure adaptations if needed
-        adapted_source = None
-        if self.structure_adaptations:
-            adapted_source = self._adapt_source(source_path)
-        
-        # Build include paths with proper quoting to handle spaces in paths
+        # Build include paths
         include_opts = " ".join(f'-I"{p}"' for p in self.include_paths if os.path.exists(p))
         
         # Build command based on source type
-        compiler = self.system_info['c_compiler'] if source_path.endswith(".c") else self.system_info['compiler']
-        flags = self.system_info['c_flags'] if source_path.endswith(".c") else self.system_info['cpp_flags']
+        compiler = self.system_info['c_compiler']
+        flags = self.system_info['c_flags']
         
-        cmd = f'{compiler} {flags} {include_opts} -c'
+        # Add force include if specified (for XINU OS sources)
+        force_include_opt = ""
+        if force_include:
+            if self.system_info['os'] == 'windows' and not 'mingw' in self.system_info['os']:
+                force_include_opt = f' /FI"{force_include}"'
+            else:
+                force_include_opt = f' -include "{force_include}"'
         
-        # If we have an adapted source, compile that instead of the original
-        if adapted_source:
-            cmd += f' "{adapted_source}" -o "{obj_path}"'
-            source_to_compile = adapted_source
-        else:
-            cmd += f' "{source_path}" -o "{obj_path}"'
-            source_to_compile = source_path
+        cmd = f'{compiler} {flags} {include_opts}{force_include_opt} -c "{source_path}" -o "{obj_path}"'
         
         try:
             self._print(f"Running: {cmd}")
@@ -293,93 +227,41 @@ class XinuCompiler:
                 log(f"Compilation error in {source_path}:\n{stderr}")
                 self._print(f"Error compiling {os.path.basename(source_path)}")
                 self._print(f"Error message: {stderr}")
-                
-                # Try to parse errors for easier diagnosis
-                self._parse_compilation_errors(stderr)
-                
-                # If using an adapted source, clean it up
-                if adapted_source:
-                    try:
-                        os.unlink(adapted_source)
-                    except:
-                        pass
-                
                 return False
             
             self._print(f"Successfully compiled {os.path.basename(source_path)}")
-            
-            # Clean up adapted source if used
-            if adapted_source:
-                try:
-                    os.unlink(adapted_source)
-                except:
-                    pass
-            
             return True
         except Exception as e:
             log(f"Error during compilation of {source_path}: {str(e)}")
             self._print(f"Error during compilation of {os.path.basename(source_path)}: {str(e)}")
             return False
     
-    def _adapt_source(self, source_path):
-        # Create an adapted version of the source with structure adaptations.
-        try:
-            # Create a temporary file for the adapted source
-            fd, adapted_path = tempfile.mkstemp(suffix=".c", prefix="xinu_adapted_")
-            os.close(fd)
-            
-            with open(source_path, 'r', encoding='utf-8', errors='ignore') as src:
-                content = src.read()
-            
-            # Apply structure adaptations
-            for from_field, to_field in self.structure_adaptations.items():
-                # Replace field references in structure access (e.g., proc->prio to proc->prprio)
-                content = re.sub(r'(\w+)->(' + from_field + r')\b', r'\1->' + to_field, content)
-                
-                # Replace array references (e.g., proctab[i].prio to proctab[i].prprio)
-                content = re.sub(r'(\w+\[\w+\])\.(' + from_field + r')\b', r'\1.' + to_field, content)
-            
-            with open(adapted_path, 'w', encoding='utf-8') as dest:
-                dest.write(content)
-            
-            log(f"Created adapted source: {adapted_path}")
-            return adapted_path
-        except Exception as e:
-            log(f"Error adapting source {source_path}: {str(e)}")
-            self._print(f"Error adapting source {os.path.basename(source_path)}")
-            return None
-    
-    def _parse_compilation_errors(self, error_output):
-        # Parse compilation errors for diagnosis.
-        # Look for common error patterns
-        missing_types = re.findall(r"'(\w+)' was not declared in this scope", error_output)
-        missing_fields = re.findall(r"no member named '(\w+)' in", error_output)
-        
-        # Record the errors
-        for type_name in missing_types:
-            self.detected_compile_errors.append(f"Missing type: {type_name}")
-            self._print(f"Detected missing type: {type_name}")
-        
-        for field_name in missing_fields:
-            self.detected_compile_errors.append(f"Missing structure field: {field_name}")
-            self._print(f"Detected missing structure field: {field_name}")
-    
     def _link_executable(self, object_files):
-        # Link object files into executable.
+        # Link object files into executable
         if not object_files:
             log("Error: No object files to link")
             self._print("Error: No object files to link")
             return False
         
         # Create the executable path
-        exe_name = "xinu_sim" + self.system_info['exe_ext']
-        exe_path = os.path.join(self.config.bin_dir, exe_name)
+        exe_name = "xinu_core" + self.system_info['exe_ext']
+        exe_path = os.path.join(self.config.output_dir, exe_name)
         
-        # Build object files list with proper quoting to handle spaces in paths
+        # Store the path in the config for other modules to access
+        self.config.xinu_core_output = exe_path
+        
+        # Build object files list
         obj_list = " ".join(f'"{obj}"' for obj in object_files)
         
-        # Link command with properly quoted paths
-        cmd = f'{self.system_info["compiler"]} {obj_list} -o "{exe_path}"'
+        # Get additional linker flags from Makefile if available
+        additional_flags = ""
+        if hasattr(self.makefile_parser, "get_linker_flags"):
+            makefile_flags = self.makefile_parser.get_linker_flags()
+            if makefile_flags:
+                additional_flags = " ".join(makefile_flags)
+        
+        # Link command
+        cmd = f'{self.system_info["compiler"]} {obj_list} -o "{exe_path}" {additional_flags}'
         
         self._print(f"Linking executable: {exe_path}")
         self._print(f"Running: {cmd}")
@@ -410,5 +292,5 @@ class XinuCompiler:
             return False
     
     def get_compile_errors(self):
-        # Get list of compilation errors detected.
+        # Get list of compilation errors detected
         return self.detected_compile_errors

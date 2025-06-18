@@ -1,10 +1,10 @@
 # makefile_parser.py - Parse XINU Makefile for build instructions
 import os
 import re
-from xinu_sim.utils.logger import log
+from utils.logger import log
 
 class MakefileParser:
-    """Parser for XINU Makefile to extract build instructions and dependencies"""
+    # Parser for XINU Makefile to extract build instructions and dependencies
     
     def __init__(self, config):
         self.config = config
@@ -16,7 +16,7 @@ class MakefileParser:
         self.definitions = {}
         
     def parse_makefile(self):
-        """Parse the XINU Makefile to extract build information"""
+        # Parse the XINU Makefile to extract build information
         if not os.path.exists(self.makefile_path):
             log(f"Warning: Makefile not found at {self.makefile_path}")
             return False
@@ -49,7 +49,7 @@ class MakefileParser:
             return False
     
     def _extract_variables(self, content):
-        """Extract variable definitions from Makefile"""
+        # Extract variable definitions from Makefile
         # Match variable definitions (e.g., NAME = value)
         pattern = r'^\s*([A-Za-z0-9_]+)\s*=\s*(.*)$'
         for line in content.split('\n'):
@@ -58,16 +58,20 @@ class MakefileParser:
                 name = match.group(1)
                 value = match.group(2).strip()
                 self.definitions[name] = value
-                log(f"Found definition: {name} = {value}", verbose_only=True)
+                log(f"Found definition: {name} = {value}")
     
     def _extract_sources(self, content):
-        """Extract source file definitions from Makefile"""
+        # Extract source file definitions from Makefile
         # Look for source file lists (e.g., SRC_FILES = file1.c file2.c)
         source_patterns = [
             r'^\s*SRC\s*=\s*(.*)$',
             r'^\s*C_FILES\s*=\s*(.*)$',
             r'^\s*SYSTEM_SRC\s*=\s*(.*)$',
-            r'^\s*LIB_SRC\s*=\s*(.*)$'
+            r'^\s*LIB_SRC\s*=\s*(.*)$',
+            r'^\s*SYSTEM_CFILES\s*=\s*(.*)$',
+            r'^\s*TTY_CFILES\s*=\s*(.*)$',
+            r'^\s*SHELL_CFILES\s*=\s*(.*)$',
+            r'^\s*LIBXCCFILES\s*=\s*(.*)$'
         ]
         
         # Track all source file declarations
@@ -79,7 +83,7 @@ class MakefileParser:
                 if match:
                     sources = match.group(1).strip().split()
                     all_sources.extend(sources)
-                    log(f"Found source files: {sources}", verbose_only=True)
+                    log(f"Found source files: {sources}")
         
         # Also look for .c files in explicit compilation rules
         compile_pattern = r'^\s*[\w/\.\$\{\}]+\.o\s*:\s*([\w/\.\$\{\}]+\.c)'
@@ -89,12 +93,12 @@ class MakefileParser:
                 source = match.group(1).strip()
                 if source not in all_sources:
                     all_sources.append(source)
-                    log(f"Found compiled source: {source}", verbose_only=True)
+                    log(f"Found compiled source: {source}")
                     
         self.sources = all_sources
     
     def _extract_compiler_flags(self, content):
-        """Extract compiler flags from Makefile"""
+        # Extract compiler flags from Makefile
         # Look for CFLAGS definition
         cflags_pattern = r'^\s*CFLAGS\s*=\s*(.*)$'
         for line in content.split('\n'):
@@ -102,7 +106,7 @@ class MakefileParser:
             if match:
                 flags = match.group(1).strip().split()
                 self.cflags.extend(flags)
-                log(f"Found CFLAGS: {flags}", verbose_only=True)
+                log(f"Found CFLAGS: {flags}")
         
         # Look for LDFLAGS definition
         ldflags_pattern = r'^\s*LDFLAGS\s*=\s*(.*)$'
@@ -111,10 +115,10 @@ class MakefileParser:
             if match:
                 flags = match.group(1).strip().split()
                 self.ldflags.extend(flags)
-                log(f"Found LDFLAGS: {flags}", verbose_only=True)
+                log(f"Found LDFLAGS: {flags}")
     
     def _extract_include_dirs(self, content):
-        """Extract include directories from Makefile"""
+        # Extract include directories from Makefile
         # Look for -I flags in CFLAGS
         include_pattern = r'-I\s*([^\s]+)'
         for flag in self.cflags:
@@ -123,7 +127,7 @@ class MakefileParser:
                 include_dir = match.group(1)
                 if include_dir not in self.include_dirs:
                     self.include_dirs.append(include_dir)
-                    log(f"Found include directory: {include_dir}", verbose_only=True)
+                    log(f"Found include directory: {include_dir}")
         
         # Also look for INCLUDE definitions
         include_def_pattern = r'^\s*INCLUDE\s*=\s*(.*)$'
@@ -140,10 +144,10 @@ class MakefileParser:
                     
                     if include_dir not in self.include_dirs:
                         self.include_dirs.append(include_dir)
-                        log(f"Found include directory from INCLUDE: {include_dir}", verbose_only=True)
+                        log(f"Found include directory from INCLUDE: {include_dir}")
     
     def _expand_variables(self):
-        """Expand Makefile variables in extracted values"""
+        # Expand Makefile variables in extracted values
         # First expand all definitions recursively
         expanded_defs = {}
         for name, value in self.definitions.items():
@@ -159,9 +163,9 @@ class MakefileParser:
         self.ldflags = [self._expand_value(f, self.definitions) for f in self.ldflags]
     
     def _expand_value(self, value, definitions, max_depth=10):
-        """Recursively expand variables in a value"""
+        # Recursively expand variables in a value
         if max_depth <= 0:
-            log(f"Warning: Maximum expansion depth reached for '{value}'", verbose_only=True)
+            log(f"Warning: Maximum expansion depth reached for '{value}'")
             return value
             
         # Match $(VAR) or ${VAR} style variables
@@ -187,7 +191,7 @@ class MakefileParser:
         return result
     
     def get_resolved_source_files(self):
-        """Get list of source files with resolved paths"""
+        # Get list of source files with resolved paths
         resolved_sources = []
         
         for src in self.sources:
@@ -219,14 +223,14 @@ class MakefileParser:
         return resolved_sources
     
     def get_resolved_include_dirs(self):
-        """Get list of include directories with resolved paths"""
+        # Get list of include directories with resolved paths
         resolved_includes = []
         
         # Always include the standard includes
         standard_includes = [
             self.config.include_dir,
             self.config.output_dir,
-            os.path.dirname(self.config.xinu_h)
+            #os.path.join(self.config.output_dir, "includes")
         ]
         
         for inc in standard_includes:
@@ -263,7 +267,7 @@ class MakefileParser:
         return resolved_includes
     
     def get_compiler_flags(self):
-        """Get compiler flags from Makefile suitable for cross-platform use"""
+        # Get compiler flags from Makefile suitable for cross-platform use
         safe_flags = []
         
         # Filter flags to remove platform-specific or unsafe options
@@ -294,7 +298,7 @@ class MakefileParser:
         return safe_flags
         
     def get_linker_flags(self):
-        """Get linker flags from Makefile suitable for cross-platform use"""
+        # Get linker flags from Makefile suitable for cross-platform use
         safe_flags = []
         
         # Filter flags to remove platform-specific options
