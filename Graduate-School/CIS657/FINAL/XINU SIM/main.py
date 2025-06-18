@@ -228,9 +228,8 @@ class XinuSimMain:
         log_level = 'DEBUG' if self.config.debug else 'INFO'
         setup_logging(log_level)
         
-        # Use the specific date/time and user as requested
-        current_time = "2025-06-18 02:05:41"  # UTC time as requested
-        username = "wllclngn"  # Specific username as requested
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
         # Display welcome message
         self._print("\n##############################################")
