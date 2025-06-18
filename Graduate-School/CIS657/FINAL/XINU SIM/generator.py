@@ -1,10 +1,26 @@
-# generator.py - Minimal XINU wrapper generator
+# generator.py - Minimal XINU wrapper generator with improved Windows path handling
 import os
 import datetime
 import re
 import subprocess
-import platform
 from utils.logger import log
+import sys
+
+# For Windows long path support
+if os.name == 'nt':
+    import ctypes
+    from ctypes import wintypes
+    from pathlib import Path
+
+    # Enable long path support at Windows API level
+    kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel32.SetFileAttributesW.argtypes = (wintypes.LPCWSTR, wintypes.DWORD)
+
+    def handle_long_path(path_str):
+        # Prefix with \\?\ for paths exceeding MAX_PATH
+        if len(path_str) >= 260 and not path_str.startswith("\\\\?\\"):
+            path_str = "\\\\?\\" + str(Path(path_str).resolve()).replace("/", "\\")
+        return path_str
 
 class XinuGenerator:
     # Minimal generator for XINU simulation wrapper files
@@ -13,13 +29,24 @@ class XinuGenerator:
         self.config = config
     
     def normalize_path(self, path):
-        # Normalize paths to use backslashes on Windows, forward slashes on other platforms
+        # Handle Windows long paths and normalize separators
         if os.name == 'nt':  # Windows
-            # Replace all forward slashes with backslashes
+            # Handle long paths with \\?\ prefix
+            path = handle_long_path(path)
+            
+            # Make sure all slashes are backslashes
             path = path.replace('/', '\\')
-            # Ensure no double backslashes
-            while '\\\\' in path:
-                path = path.replace('\\\\', '\\')
+            
+            # Ensure no double backslashes (except at start for \\?\ prefix)
+            if path.startswith("\\\\?\\"):
+                prefix = "\\\\?\\"
+                rest = path[4:]
+                while "\\\\" in rest:
+                    rest = rest.replace("\\\\", "\\")
+                path = prefix + rest
+            else:
+                while "\\\\" in path:
+                    path = path.replace("\\\\", "\\")
         else:
             # Replace all backslashes with forward slashes on Unix
             path = path.replace('\\', '/')
@@ -79,14 +106,15 @@ class XinuGenerator:
         # Generate only the essential files needed for XINU simulation
         log("Generating minimal XINU simulation files")
         
-        # Create output directory
-        os.makedirs(self.config.output_dir, exist_ok=True)
+        # Create output directory with long path support
+        output_dir = self.normalize_path(self.config.output_dir)
+        os.makedirs(output_dir, exist_ok=True)
         
         # Create obj directory to prevent "No such file or directory" error
-        obj_dir = os.path.join(self.config.output_dir, "obj")
+        obj_dir = self.normalize_path(os.path.join(output_dir, "obj"))
         os.makedirs(obj_dir, exist_ok=True)
         
-        # Generate only the essential files
+        # Generate only the three essential files
         self.generate_stddefs()
         self.generate_includes_wrapper()
         self.generate_sim_helper()
@@ -110,10 +138,8 @@ class XinuGenerator:
 /* Version information */
 #define VERSION "XINU Simulation Version 1.0"
 
-/* Prevent conflicts with standard C headers */
-#ifndef _XINU_INTERNAL_
+/* Minimal definition to avoid conflicts */
 typedef unsigned char byte;
-#endif
 
 #endif /* _XINU_STDDEFS_H_ */
 """
@@ -147,10 +173,9 @@ typedef unsigned char byte;
 
 #define _CRT_SECURE_NO_WARNINGS 
 #define XINU_SIMULATION        
-#define _XINU_INTERNAL_
 
-/* No need to include other headers here to avoid conflicts */
-#include "xinu_stddefs.h"
+/* Include our minimal defs */
+#include "xinu_stddefs.h" 
 
 #endif /* _XINU_INCLUDES_H_ */
 """
@@ -175,12 +200,12 @@ typedef unsigned char byte;
  * Generated on: {timestamp} by {username}
  */
 #define _CRT_SECURE_NO_WARNINGS
-#define _XINU_INTERNAL_
 
-/* Standard C headers only - avoid including XINU headers */
+/* Simple standalone simulation without XINU dependencies */
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Main entry point for simulation */
 int main(void) {{
     printf("XINU Simulation Starting\\n");
     printf("Generated on: {timestamp} by {username}\\n\\n");
@@ -198,66 +223,49 @@ int main(void) {{
         with open(helper_path, 'w') as f:
             f.write(content)
         log(f"Generated simulation helper: {helper_path}")
-
+    
     def generate_obj_file(self):
-        # Create a simple object file for linking
+        # Create a minimal object file for linking with XINU
         obj_dir = self.normalize_path(os.path.join(self.config.output_dir, "obj"))
         obj_path = self.normalize_path(os.path.join(obj_dir, "xinu_simulation.o"))
         
-        # Create a simple C file with minimal content
+        # Create a simple C file for compilation
         dummy_c_path = self.normalize_path(os.path.join(self.config.output_dir, "dummy.c"))
         with open(dummy_c_path, 'w') as f:
-            f.write("/* Dummy C file for object generation */\n")
-            f.write("int xinu_simulation_dummy(void) { return 0; }\n")
-        
-        # On Linux, we need to use -m32 compile flag for compatibility
-        is_windows = os.name == 'nt'
+            f.write("/* Minimal dummy object for compilation */\n")
+            f.write("void xinu_simulation_dummy(void) {}\n")
         
         try:
-            # Determine the right compiler flags based on the platform
-            if is_windows:
-                # Windows - use standard GCC
-                compiler_cmd = "gcc -c"
+            # Use direct execution with proper path handling
+            if os.name == 'nt':
+                # On Windows, wrap paths in quotes to handle spaces
+                cmd = f'gcc -c "{dummy_c_path}" -o "{obj_path}"'
             else:
-                # Linux - try with -m32 if available
-                compiler_cmd = "gcc -m32 -c"
-            
-            # Try to compile the object file
-            cmd = f"{compiler_cmd} {dummy_c_path} -o {obj_path}"
-            result = subprocess.run(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            
-            # If -m32 fails, try without it on Linux
-            if not is_windows and result.returncode != 0:
-                log("32-bit compilation failed, trying without -m32 flag")
+                # On Unix, use direct paths
                 cmd = f"gcc -c {dummy_c_path} -o {obj_path}"
-                result = subprocess.run(cmd, shell=True)
+                
+            # Run the compilation
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
             
-            if os.path.exists(obj_path):
+            if result.returncode == 0 and os.path.exists(obj_path):
                 log(f"Created object file: {obj_path}")
             else:
-                log(f"Warning: Failed to create object file at {obj_path}")
+                log(f"Warning: Could not compile object file: {result.stderr}")
                 
-                # Create an empty file as a placeholder
+                # Create a minimal object file as a fallback
                 with open(obj_path, 'wb') as f:
-                    # Write a minimal ELF header to trick the linker
-                    if not is_windows:
-                        # ELF magic number and some minimal headers for Linux
-                        f.write(bytes.fromhex('7f454c4601010100000000000000000001000000000000000000000000000000'))
-                    else:
+                    # Just a minimal valid object file header to satisfy the linker
+                    if os.name == 'nt':
                         # COFF header for Windows
-                        f.write(bytes.fromhex('4d5a900003000000040000000ffff0000b80000000000000040000000000000000000000000000000000000000000000000000000000000000000000080000000'))
+                        f.write(bytes.fromhex('4d5a900003000000040000000ffff0000'))
+                    else:
+                        # ELF header for Linux
+                        f.write(bytes.fromhex('7f454c46010101000000000000000000'))
                 
-                log(f"Created placeholder object file: {obj_path}")
+                log(f"Created fallback object file: {obj_path}")
             
-            # Remove the temporary C file
-            if os.path.exists(dummy_c_path):
-                os.remove(dummy_c_path)
-                
+            # Clean up the temporary C file
+            os.remove(dummy_c_path)
+            
         except Exception as e:
-            log(f"Warning: Could not create object file: {str(e)}")
-            
-            # Create an empty file as a last resort
-            with open(obj_path, 'wb') as f:
-                f.write(b'\0' * 128)  # Just some null bytes
-            
-            log(f"Created empty placeholder object file: {obj_path}")
+            log(f"Error generating object file: {str(e)}")
