@@ -134,6 +134,49 @@ struct procent {
             if type_name not in self.missing_types:
                 self.missing_types.append(type_name)
                 log(f"Added type {type_name} to missing types list")
+    
+    def _fix_include_paths(self, directory):
+        # Fix include paths in header files to use backslashes on Windows
+        if not os.path.exists(directory):
+            log(f"Directory not found: {directory}")
+            return
+        
+        # Create output include directory if it doesn't exist
+        output_include_dir = os.path.join(self.config.output_dir, "include")
+        os.makedirs(output_include_dir, exist_ok=True)
+        
+        self._print(f"Fixing include paths in {directory}...")
+        
+        # Process key header files
+        for filename in os.listdir(directory):
+            if filename.endswith(".h"):
+                input_path = os.path.join(directory, filename)
+                output_path = os.path.join(output_include_dir, filename)
+                
+                try:
+                    with open(input_path, 'r') as f:
+                        content = f.read()
+                    
+                    # Fix include directives to use backslashes on Windows
+                    if os.name == 'nt':  # Windows
+                        # Replace patterns like #include "folder/file.h" with #include "folder\\file.h"
+                        pattern = r'#include\s+[\"<](.*?\/.*?)[\">]'
+                        matches = re.findall(pattern, content)
+                        
+                        for match in matches:
+                            if '/' in match:
+                                fixed_path = match.replace('/', '\\\\')
+                                content = content.replace(match, fixed_path)
+                    
+                    # Write fixed content to output directory
+                    with open(output_path, 'w') as f:
+                        f.write(content)
+                    
+                    log(f"Fixed include paths in {filename}")
+                except Exception as e:
+                    log(f"Error fixing include paths in {filename}: {str(e)}")
+        
+        return output_include_dir
         
     def preprocess_headers(self):
         # Use g++ to preprocess XINU headers and extract definitions.
@@ -151,22 +194,76 @@ struct procent {
             self._print(f"ERROR: Cannot find xinu.h in standard locations")
             return False
         
-        # Create a temporary file with inclusion of xinu.h
-        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
-            temp_path = temp_file.name
-            temp_file.write(f"#include \"{xinu_h_path}\"\n".encode('utf-8'))
+        # Fix include paths in header files
+        fixed_headers_dir = self._fix_include_paths(os.path.dirname(xinu_h_path))
+        
+        # Make sure xinu_stddefs.h exists in the output directory before preprocessing
+        stddefs_path = os.path.join(self.config.output_dir, "xinu_stddefs.h")
+        if not os.path.exists(stddefs_path):
+            # Create a minimal stddefs file to satisfy the preprocessor
+            os.makedirs(os.path.dirname(stddefs_path), exist_ok=True)
+            with open(stddefs_path, 'w') as f:
+                f.write("/* Temporary stddefs file for preprocessing */\n")
+                f.write("#ifndef _XINU_STDDEFS_H_\n")
+                f.write("#define _XINU_STDDEFS_H_\n")
+                f.write("typedef int pid32;\n")
+                f.write("typedef int sid32;\n")
+                f.write("#endif /* _XINU_STDDEFS_H_ */\n")
+            log(f"Created temporary xinu_stddefs.h for preprocessing")
         
         # Build include paths with proper quoting to handle spaces
+        # Include the output directory first to ensure our stddefs.h is found
         include_paths = [
+            self.config.output_dir,  # Look here first for our generated files
+            os.path.join(self.config.output_dir, "include"),  # Look for our fixed headers
             self.config.include_dir,
             os.path.join(self.config.xinu_os_dir, "include"),
             os.path.dirname(xinu_h_path)
         ]
-        include_opts = " ".join(f'-I"{p}"' for p in include_paths if os.path.exists(p))
         
-        # Run g++ preprocessor with properly quoted paths
+        # Ensure paths are unique and exist
+        include_paths = [p for p in include_paths if p and os.path.exists(p)]
+        unique_paths = []
+        for p in include_paths:
+            if p not in unique_paths:
+                unique_paths.append(p)
+        include_paths = unique_paths
+        
+        self._print(f"Setup environment with include paths: {include_paths}")
+        
+        # Build include options with proper path handling for g++
+        # g++ on Windows accepts forward slashes, so standardize on that
+        include_opts = ""
+        for path in include_paths:
+            # Convert Windows backslashes to forward slashes for g++
+            gcc_path = path.replace('\\', '/')
+            include_opts += f' -I"{gcc_path}"'
+        
+        # Create a simple temp file for preprocessing
+        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
+            temp_path = temp_file.name
+            # Instead of including headers directly in the file,
+            # we'll use -include option to control include order
+        
+        # Run g++ preprocessor with properly quoted paths and explicit includes
         try:
-            cmd = f'g++ -E {include_opts} "{temp_path}"'
+            # Convert temp path to use forward slashes
+            temp_path_gcc = temp_path.replace('\\', '/')
+            
+            # Find our fixed xinu.h in the output directory
+            fixed_xinu_h = os.path.join(self.config.output_dir, "include", "xinu.h")
+            if os.path.exists(fixed_xinu_h):
+                xinu_include = fixed_xinu_h
+            else:
+                xinu_include = xinu_h_path
+            
+            # Convert all paths to forward slashes
+            stddefs_gcc = stddefs_path.replace('\\', '/')
+            xinu_include_gcc = xinu_include.replace('\\', '/')
+            
+            # Build the command line with explicit includes and forward slashes consistently
+            cmd = f'g++ -E{include_opts} -include "{stddefs_gcc}" -include "{xinu_include_gcc}" "{temp_path_gcc}"'
+            
             self._print(f"Running: {cmd}")
             process = subprocess.Popen(
                 cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -190,7 +287,7 @@ struct procent {
             log(f"ERROR: Failed to run g++ preprocessor: {str(e)}")
             self._print(f"ERROR: Failed to run g++ preprocessor: {str(e)}")
             return False
-    
+
     def extract_symbols(self):
         # Extract symbols from preprocessed content.
         if not self.preprocessed_content:
