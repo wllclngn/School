@@ -1,395 +1,454 @@
-2025-06-17 23:12:27 - Cleaned output directories for complete rebuild
-2025-06-17 23:12:27 - Loaded template: XINU_STDDEFS_H
-2025-06-17 23:12:27 - Loaded template: XINU_H
-2025-06-17 23:12:27 - Loaded template: XINU_INCLUDES_H
-2025-06-17 23:12:27 - Loaded template: XINU_SIM_DECLARATIONS_H
-2025-06-17 23:12:27 - Loaded template: XINU_SIMULATION_C
-2025-06-17 23:12:27 - Loaded template: XINU_CORE_C
-2025-06-17 23:12:27 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-17 23:12:27 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\templates']
-2025-06-17 23:12:27 - Added missing type: bool8
-2025-06-17 23:12:27 - Added missing type: shellcmd
-2025-06-17 23:12:27 - Added missing type: intmask
-2025-06-17 23:12:27 - Added missing type: exchandler
-2025-06-17 23:12:27 - Added missing type: message
-2025-06-17 23:12:27 - Added missing type: syscall
-2025-06-17 23:12:27 - Added missing type: process
-2025-06-17 23:12:27 - Added missing type: bool32
-2025-06-17 23:12:27 - Added missing type: did32
-2025-06-17 23:12:27 - Added missing type: status
-2025-06-17 23:12:27 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-17 23:12:27 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
-2025-06-17 23:12:27 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-17 23:12:27 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
-2025-06-17 23:12:27 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-17 23:12:27 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
-2025-06-17 23:12:28 - Structure adaptations: {}
-2025-06-17 23:12:28 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:24:16: error: conflicting types for 'qid16'
- typedef int16  qid16;
-                ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:13: note: previous declaration of 'qid16' was here
- typedef int qid16;
-             ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:24:2: error: unknown type name 'byte'
-  byte    dvirq;
-  ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
- typedef char                int8;
-                             ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
- typedef int8_t   int8;
-                  ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:27:15: error: conflicting types for 'pri16'
- typedef int16 pri16;  /* process priority   */
-               ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:13: note: previous declaration of 'pri16' was here
- typedef int pri16;
-             ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:31:16: error: conflicting types for 'intmask'
- typedef uint16 intmask; /* saved interrupt mask   */
-                ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:12:13: note: previous declaration of 'intmask' was here
- typedef int intmask;
-             ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
- #define NULL 0  /* null pointer for linked lists */
- 
-In file included from c:\mingw\include\stdint.h:54:0,
-                 from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
- #define NULL ((void *)0)
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:59:0: warning: "OK" redefined
- #define OK ( 1)  /* normal system call return  */
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:0: note: this is the location of the previous definition
- #define OK          1
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
- extern syscall putc(did32, char);
-                ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
-                                                  ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
-                                ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
-                                                   ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
-                                 ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
-                                                 ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
-                               ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
- extern int32 fscanf(int32, char *, int32);
-              ^~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:7:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:16:1: error: expected identifier or '(' before '{' token
- {{ system_structures }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:19:1: error: expected identifier or '(' before '{' token
- {{ system_variables }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:22:1: error: expected identifier or '(' before '{' token
- {{ process_structure }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:28:1: error: expected identifier or '(' before '{' token
- {{ additional_structures }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:11:1: error: expected identifier or '(' before '{' token
- {{ test_forward_declarations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'main':
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: implicit declaration of function 'getenv' [-Wimplicit-function-declaration]
-         char *user = getenv("USER");
-                      ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:28:18: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
-             user = getenv("USERNAME"); /* For Windows */
-                  ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: error: 'test_execution_switch' undeclared (first use in this function)
-         {{ test_execution_switch }}
-            ^~~~~~~~~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: note: each undeclared identifier is reported only once for each function it appears in
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:34: error: expected ';' before '}' token
-         {{ test_execution_switch }}
-                                  ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'initialize_simulation':
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: implicit declaration of function 'strcpy' [-Wimplicit-function-declaration]
-             strcpy(proctab[i].prname, "NULLPROC");
-             ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: incompatible implicit declaration of built-in function 'strcpy'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: note: include '<string.h>' or provide a declaration of 'strcpy'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:55:23: error: 'struct procent' has no member named 'prio'; did you mean 'prprio'?
-             proctab[i].prio = 0;
-                       ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: warning: incompatible implicit declaration of built-in function 'strcpy'
-             strcpy(proctab[i].prname, "UNUSED");
-             ^~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: note: include '<string.h>' or provide a declaration of 'strcpy'
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:64:5: error: 'count1000' undeclared (first use in this function)
-     count1000 = 0;
-     ^~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:8: error: 'custom_initialization' undeclared (first use in this function)
-     {{ custom_initialization }}
-        ^~~~~~~~~~~~~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:30: error: expected ';' before '}' token
-     {{ custom_initialization }}
-                              ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: At top level:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:75:1: error: expected identifier or '(' before '{' token
- {{ test_implementations }}
- ^
+2025-06-17 23:16:33 - Cleaned output directories for complete rebuild
+2025-06-17 23:16:33 - Loaded template: XINU_STDDEFS_H
+2025-06-17 23:16:33 - Loaded template: XINU_H
+2025-06-17 23:16:33 - Loaded template: XINU_INCLUDES_H
+2025-06-17 23:16:33 - Loaded template: XINU_SIM_DECLARATIONS_H
+2025-06-17 23:16:33 - Loaded template: XINU_SIMULATION_C
+2025-06-17 23:16:33 - Loaded template: XINU_CORE_C
+2025-06-17 23:16:33 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
+2025-06-17 23:16:33 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/templates']
+2025-06-17 23:16:33 - Added missing type: bool8
+2025-06-17 23:16:33 - Added missing type: shellcmd
+2025-06-17 23:16:33 - Added missing type: intmask
+2025-06-17 23:16:33 - Added missing type: exchandler
+2025-06-17 23:16:33 - Added missing type: message
+2025-06-17 23:16:33 - Added missing type: syscall
+2025-06-17 23:16:33 - Added missing type: process
+2025-06-17 23:16:33 - Added missing type: bool32
+2025-06-17 23:16:33 - Added missing type: did32
+2025-06-17 23:16:33 - Added missing type: status
+2025-06-17 23:16:33 - Generated XINU stddefs: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
+2025-06-17 23:16:33 - Generated XINU header: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu.h
+2025-06-17 23:16:33 - Generated XINU includes: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-17 23:16:33 - Generated simulation declarations: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h
+2025-06-17 23:16:33 - Generated simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-17 23:16:33 - Generated XINU core: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c
+2025-06-17 23:16:33 - Structure adaptations: {}
+2025-06-17 23:16:33 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:5,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:3:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:24:16: error: conflicting types for ‘qid16’; have ‘int16’ {aka ‘short int’}
+   24 | typedef int16  qid16;
+      |                ^~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:13:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:10:13: note: previous declaration of ‘qid16’ with type ‘qid16’ {aka ‘int’}
+   10 | typedef int qid16;
+      |             ^~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:52:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/conf.h:24:9: error: unknown type name ‘byte’
+   24 |         byte    dvirq;
+      |         ^~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:59:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:13:29: error: conflicting types for ‘int8’; have ‘char’
+   13 | typedef char                int8;
+      |                             ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:21:18: note: previous declaration of ‘int8’ with type ‘int8’ {aka ‘signed char’}
+   21 | typedef int8_t   int8;
+      |                  ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:27:17: error: conflicting types for ‘pri16’; have ‘int16’ {aka ‘short int’}
+   27 | typedef int16   pri16;          /* process priority                     */
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:20:13: note: previous declaration of ‘pri16’ with type ‘pri16’ {aka ‘int’}
+   20 | typedef int pri16;
+      |             ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:31:17: error: conflicting types for ‘intmask’; have ‘uint16’ {aka ‘short unsigned int’}
+   31 | typedef uint16  intmask;        /* saved interrupt mask                 */
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:12:13: note: previous declaration of ‘intmask’ with type ‘intmask’ {aka ‘int’}
+   12 | typedef int intmask;
+      |             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:53:9: warning: ‘NULL’ redefined
+   53 | #define NULL    0               /* null pointer for linked lists        */
+      |         ^~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:3:
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h:419:9: note: this is the location of the previous definition
+  419 | #define NULL ((void *)0)
+      |         ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:59:9: warning: ‘OK’ redefined
+   59 | #define OK      ( 1)            /* normal system call return            */
+      |         ^~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:28:9: note: this is the location of the previous definition
+   28 | #define OK          1
+      |         ^~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:65:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:3:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+    2 | #include "xinu.h"
+  +++ |+#include <string.h>
+    3 | #include <xinu.h>
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:151:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:154:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  154 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:154:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:200:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  200 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:3:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+    2 | #include "xinu.h"
+  +++ |+#include <stdio.h>
+    3 | #include <xinu.h>
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:283:54: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  283 | extern  void    ttyInter_in(struct ttycblk *, struct uart_csreg *);
+      |                                                      ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:283:36: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  283 | extern  void    ttyInter_in(struct ttycblk *, struct uart_csreg *);
+      |                                    ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:286:55: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  286 | extern  void    ttyInter_out(struct ttycblk *, struct uart_csreg *);
+      |                                                       ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:286:37: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  286 | extern  void    ttyInter_out(struct ttycblk *, struct uart_csreg *);
+      |                                     ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:295:53: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  295 | extern  void    ttyKickOut(struct ttycblk *, struct uart_csreg *);
+      |                                                     ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:295:35: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  295 | extern  void    ttyKickOut(struct ttycblk *, struct uart_csreg *);
+      |                                   ^~~~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:74:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:46:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   46 | void bzero(void *s, unsigned int n);
+      |      ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:70:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   70 | void *malloc(unsigned int nbytes);
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:1:1: note: ‘malloc’ is declared in header ‘<stdlib.h>’
+  +++ |+#include <stdlib.h>
+    1 | #ifndef _STDLIB_H_
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:75:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:9:18: warning: conflicting types for built-in function ‘strncpy’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  char    *strncpy(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:4:1: note: ‘strncpy’ is declared in header ‘<string.h>’
+    3 | #include <stddef.h>
+  +++ |+#include <string.h>
+    4 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:10:18: warning: conflicting types for built-in function ‘strncat’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   10 | extern  char    *strncat(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:10:18: note: ‘strncat’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:11:17: warning: conflicting types for built-in function ‘strncmp’; expected ‘int(const char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   11 | extern  int32   strncmp(const char *, const char *, int32);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:11:17: note: ‘strncmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:15:17: warning: conflicting types for built-in function ‘strnlen’; expected ‘long unsigned int(const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   15 | extern  int32   strnlen(const char *, uint32);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:13:17: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   13 | extern  int32   fscanf(int32, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:1: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+    5 | #include <xinu.h>
+  +++ |+#include <stdio.h>
+    6 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: warning: mismatch in argument 2 type of built-in function ‘sprintf’; expected ‘const char *’ [-Wbuiltin-declaration-mismatch]
+   25 | extern  int32   sprintf(char *, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: note: ‘sprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:17: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   30 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:17: note: ‘fputc’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:17: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   31 | extern  int32   fputs(char *, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:17: note: ‘fputs’ is declared in header ‘<stdio.h>’
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:7:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h:16:1: error: expected identifier or ‘(’ before ‘{’ token
+   16 | {{ system_structures }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h:19:1: error: expected identifier or ‘(’ before ‘{’ token
+   19 | {{ system_variables }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h:22:1: error: expected identifier or ‘(’ before ‘{’ token
+   22 | {{ process_structure }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h:28:1: error: expected identifier or ‘(’ before ‘{’ token
+   28 | {{ additional_structures }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:11:1: error: expected identifier or ‘(’ before ‘{’ token
+   11 | {{ test_forward_declarations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c: In function ‘main’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:26:22: error: implicit declaration of function ‘getenv’ [-Wimplicit-function-declaration]
+   26 |         char *user = getenv("USER");
+      |                      ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:8:1: note: ‘getenv’ is defined in header ‘<stdlib.h>’; this is probably fixable by adding ‘#include <stdlib.h>’
+    7 | #include "xinu_includes.h"
+  +++ |+#include <stdlib.h>
+    8 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:26:22: error: initialization of ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   26 |         char *user = getenv("USER");
+      |                      ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:28:18: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   28 |             user = getenv("USERNAME"); /* For Windows */
+      |                  ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:37:12: error: ‘test_execution_switch’ undeclared (first use in this function)
+   37 |         {{ test_execution_switch }}
+      |            ^~~~~~~~~~~~~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:37:12: note: each undeclared identifier is reported only once for each function it appears in
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:37:33: error: expected ‘;’ before ‘}’ token
+   37 |         {{ test_execution_switch }}
+      |                                 ^~
+      |                                 ;
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c: In function ‘initialize_simulation’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:53:13: error: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+   53 |             strcpy(proctab[i].prname, "NULLPROC");
+      |             ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:8:1: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+    7 | #include "xinu_includes.h"
+  +++ |+#include <string.h>
+    8 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:53:13: warning: incompatible implicit declaration of built-in function ‘strcpy’ [-Wbuiltin-declaration-mismatch]
+   53 |             strcpy(proctab[i].prname, "NULLPROC");
+      |             ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:53:13: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:55:24: error: ‘struct procent’ has no member named ‘prio’; did you mean ‘prprio’?
+   55 |             proctab[i].prio = 0;
+      |                        ^~~~
+      |                        prprio
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:57:13: warning: incompatible implicit declaration of built-in function ‘strcpy’ [-Wbuiltin-declaration-mismatch]
+   57 |             strcpy(proctab[i].prname, "UNUSED");
+      |             ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:57:13: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:64:5: error: ‘count1000’ undeclared (first use in this function)
+   64 |     count1000 = 0;
+      |     ^~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:71:8: error: ‘custom_initialization’ undeclared (first use in this function)
+   71 |     {{ custom_initialization }}
+      |        ^~~~~~~~~~~~~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:71:29: error: expected ‘;’ before ‘}’ token
+   71 |     {{ custom_initialization }}
+      |                             ^~
+      |                             ;
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c: At top level:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core.c:75:1: error: expected identifier or ‘(’ before ‘{’ token
+   75 | {{ test_implementations }}
+      | ^
 
-2025-06-17 23:12:28 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:24:16: error: conflicting types for 'qid16'
- typedef int16  qid16;
-                ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:13: note: previous declaration of 'qid16' was here
- typedef int qid16;
-             ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:24:2: error: unknown type name 'byte'
-  byte    dvirq;
-  ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
- typedef char                int8;
-                             ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
- typedef int8_t   int8;
-                  ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:27:15: error: conflicting types for 'pri16'
- typedef int16 pri16;  /* process priority   */
-               ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:20:13: note: previous declaration of 'pri16' was here
- typedef int pri16;
-             ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:31:16: error: conflicting types for 'intmask'
- typedef uint16 intmask; /* saved interrupt mask   */
-                ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:12:13: note: previous declaration of 'intmask' was here
- typedef int intmask;
-             ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
- #define NULL 0  /* null pointer for linked lists */
- 
-In file included from c:\mingw\include\stdint.h:54:0,
-                 from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
- #define NULL ((void *)0)
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:59:0: warning: "OK" redefined
- #define OK ( 1)  /* normal system call return  */
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:28:0: note: this is the location of the previous definition
- #define OK          1
- 
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
- extern syscall putc(did32, char);
-                ^~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
-                                                  ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
-                                ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
-                                                   ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
-                                 ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
-                                                 ^~~~~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
- extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
-                               ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
- extern int32 fscanf(int32, char *, int32);
-              ^~~~~~
-In file included from c:\mingw\include\unistd.h:56:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
-c:\mingw\include\io.h:661:38: error: conflicting types for 'open'
- _CRTIMP __cdecl __MINGW_NOTHROW  int open (const char*, int, ...);
-                                      ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:167:16: note: previous declaration of 'open' was here
- extern syscall open(did32, char *, char *);
-                ^~~~
-In file included from c:\mingw\include\unistd.h:56:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
-c:\mingw\include\io.h:662:38: error: conflicting types for 'read'
- _CRTIMP __cdecl __MINGW_NOTHROW  int read (int, void*, unsigned int);
-                                      ^~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:203:16: note: previous declaration of 'read' was here
- extern syscall read(did32, char *, uint32);
-                ^~~~
-In file included from c:\mingw\include\unistd.h:56:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
-c:\mingw\include\io.h:668:38: error: conflicting types for 'write'
- _CRTIMP __cdecl __MINGW_NOTHROW  int write (int, const void*, unsigned int);
-                                      ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:319:16: note: previous declaration of 'write' was here
- extern syscall write(did32, char *, uint32);
-                ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:0:
-c:\mingw\include\unistd.h:113:34: error: conflicting types for 'sleep'
- unsigned __cdecl __MINGW_NOTHROW sleep( unsigned );
-                                  ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:258:16: note: previous declaration of 'sleep' was here
- extern syscall sleep(uint32);
-                ^~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:9:0:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:12:1: error: expected identifier or '(' before '{' token
- {{ stdio_functions }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:15:1: error: expected identifier or '(' before '{' token
- {{ stdlib_functions }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:18:1: error: expected identifier or '(' before '{' token
- {{ string_functions }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:21:1: error: expected identifier or '(' before '{' token
- {{ process_management }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:24:1: error: expected identifier or '(' before '{' token
- {{ interrupt_management }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:27:1: error: expected identifier or '(' before '{' token
- {{ simulation_functions }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:30:1: error: expected identifier or '(' before '{' token
- {{ dynamic_functions }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:12:1: error: expected identifier or '(' before '{' token
- {{ stdio_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:15:1: error: expected identifier or '(' before '{' token
- {{ stdlib_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:18:1: error: expected identifier or '(' before '{' token
- {{ string_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:21:1: error: expected identifier or '(' before '{' token
- {{ process_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:24:1: error: expected identifier or '(' before '{' token
- {{ interrupt_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:27:1: error: expected identifier or '(' before '{' token
- {{ simulation_implementations }}
- ^
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:31:15: error: conflicting types for 'clktime'
- unsigned long clktime = 0;/* Current time in seconds since boot */
-               ^~~~~~~
-In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:51:0,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
-                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/clock.h:14:15: note: previous declaration of 'clktime' was here
- extern uint32 clktime; /* current time in secs since boot */
-               ^~~~~~~
-C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:38:1: error: expected identifier or '(' before '{' token
- {{ dynamic_implementations }}
- ^
+2025-06-17 23:16:33 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:5,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:3:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:24:16: error: conflicting types for ‘qid16’; have ‘int16’ {aka ‘short int’}
+   24 | typedef int16  qid16;
+      |                ^~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:13:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:10:13: note: previous declaration of ‘qid16’ with type ‘qid16’ {aka ‘int’}
+   10 | typedef int qid16;
+      |             ^~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:52:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/conf.h:24:9: error: unknown type name ‘byte’
+   24 |         byte    dvirq;
+      |         ^~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:59:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:13:29: error: conflicting types for ‘int8’; have ‘char’
+   13 | typedef char                int8;
+      |                             ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:21:18: note: previous declaration of ‘int8’ with type ‘int8’ {aka ‘signed char’}
+   21 | typedef int8_t   int8;
+      |                  ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:27:17: error: conflicting types for ‘pri16’; have ‘int16’ {aka ‘short int’}
+   27 | typedef int16   pri16;          /* process priority                     */
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:20:13: note: previous declaration of ‘pri16’ with type ‘pri16’ {aka ‘int’}
+   20 | typedef int pri16;
+      |             ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:31:17: error: conflicting types for ‘intmask’; have ‘uint16’ {aka ‘short unsigned int’}
+   31 | typedef uint16  intmask;        /* saved interrupt mask                 */
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:12:13: note: previous declaration of ‘intmask’ with type ‘intmask’ {aka ‘int’}
+   12 | typedef int intmask;
+      |             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:53:9: warning: ‘NULL’ redefined
+   53 | #define NULL    0               /* null pointer for linked lists        */
+      |         ^~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:3:
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/include/stddef.h:419:9: note: this is the location of the previous definition
+  419 | #define NULL ((void *)0)
+      |         ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:59:9: warning: ‘OK’ redefined
+   59 | #define OK      ( 1)            /* normal system call return            */
+      |         ^~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h:28:9: note: this is the location of the previous definition
+   28 | #define OK          1
+      |         ^~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:65:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:148:18: warning: conflicting types for built-in function ‘memcpy’; expected ‘void *(void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  148 | extern  void    *memcpy(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:3:1: note: ‘memcpy’ is declared in header ‘<string.h>’
+    2 | #include "xinu.h"
+  +++ |+#include <string.h>
+    3 | #include <xinu.h>
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:151:18: warning: conflicting types for built-in function ‘memcmp’; expected ‘int(const void *, const void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  151 | extern  int32   *memcmp(void *, const void *, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:151:18: note: ‘memcmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:154:18: warning: conflicting types for built-in function ‘memset’; expected ‘void *(void *, int,  long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+  154 | extern  void    *memset(void *, const int, int32);
+      |                  ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:154:18: note: ‘memset’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:200:17: warning: conflicting types for built-in function ‘putc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+  200 | extern  syscall putc(did32, char);
+      |                 ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:3:1: note: ‘putc’ is declared in header ‘<stdio.h>’
+    2 | #include "xinu.h"
+  +++ |+#include <stdio.h>
+    3 | #include <xinu.h>
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:283:54: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  283 | extern  void    ttyInter_in(struct ttycblk *, struct uart_csreg *);
+      |                                                      ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:283:36: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  283 | extern  void    ttyInter_in(struct ttycblk *, struct uart_csreg *);
+      |                                    ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:286:55: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  286 | extern  void    ttyInter_out(struct ttycblk *, struct uart_csreg *);
+      |                                                       ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:286:37: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  286 | extern  void    ttyInter_out(struct ttycblk *, struct uart_csreg *);
+      |                                     ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:295:53: warning: ‘struct uart_csreg’ declared inside parameter list will not be visible outside of this definition or declaration
+  295 | extern  void    ttyKickOut(struct ttycblk *, struct uart_csreg *);
+      |                                                     ^~~~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:295:35: warning: ‘struct ttycblk’ declared inside parameter list will not be visible outside of this definition or declaration
+  295 | extern  void    ttyKickOut(struct ttycblk *, struct uart_csreg *);
+      |                                   ^~~~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:74:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:46:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   46 | void bzero(void *s, unsigned int n);
+      |      ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:70:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   70 | void *malloc(unsigned int nbytes);
+      |       ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:1:1: note: ‘malloc’ is declared in header ‘<stdlib.h>’
+  +++ |+#include <stdlib.h>
+    1 | #ifndef _STDLIB_H_
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:75:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:9:18: warning: conflicting types for built-in function ‘strncpy’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  char    *strncpy(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:4:1: note: ‘strncpy’ is declared in header ‘<string.h>’
+    3 | #include <stddef.h>
+  +++ |+#include <string.h>
+    4 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:10:18: warning: conflicting types for built-in function ‘strncat’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   10 | extern  char    *strncat(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:10:18: note: ‘strncat’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:11:17: warning: conflicting types for built-in function ‘strncmp’; expected ‘int(const char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   11 | extern  int32   strncmp(const char *, const char *, int32);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:11:17: note: ‘strncmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:15:17: warning: conflicting types for built-in function ‘strnlen’; expected ‘long unsigned int(const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+   15 | extern  int32   strnlen(const char *, uint32);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:13:17: warning: conflicting types for built-in function ‘fscanf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   13 | extern  int32   fscanf(int32, char *, int32);
+      |                 ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:1: note: ‘fscanf’ is declared in header ‘<stdio.h>’
+    5 | #include <xinu.h>
+  +++ |+#include <stdio.h>
+    6 | 
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
+   23 | extern  int32   fprintf(int, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: note: ‘fprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: warning: mismatch in argument 2 type of built-in function ‘sprintf’; expected ‘const char *’ [-Wbuiltin-declaration-mismatch]
+   25 | extern  int32   sprintf(char *, char *, ...);
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: note: ‘sprintf’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:17: warning: conflicting types for built-in function ‘fputc’; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
+   30 | extern  int32   fputc(int32, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:17: note: ‘fputc’ is declared in header ‘<stdio.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:17: warning: conflicting types for built-in function ‘fputs’; expected ‘int(const char *, void *)’ [-Wbuiltin-declaration-mismatch]
+   31 | extern  int32   fputs(char *, int32);
+      |                 ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:17: note: ‘fputs’ is declared in header ‘<stdio.h>’
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:7:
+/usr/include/unistd.h:371:16: error: conflicting types for ‘read’; have ‘ssize_t(int,  void *, size_t)’ {aka ‘long int(int,  void *, long unsigned int)’}
+  371 | extern ssize_t read (int __fd, void *__buf, size_t __nbytes) __wur
+      |                ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:203:17: note: previous declaration of ‘read’ with type ‘syscall(did32,  char *, uint32)’ {aka ‘int(int,  char *, unsigned int)’}
+  203 | extern  syscall read(did32, char *, uint32);
+      |                 ^~~~
+/usr/include/unistd.h:378:16: error: conflicting types for ‘write’; have ‘ssize_t(int,  const void *, size_t)’ {aka ‘long int(int,  const void *, long unsigned int)’}
+  378 | extern ssize_t write (int __fd, const void *__buf, size_t __n) __wur
+      |                ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:319:17: note: previous declaration of ‘write’ with type ‘syscall(did32,  char *, uint32)’ {aka ‘int(int,  char *, unsigned int)’}
+  319 | extern  syscall write(did32, char *, uint32);
+      |                 ^~~~~
+/usr/include/unistd.h:464:21: error: conflicting types for ‘sleep’; have ‘unsigned int(unsigned int)’
+  464 | extern unsigned int sleep (unsigned int __seconds);
+      |                     ^~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/prototypes.h:258:17: note: previous declaration of ‘sleep’ with type ‘syscall(uint32)’ {aka ‘int(unsigned int)’}
+  258 | extern  syscall sleep(uint32);
+      |                 ^~~~~
+/usr/include/unistd.h:1091:17: error: ‘syscall’ redeclared as different kind of symbol
+ 1091 | extern long int syscall (long int __sysno, ...) __THROW;
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/kernel.h:37:17: note: previous declaration of ‘syscall’ with type ‘syscall’ {aka ‘int’}
+   37 | typedef int32   syscall;        /* system call declaration              */
+      |                 ^~~~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:9:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:12:1: error: expected identifier or ‘(’ before ‘{’ token
+   12 | {{ stdio_functions }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:15:1: error: expected identifier or ‘(’ before ‘{’ token
+   15 | {{ stdlib_functions }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:18:1: error: expected identifier or ‘(’ before ‘{’ token
+   18 | {{ string_functions }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:21:1: error: expected identifier or ‘(’ before ‘{’ token
+   21 | {{ process_management }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:24:1: error: expected identifier or ‘(’ before ‘{’ token
+   24 | {{ interrupt_management }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:27:1: error: expected identifier or ‘(’ before ‘{’ token
+   27 | {{ simulation_functions }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_sim_declarations.h:30:1: error: expected identifier or ‘(’ before ‘{’ token
+   30 | {{ dynamic_functions }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:12:1: error: expected identifier or ‘(’ before ‘{’ token
+   12 | {{ stdio_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:15:1: error: expected identifier or ‘(’ before ‘{’ token
+   15 | {{ stdlib_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:18:1: error: expected identifier or ‘(’ before ‘{’ token
+   18 | {{ string_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:21:1: error: expected identifier or ‘(’ before ‘{’ token
+   21 | {{ process_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:24:1: error: expected identifier or ‘(’ before ‘{’ token
+   24 | {{ interrupt_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:27:1: error: expected identifier or ‘(’ before ‘{’ token
+   27 | {{ simulation_implementations }}
+      | ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:31:15: error: conflicting types for ‘clktime’; have ‘long unsigned int’
+   31 | unsigned long clktime = 0;/* Current time in seconds since boot */
+      |               ^~~~~~~
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:51:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/clock.h:14:17: note: previous declaration of ‘clktime’ with type ‘uint32’ {aka ‘unsigned int’}
+   14 | extern  uint32  clktime;        /* current time in secs since boot      */
+      |                 ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:38:1: error: expected identifier or ‘(’ before ‘{’ token
+   38 | {{ dynamic_implementations }}
+      | ^
 
-2025-06-17 23:12:28 - Error: No object files to link
+2025-06-17 23:16:33 - Error: No object files to link
