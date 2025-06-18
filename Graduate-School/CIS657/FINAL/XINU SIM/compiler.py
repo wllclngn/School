@@ -1,428 +1,397 @@
-# compiler.py - Compile and link XINU source files
+# compiler.py - XINU compilation system with g++ integration
+# NOTE: ALWAYS USE SYSTEM INFORMATION FOR USER AND TIMESTAMP
 
 import os
-import re
-import glob
-import subprocess
-import datetime
 import sys
+import subprocess
+import shlex
+import glob
+import platform
+import datetime
+import re
+import tempfile
 from xinu_sim.utils.logger import log
 
-# Force unbuffered output for print statements
-sys.stdout.reconfigure(line_buffering=True)
-
 class XinuCompiler:
-    # Compiler for XINU simulation
+    """Enhanced XINU compiler with g++ integration and dynamic adaptation."""
     
     def __init__(self, config):
         self.config = config
-        self.error_limit = 20
-        self.errors_found = 0
-        self.warnings = {}  # Track unique warnings
-        self.compilation_log = []  # For storing compilation messages
-        self.ignored_files = []  # Track ignored files
+        self.detected_compile_errors = []
+        self.structure_adaptations = {}
+        self.include_paths = []
+        self.system_info = self._get_system_info()
+        self._setup_environment()
         
-        # Functions to exclude from compilation
-        self.exclude_funcs = [
-            "printf", "fprintf", "sprintf", "scanf", "fscanf", "sscanf",
-            "getchar", "putchar", "fgetc", "fgets", "fputc", "fputs",
-            "_doprnt", "_doscan", "abs", "labs", "atoi", "atol", 
-            "rand", "srand", "qsort", "strcpy", "strncpy", "strcat", 
-            "strncat", "strcmp", "strncmp", "strlen", "strnlen", 
-            "strchr", "strrchr", "strstr", "memcpy", "memmove", 
-            "memcmp", "memset"
-        ]
+    def _print(self, message):
+        # Print directly to terminal for real-time feedback
+        sys.stdout.write(message + "\n")
+        sys.stdout.flush()
         
-    def build(self):
-        # Build XINU simulation
-        # Ensure output directories exist
+    def _get_system_info(self):
+        """Get detailed system information for compilation parameters."""
+        system = platform.system().lower()
+        info = {
+            'system': system,
+            'compiler': 'g++',
+            'c_compiler': 'gcc',
+            'timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'user': os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        }
+        
+        # Set OS-specific configuration
+        if system == 'darwin':
+            info['os'] = 'macos'
+            info['c_flags'] = '-Wall -Wextra'
+            info['cpp_flags'] = '-Wall -Wextra -std=c++11'
+            info['obj_ext'] = '.o'
+            info['exe_ext'] = ''
+        elif system == 'windows':
+            info['os'] = 'windows'
+            info['c_flags'] = '/W4'
+            info['cpp_flags'] = '/W4 /EHsc'
+            info['obj_ext'] = '.obj'
+            info['exe_ext'] = '.exe'
+        else:  # Linux and others
+            info['os'] = 'linux'
+            info['c_flags'] = '-Wall -Wextra -fPIC'
+            info['cpp_flags'] = '-Wall -Wextra -std=c++11 -fPIC'
+            info['obj_ext'] = '.o'
+            info['exe_ext'] = ''
+        
+        # Check for compiler availability
+        try:
+            process = subprocess.Popen(['g++', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate()
+            if process.returncode == 0:
+                version = stdout.decode('utf-8', errors='ignore').split('\n')[0]
+                info['compiler_version'] = version
+                log(f"Found g++ compiler: {version}")
+                self._print(f"Found g++ compiler: {version}")
+            else:
+                log("Warning: g++ compiler not found")
+                self._print("Warning: g++ compiler not found")
+                info['compiler_version'] = 'unknown'
+        except Exception:
+            log("Warning: Could not determine g++ compiler version")
+            info['compiler_version'] = 'unknown'
+        
+        return info
+    
+    def _setup_environment(self):
+        """Setup the compilation environment."""
+        # Initialize include paths
+        self.include_paths = []
+        
+        # Add standard include paths
+        if hasattr(self.config, 'include_dir') and os.path.exists(self.config.include_dir):
+            self.include_paths.append(self.config.include_dir)
+        
+        # Add XINU OS include directory
+        xinu_include_dir = os.path.join(self.config.xinu_os_dir, 'include')
+        if os.path.exists(xinu_include_dir):
+            self.include_paths.append(xinu_include_dir)
+        
+        # Add output directory for generated headers
+        output_include_dir = os.path.join(self.config.output_dir)
+        if os.path.exists(output_include_dir):
+            self.include_paths.append(output_include_dir)
+            
+        # Create output directories if they don't exist
+        os.makedirs(self.config.output_dir, exist_ok=True)
         os.makedirs(self.config.obj_dir, exist_ok=True)
+        os.makedirs(self.config.bin_dir, exist_ok=True)
         
-        # Start compilation log
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._log(f"##### XINU Compilation Log #####")
-        self._log(f"Started: {os.environ.get('USER', 'unknown')} at {timestamp}")
-        self._log(f"Project directory: {self.config.project_dir}")
-        self._log(f"System directory: {self.config.system_dir}")
-        self._log(f"Output directory: {self.config.output_dir}")
+        log(f"Setup environment with include paths: {self.include_paths}")
+        self._print(f"Setup environment with include paths: {self.include_paths}")
+    
+    def compile(self):
+        """Compile the XINU simulation project with g++ integration."""
+        self._print("\n##### Compiling XINU Simulation #####")
         
-        # Print concise info to terminal
-        print(f"##### XINU Compilation Started #####", flush=True)
-        print(f"Time: {timestamp}", flush=True)
+        # Analyze the XINU headers to detect structure names and adaptations needed
+        self._analyze_for_adaptations()
         
-        # Try parsing the Makefile for build instructions
-        from xinu_sim.makefile_parser import MakefileParser
-        makefile_parser = MakefileParser(self.config)
-        if makefile_parser.parse_makefile():
-            log("Successfully parsed Makefile for build instructions")
-            self._log("Using build instructions from Makefile")
-            print("Using Makefile build instructions", flush=True)
-            
-            # Get source files from Makefile
-            makefile_sources = makefile_parser.get_resolved_source_files()
-            if makefile_sources:
-                log(f"Found {len(makefile_sources)} source files defined in Makefile")
-                self._log(f"Found {len(makefile_sources)} source files defined in Makefile")
-                
-                # Add our core files
-                core_files = [
-                    self.config.xinu_core_c,
-                    self.config.sim_helper_c
-                ]
-                
-                for file_path in core_files:
-                    if os.path.exists(file_path) and file_path not in makefile_sources:
-                        makefile_sources.append(file_path)
-                        self._log(f"Added core file: {file_path}")
-                
-                # Use Makefile sources
-                srcfiles = makefile_sources
-            else:
-                # Fall back to collecting sources normally
-                log("No source files found in Makefile, falling back to source scanning")
-                self._log("No source files found in Makefile, falling back to source scanning")
-                print("Source scanning (no Makefile sources found)", flush=True)
-                srcfiles = self.collect_source_files()
-        else:
-            # Fall back to collecting sources normally
-            log("Makefile not found or couldn't be parsed, falling back to source scanning")
-            self._log("Makefile not found or couldn't be parsed, falling back to source scanning")
-            print("Source scanning (no Makefile found)", flush=True)
-            srcfiles = self.collect_source_files()
+        # Compile core files
+        core_files = [self.config.xinu_core_c, self.config.sim_helper_c]
+        core_objects = self._compile_sources(core_files)
         
-        if not srcfiles:
-            log("No source files found to compile.")
-            self._log("ERROR: No source files found to compile.")
-            print("ERROR: No source files found to compile.", flush=True)
-            self._save_compilation_log()
-            return False
+        # Find and compile additional C files
+        additional_sources = self._find_additional_sources()
+        additional_objects = self._compile_sources(additional_sources)
         
-        # Report source file summary
-        ignored_count = len(self.ignored_files)
-        print(f"Using total of {len(srcfiles)} source files for simulation ({ignored_count} files ignored)", flush=True)
+        # Link everything together
+        result = self._link_executable(core_objects + additional_objects)
         
-        # Compile each file
-        print(f"##### Compiling {len(srcfiles)} source files #####", flush=True)
-        obj_files = self.compile_files(srcfiles, makefile_parser if makefile_parser.parse_makefile() else None)
-        if not obj_files:
-            if self.errors_found >= self.error_limit:
-                log(f"Compilation aborted after {self.error_limit} errors.")
-                self._log(f"ERROR: Compilation aborted after {self.error_limit} errors.")
-                print(f"ERROR: Compilation aborted after {self.error_limit} errors.", flush=True)
-            else:
-                log("No object files generated. Compilation failed.")
-                self._log("ERROR: No object files generated. Compilation failed.")
-                print("ERROR: No object files generated. Compilation failed.", flush=True)
-            self._save_compilation_log()
-            return False
-        
-        # Link object files
-        print(f"##### Linking {len(obj_files)} object files #####", flush=True)
-        success = self.link_files(obj_files, makefile_parser if makefile_parser.parse_makefile() else None)
-        if not success:
-            log("Linking failed.")
-            self._log("ERROR: Linking failed.")
-            print("ERROR: Linking failed.", flush=True)
-            self._save_compilation_log()
-            return False
-            
-        # Final summary
-        num_warnings = len(self.warnings)
-        success_msg = f"SUCCESS: Build completed with 0 errors and {num_warnings} unique warning(s)."
-        log(success_msg)
-        self._log(success_msg)
-        print(f"##### {success_msg} #####", flush=True)
-        print(f"XINU core executable: {self.config.xinu_core_output}", flush=True)
-        
-        # Save compilation log
-        self._save_compilation_log()
-        return True
-        
-    def _log(self, message):
-        # Add a message to the compilation log only (not terminal)
-        self.compilation_log.append(message)
-        
-    def _error(self, message):
-        # Log error and increment error count
-        self.errors_found += 1
-        self._log(f"ERROR: {message}")
-        print(f"ERROR: {message}", flush=True)
-        # Check if we've hit the error limit
-        if self.errors_found >= self.error_limit:
-            self._log(f"Error limit ({self.error_limit}) reached. Aborting compilation.")
-            print(f"Error limit ({self.error_limit}) reached. Aborting compilation.", flush=True)
+        if result:
+            self._print("\nXINU Simulation compilation successful!")
             return True
-        return False
-        
-    def _save_compilation_log(self):
-        # Save compilation log to file
-        log_file = self.config.compilation_log
-        try:
-            with open(log_file, 'w') as f:
-                f.write('\n'.join(self.compilation_log))
-            print(f"Compilation log saved to {log_file}", flush=True)
-        except Exception as e:
-            print(f"Error saving compilation log: {str(e)}", flush=True)
-        
-    def _collect_minimal_source_files(self):
-        # Collect only the minimal source files needed for a basic simulation
-        srcfiles = []
-        
-        # Only include the generated files
-        core_files = [
-            self.config.xinu_core_c,
-            self.config.sim_helper_c
-        ]
-        
-        for file_path in core_files:
-            if os.path.exists(file_path):
-                srcfiles.append(file_path)
-                self._log(f"Added core file: {file_path}")
-        
-        print(f"Using minimal set of {len(srcfiles)} source files", flush=True)
-        self._log(f"Using minimal set of {len(srcfiles)} source files for simulation")
-        return srcfiles
-        
-    def collect_source_files(self):
-        # Collect XINU C source files for full compilation
-        self._log("\n##### Source Files #####")
-        
-        srcfiles = []
-        self.ignored_files = []
-        
-        # Use XINU OS directories directly
-        self._log("Scanning directories for source files...")
-        srcfiles = self._scan_directories_for_sources()
-        
-        # Always include these files if they exist
-        core_files = [
-            self.config.xinu_core_c,
-            self.config.sim_helper_c
-        ]
-        
-        for file_path in core_files:
-            if os.path.exists(file_path) and file_path not in srcfiles:
-                srcfiles.append(file_path)
-                self._log(f"Added core file: {file_path}")
-                
-        # Filter out assembly files and library functions that will be shimmed
-        filtered_srcfiles = []
-        for src_path in srcfiles:
-            basename = os.path.basename(src_path)
-            basename_no_ext = os.path.splitext(basename)[0]
-            
-            if basename.endswith(('.S', '.s', '.asm')):
-                self._log(f"Skipping assembly file: {src_path}")
-                self.ignored_files.append(f"Assembly: {src_path}")
-                continue
-                
-            if basename_no_ext in self.exclude_funcs and os.path.dirname(src_path) == self.config.libxc_dir:
-                self._log(f"Excluding libxc source for shimmed function: {src_path}")
-                self.ignored_files.append(f"Excluded function: {src_path}")
-            else:
-                filtered_srcfiles.append(src_path)
-                self._log(f"Adding source file: {src_path}")
-                
-        # Add ignored files section to log
-        if self.ignored_files:
-            self._log("\n##### Ignored Files #####")
-            for ignored in self.ignored_files:
-                self._log(f"Ignored: {ignored}")
-                
-        self._log(f"Total XINU C source files for compilation: {len(filtered_srcfiles)}")
-        return filtered_srcfiles
-        
-    def _scan_directories_for_sources(self):
-        # Scan directories for source files
-        srcfiles = []
-        
-        # Define directories to scan
-        dirs_to_scan = [
-            self.config.system_dir,
-            os.path.join(self.config.device_dir, "tty") if os.path.exists(self.config.device_dir) else None,
-            self.config.shell_dir,
-            self.config.libxc_dir
-        ]
-        
-        # Filter out None values (directories that don't exist)
-        dirs_to_scan = [d for d in dirs_to_scan if d]
-        
-        # Find all .c files
-        for directory in dirs_to_scan:
-            if os.path.exists(directory):
-                self._log(f"Scanning directory: {directory}")
-                count = 0
-                for root, _, files in os.walk(directory):
-                    for file in files:
-                        if file.endswith('.c'):
-                            srcfiles.append(os.path.join(root, file))
-                            count += 1
-                self._log(f"  Found {count} .c files")
-            else:
-                self._log(f"Directory does not exist: {directory}")
-                            
-        return srcfiles
-        
-    def compile_files(self, srcfiles, makefile_parser=None):
-        # Compile all source files
-        self._log("\n##### Compilation #####")
-        obj_files = []
-        
-        # Setup compiler options
-        include_dirs = []
-        compiler_flags = []
-        
-        # If we have Makefile info, use it
-        if makefile_parser:
-            include_dirs = makefile_parser.get_resolved_include_dirs()
-            compiler_flags = makefile_parser.get_compiler_flags()
-        
-        # If no Makefile info or it's incomplete, add our standard include dirs
-        if not include_dirs:
-            include_dirs = [
-                self.config.output_dir,                      # For generated files
-                os.path.dirname(self.config.xinu_h),         # For xinu.h location
-                self.config.include_dir.replace(" ", "\\ ")  # For XINU OS include files
-            ]
-        
-        # If no Makefile compiler flags, use our defaults
-        if not compiler_flags:
-            compiler_flags = ["-Wall", "-Wextra", "-g", "-O0", "-w", "-fno-builtin"]
-        
-        # Build include options
-        include_opts = " ".join(f"-I{d}" for d in include_dirs if os.path.exists(d))
-        compiler_opts = " ".join(compiler_flags)
-                
-        pre_header_path = os.path.join(self.config.output_dir, "xinu_pre.h")
-        # Create a simple pre-header if it doesn't exist
-        with open(pre_header_path, 'w') as f:
-            f.write("/* Auto-generated xinu_pre.h */\n")
-            f.write("#define NULL 0\n")
-            f.write("#define OK 1\n")
-            f.write("#define SYSERR -1\n")
-            f.write("typedef int process;\n")
-            f.write("typedef int syscall;\n")
-            f.write("typedef int pid32;\n")
-        
-        # Compile each source file
-        for i, src in enumerate(srcfiles):
-            obj = os.path.join(self.config.obj_dir, os.path.basename(src).replace('.c', '.o'))
-            print(f"Compiling [{i+1}/{len(srcfiles)}]: {os.path.basename(src)}", flush=True)
-            self._log(f"\nCompiling {src} -> {obj}")
-            
-            compile_options = f"{include_opts} {compiler_opts}"
-            cmd = f"gcc -c {src} {compile_options} -o {obj}"
-            
-            self._log(f"Command: {cmd}")
-            
-            try:
-                process = subprocess.Popen(
-                    cmd, 
-                    shell=True, 
-                    stdout=subprocess.PIPE, 
-                    stderr=subprocess.PIPE,
-                    universal_newlines=True
-                )
-                stdout, stderr = process.communicate()
-                
-                # Process output for errors and warnings
-                errors_in_file = 0
-                for line in stderr.splitlines():
-                    if "error:" in line.lower():
-                        self._log(f"ERROR: {line}")
-                        errors_in_file += 1
-                        # Only print first few errors to terminal
-                        if self.errors_found < self.error_limit:
-                            print(f"Error in {os.path.basename(src)}: {line.split(':', 3)[-1].strip()}", flush=True)
-                        self.errors_found += 1
-                    elif "warning:" in line.lower():
-                        warning_key = line.strip()
-                        if warning_key not in self.warnings:
-                            self._log(f"WARNING: {line}")
-                            self.warnings[warning_key] = True
-                
-                # Check if compilation succeeded
-                if process.returncode == 0:
-                    obj_files.append(obj)
-                    self._log(f"Successfully compiled {src}")
-                else:
-                    self._log(f"Failed to compile {src}")
-                    
-                if self.errors_found >= self.error_limit:
-                    print(f"Stopping compilation after {self.error_limit} errors", flush=True)
-                    return []
-            except Exception as e:
-                self._log(f"Error compiling {src}: {str(e)}")
-                print(f"Error compiling {os.path.basename(src)}: {str(e)}", flush=True)
-                self.errors_found += 1
-                
-                if self.errors_found >= self.error_limit:
-                    print(f"Stopping compilation after {self.error_limit} errors", flush=True)
-                    return []
-        
-        return obj_files
-        
-    def link_files(self, obj_files, makefile_parser=None):
-        # Link object files into executable
-        if not obj_files:
-            self._log("No object files to link.")
-            return False
-            
-        self._log(f"\n##### Linking #####")
-        self._log(f"Linking {len(obj_files)} objects to {self.config.xinu_core_output}")
-        
-        # Get linker flags from Makefile if available
-        linker_flags = ""
-        if makefile_parser:
-            linker_flags = " ".join(makefile_parser.get_linker_flags())
         else:
-            linker_flags = "-lm"  # Default to just math library if no Makefile
+            self._print("\nXINU Simulation compilation failed!")
+            return False
+    
+    def _analyze_for_adaptations(self):
+        """Use g++ preprocessing to analyze headers for structure adaptations."""
+        self._print("\n##### Analyzing Headers for Structure Adaptations #####")
         
-        # Construct the link command
-        link_cmd = f"gcc {' '.join(obj_files)} -o {self.config.xinu_core_output} {linker_flags}"
-        self._log(f"Command: {link_cmd}")
+        # Create a temporary file for preprocessing
+        with tempfile.NamedTemporaryFile(suffix=".c", delete=False) as temp_file:
+            temp_path = temp_file.name
+            temp_file.write(f"#include \"{self.config.includes_h}\"\n".encode('utf-8'))
         
+        # Build include paths for preprocessing
+        include_opts = " ".join(f"-I{p}" for p in self.include_paths if os.path.exists(p))
+        
+        # Run g++ preprocessor
         try:
+            cmd = f"g++ -E {include_opts} {temp_path}"
+            self._print(f"Running preprocessor: {cmd}")
             process = subprocess.Popen(
-                link_cmd,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 universal_newlines=True
             )
             stdout, stderr = process.communicate()
             
-            # Process the output
-            link_errors = 0
+            if process.returncode != 0:
+                log(f"Warning: Failed to preprocess headers for adaptation: {stderr}")
+                self._print("Warning: Failed to preprocess headers for adaptation")
+            else:
+                # Scan for structure definitions
+                self._scan_for_struct_variations(stdout)
             
-            for line in stderr.splitlines():
-                if "error:" in line.lower():
-                    self._log(f"ERROR: {line}")
-                    print(f"Link error: {line.split(':', 1)[-1].strip()}", flush=True)
-                    link_errors += 1
-                    self.errors_found += 1
-                    
-                    if self.errors_found >= self.error_limit:
-                        print(f"Stopping linking after {self.error_limit} errors", flush=True)
-                        return False
-                elif "warning:" in line.lower():
-                    warning_key = line.strip()
-                    if warning_key not in self.warnings:
-                        self._log(f"WARNING: {line}")
-                        self.warnings[warning_key] = True
-            
-            if link_errors > 0:
-                self._log(f"Linking failed with {link_errors} errors.")
-                print(f"Linking failed with {link_errors} errors.", flush=True)
-                return False
-                
-            # Make the output executable (Unix-like systems)
-            if not self.config.is_windows() and os.path.exists(self.config.xinu_core_output):
-                os.chmod(self.config.xinu_core_output, 0o755)
-                self._log(f"Made {self.config.xinu_core_output} executable")
-                
-            return process.returncode == 0
+            # Clean up temp file
+            os.unlink(temp_path)
         except Exception as e:
-            self._log(f"Error during linking: {str(e)}")
-            print(f"Error during linking: {str(e)}", flush=True)
+            log(f"Warning: Error during header analysis: {str(e)}")
+            self._print(f"Warning: Error during header analysis")
+    
+    def _scan_for_struct_variations(self, preprocessed_content):
+        """Scan preprocessed content for structure variations."""
+        # Find process structure
+        proc_structs = re.findall(r'struct\s+(\w+)\s*{(.*?)};', preprocessed_content, re.DOTALL)
+        
+        # Look for key structures like procent
+        for name, body in proc_structs:
+            if "prstate" in body or "prio" in body or "prprio" in body:
+                self._print(f"Found process structure: {name}")
+                
+                # Detect key field variations
+                if "prio" in body and "prprio" not in body:
+                    self.structure_adaptations["prprio"] = "prio"
+                    log("Detected field variation: prprio -> prio")
+                    self._print("Detected field variation: prprio -> prio")
+                elif "prprio" in body and "prio" not in body:
+                    self.structure_adaptations["prio"] = "prprio"
+                    log("Detected field variation: prio -> prprio")
+                    self._print("Detected field variation: prio -> prprio")
+        
+        log(f"Structure adaptations: {self.structure_adaptations}")
+    
+    def _find_additional_sources(self):
+        """Find additional source files to compile."""
+        sources = []
+        
+        # Check for any C files in the XINU SIM directory
+        for root, dirs, files in os.walk(self.config.project_dir):
+            for file in files:
+                if file.endswith(".c") and not file.startswith("xinu_"):
+                    source_path = os.path.join(root, file)
+                    sources.append(source_path)
+        
+        # Look in specific directories if defined
+        if hasattr(self.config, 'source_dirs'):
+            for source_dir in self.config.source_dirs:
+                if os.path.exists(source_dir):
+                    for file in os.listdir(source_dir):
+                        if file.endswith(".c"):
+                            source_path = os.path.join(source_dir, file)
+                            if source_path not in sources:
+                                sources.append(source_path)
+        
+        if sources:
+            self._print(f"Found {len(sources)} additional source files to compile")
+            log(f"Additional sources: {sources}")
+        
+        return sources
+    
+    def _compile_sources(self, sources):
+        """Compile source files to object files."""
+        objects = []
+        
+        for source in sources:
+            obj_file = self._get_object_path(source)
+            if self._compile_file(source, obj_file):
+                objects.append(obj_file)
+        
+        return objects
+    
+    def _get_object_path(self, source_path):
+        """Get the path for an object file based on source file."""
+        base_name = os.path.basename(source_path)
+        name_without_ext = os.path.splitext(base_name)[0]
+        obj_ext = self.system_info['obj_ext']
+        return os.path.join(self.config.obj_dir, f"{name_without_ext}{obj_ext}")
+    
+    def _compile_file(self, source_path, obj_path):
+        """Compile a single source file with adaptations."""
+        self._print(f"Compiling {os.path.basename(source_path)}...")
+        
+        # Check if the source file exists
+        if not os.path.exists(source_path):
+            log(f"Error: Source file not found: {source_path}")
+            self._print(f"Error: Source file not found: {source_path}")
             return False
+        
+        # Apply structure adaptations if needed
+        adapted_source = None
+        if self.structure_adaptations:
+            adapted_source = self._adapt_source(source_path)
+        
+        # Build include paths
+        include_opts = " ".join(f"-I{p}" for p in self.include_paths if os.path.exists(p))
+        
+        # Build command based on source type
+        compiler = self.system_info['c_compiler'] if source_path.endswith(".c") else self.system_info['compiler']
+        flags = self.system_info['c_flags'] if source_path.endswith(".c") else self.system_info['cpp_flags']
+        
+        cmd = f"{compiler} {flags} {include_opts} -c"
+        
+        # If we have an adapted source, compile that instead of the original
+        if adapted_source:
+            cmd += f" {adapted_source} -o {obj_path}"
+            source_to_compile = adapted_source
+        else:
+            cmd += f" {source_path} -o {obj_path}"
+            source_to_compile = source_path
+        
+        try:
+            self._print(f"Running: {cmd}")
+            process = subprocess.Popen(
+                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True
+            )
+            stdout, stderr = process.communicate()
+            
+            if process.returncode != 0:
+                log(f"Compilation error in {source_path}:\n{stderr}")
+                self._print(f"Error compiling {os.path.basename(source_path)}")
+                self._print(f"Error message: {stderr}")
+                
+                # Try to parse errors for easier diagnosis
+                self._parse_compilation_errors(stderr)
+                
+                # If using an adapted source, clean it up
+                if adapted_source:
+                    try:
+                        os.unlink(adapted_source)
+                    except:
+                        pass
+                
+                return False
+            
+            self._print(f"Successfully compiled {os.path.basename(source_path)}")
+            
+            # Clean up adapted source if used
+            if adapted_source:
+                try:
+                    os.unlink(adapted_source)
+                except:
+                    pass
+            
+            return True
+        except Exception as e:
+            log(f"Error during compilation of {source_path}: {str(e)}")
+            self._print(f"Error during compilation of {os.path.basename(source_path)}: {str(e)}")
+            return False
+    
+    def _adapt_source(self, source_path):
+        """Create an adapted version of the source with structure adaptations."""
+        try:
+            # Create a temporary file for the adapted source
+            fd, adapted_path = tempfile.mkstemp(suffix=".c", prefix="xinu_adapted_")
+            os.close(fd)
+            
+            with open(source_path, 'r', encoding='utf-8', errors='ignore') as src:
+                content = src.read()
+            
+            # Apply structure adaptations
+            for from_field, to_field in self.structure_adaptations.items():
+                # Replace field references in structure access (e.g., proc->prio to proc->prprio)
+                content = re.sub(r'(\w+)->(' + from_field + r')\b', r'\1->' + to_field, content)
+                
+                # Replace array references (e.g., proctab[i].prio to proctab[i].prprio)
+                content = re.sub(r'(\w+\[\w+\])\.(' + from_field + r')\b', r'\1.' + to_field, content)
+            
+            with open(adapted_path, 'w', encoding='utf-8') as dest:
+                dest.write(content)
+            
+            log(f"Created adapted source: {adapted_path}")
+            return adapted_path
+        except Exception as e:
+            log(f"Error adapting source {source_path}: {str(e)}")
+            self._print(f"Error adapting source {os.path.basename(source_path)}")
+            return None
+    
+    def _parse_compilation_errors(self, error_output):
+        """Parse compilation errors for diagnosis."""
+        # Look for common error patterns
+        missing_types = re.findall(r"'(\w+)' was not declared in this scope", error_output)
+        missing_fields = re.findall(r"no member named '(\w+)' in", error_output)
+        
+        # Record the errors
+        for type_name in missing_types:
+            self.detected_compile_errors.append(f"Missing type: {type_name}")
+            self._print(f"Detected missing type: {type_name}")
+        
+        for field_name in missing_fields:
+            self.detected_compile_errors.append(f"Missing structure field: {field_name}")
+            self._print(f"Detected missing structure field: {field_name}")
+    
+    def _link_executable(self, object_files):
+        """Link object files into executable."""
+        if not object_files:
+            log("Error: No object files to link")
+            self._print("Error: No object files to link")
+            return False
+        
+        # Create the executable path
+        exe_name = "xinu_sim" + self.system_info['exe_ext']
+        exe_path = os.path.join(self.config.bin_dir, exe_name)
+        
+        # Build object files list
+        obj_list = " ".join(object_files)
+        
+        # Link command
+        cmd = f"{self.system_info['compiler']} {obj_list} -o {exe_path}"
+        
+        self._print(f"Linking executable: {exe_path}")
+        self._print(f"Running: {cmd}")
+        
+        try:
+            process = subprocess.Popen(
+                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True
+            )
+            stdout, stderr = process.communicate()
+            
+            if process.returncode != 0:
+                log(f"Linking error:\n{stderr}")
+                self._print(f"Error linking executable: {exe_path}")
+                self._print(f"Error message: {stderr}")
+                return False
+            
+            self._print(f"Successfully created executable: {exe_path}")
+            
+            # Make the file executable on Unix-like systems
+            if self.system_info['os'] in ('linux', 'macos'):
+                os.chmod(exe_path, 0o755)
+            
+            return True
+        except Exception as e:
+            log(f"Error during linking: {str(e)}")
+            self._print(f"Error during linking: {str(e)}")
+            return False
+    
+    def get_compile_errors(self):
+        """Get list of compilation errors detected."""
+        return self.detected_compile_errors
