@@ -1,64 +1,63 @@
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation.txt
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation_summary.txt
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\dummy.c
-2025-06-18 01:52:18 - Removed object files from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 01:52:18 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 01:52:18 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-18 01:52:18 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
-2025-06-18 01:52:18 - Generating minimal XINU simulation files
-2025-06-18 01:52:18 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-18 01:52:18 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
-2025-06-18 01:52:18 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 01:52:18 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-18 01:52:18 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 01:52:18 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-18 01:52:18 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
-2025-06-18 01:52:18 - XINU simulation file generation complete
-2025-06-18 01:52:18 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\Makefile
-2025-06-18 01:52:18 - Found definition: COMPILER_ROOT = /usr/bin/
-2025-06-18 01:52:18 - Found definition: CC = ${COMPILER_ROOT}gcc
-2025-06-18 01:52:18 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
-2025-06-18 01:52:18 - Found definition: AS = ${COMPILER_ROOT}as --32
-2025-06-18 01:52:18 - Found definition: LD = ${COMPILER_ROOT}ld
-2025-06-18 01:52:18 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
-2025-06-18 01:52:18 - Found definition: LIB = ../lib/libxc
-2025-06-18 01:52:18 - Found definition: XINU = ./xinu
-2025-06-18 01:52:18 - Found definition: MAKEDEP = gcc -M -MG
-2025-06-18 01:52:18 - Found definition: DEFS = -DBSDURG
-2025-06-18 01:52:18 - Found definition: CFLAGS_EXTRA = 
-2025-06-18 01:52:18 - Found definition: INCLUDE = -I../include
-2025-06-18 01:52:18 - Found definition: BRELOC = 0x150000
-2025-06-18 01:52:18 - Found definition: BOOTPLOC = 0x150000
-2025-06-18 01:52:18 - Found definition: SDEFS = -I../include
-2025-06-18 01:52:18 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
-2025-06-18 01:52:18 - Found definition: LDFLAGS = -m elf_i386
-2025-06-18 01:52:18 - Found definition: TOPDIR = ..
-2025-06-18 01:52:18 - Found definition: COMPS = system 							\
-2025-06-18 01:52:18 - Found definition: SRC_FILES = 
-2025-06-18 01:52:18 - Found definition: SYSTEM_SFILES = \
-2025-06-18 01:52:18 - Found definition: SYSTEM_CFILES = \
-2025-06-18 01:52:18 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-2025-06-18 01:52:18 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-2025-06-18 01:52:18 - Found definition: TTY_SFILES = \
-2025-06-18 01:52:18 - Found definition: TTY_CFILES = \
-2025-06-18 01:52:18 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-2025-06-18 01:52:18 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-2025-06-18 01:52:18 - Found definition: SHELL_CFILES = \
-2025-06-18 01:52:18 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
-2025-06-18 01:52:18 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-2025-06-18 01:52:18 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-2025-06-18 01:52:18 - Found source files: ['\\']
-2025-06-18 01:52:18 - Found source files: ['\\']
-2025-06-18 01:52:18 - Found source files: ['\\']
-2025-06-18 01:52:18 - Found compiled source: ../system/initialize.c
-2025-06-18 01:52:18 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
-2025-06-18 01:52:18 - Found LDFLAGS: ['-m', 'elf_i386']
-2025-06-18 01:52:18 - Found include directory from INCLUDE: ../include
-2025-06-18 01:52:18 - Successfully parsed Makefile: found 4 source files and 1 include directories
-2025-06-18 01:52:18 - Source files from Makefile: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\compile\\../system/initialize.c']
-2025-06-18 01:52:18 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
+2025-06-18 09:52:03 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation.txt
+2025-06-18 09:52:03 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\compilation_summary.txt
+2025-06-18 09:52:03 - Removed object files from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj
+2025-06-18 09:52:03 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 09:52:03 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 09:52:03 - Removed C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-18 09:52:03 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
+2025-06-18 09:52:03 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
+2025-06-18 09:52:03 - Generating minimal XINU simulation files
+2025-06-18 09:52:03 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-18 09:52:03 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
+2025-06-18 09:52:03 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 09:52:03 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-18 09:52:03 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 09:52:03 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-18 09:52:04 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
+2025-06-18 09:52:04 - XINU simulation file generation complete
+2025-06-18 09:52:04 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\Makefile
+2025-06-18 09:52:04 - Found definition: COMPILER_ROOT = /usr/bin/
+2025-06-18 09:52:04 - Found definition: CC = ${COMPILER_ROOT}gcc
+2025-06-18 09:52:04 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
+2025-06-18 09:52:04 - Found definition: AS = ${COMPILER_ROOT}as --32
+2025-06-18 09:52:04 - Found definition: LD = ${COMPILER_ROOT}ld
+2025-06-18 09:52:04 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
+2025-06-18 09:52:04 - Found definition: LIB = ../lib/libxc
+2025-06-18 09:52:04 - Found definition: XINU = ./xinu
+2025-06-18 09:52:04 - Found definition: MAKEDEP = gcc -M -MG
+2025-06-18 09:52:04 - Found definition: DEFS = -DBSDURG
+2025-06-18 09:52:04 - Found definition: CFLAGS_EXTRA = 
+2025-06-18 09:52:04 - Found definition: INCLUDE = -I../include
+2025-06-18 09:52:04 - Found definition: BRELOC = 0x150000
+2025-06-18 09:52:04 - Found definition: BOOTPLOC = 0x150000
+2025-06-18 09:52:04 - Found definition: SDEFS = -I../include
+2025-06-18 09:52:04 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+2025-06-18 09:52:04 - Found definition: LDFLAGS = -m elf_i386
+2025-06-18 09:52:04 - Found definition: TOPDIR = ..
+2025-06-18 09:52:04 - Found definition: COMPS = system 							\
+2025-06-18 09:52:04 - Found definition: SRC_FILES = 
+2025-06-18 09:52:04 - Found definition: SYSTEM_SFILES = \
+2025-06-18 09:52:04 - Found definition: SYSTEM_CFILES = \
+2025-06-18 09:52:04 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
+2025-06-18 09:52:04 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
+2025-06-18 09:52:04 - Found definition: TTY_SFILES = \
+2025-06-18 09:52:04 - Found definition: TTY_CFILES = \
+2025-06-18 09:52:04 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+2025-06-18 09:52:04 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
+2025-06-18 09:52:04 - Found definition: SHELL_CFILES = \
+2025-06-18 09:52:04 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
+2025-06-18 09:52:04 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
+2025-06-18 09:52:04 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
+2025-06-18 09:52:04 - Found source files: ['\\']
+2025-06-18 09:52:04 - Found source files: ['\\']
+2025-06-18 09:52:04 - Found source files: ['\\']
+2025-06-18 09:52:04 - Found compiled source: ../system/initialize.c
+2025-06-18 09:52:04 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
+2025-06-18 09:52:04 - Found LDFLAGS: ['-m', 'elf_i386']
+2025-06-18 09:52:04 - Found include directory from INCLUDE: ../include
+2025-06-18 09:52:04 - Successfully parsed Makefile: found 4 source files and 1 include directories
+2025-06-18 09:52:04 - Source files from Makefile: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\compile\\../system/initialize.c']
+2025-06-18 09:52:05 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
 In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
@@ -119,7 +118,7 @@ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h
  extern int32 fscanf(int32, char *, int32);
               ^~~~~~
 
-2025-06-18 01:52:18 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\../system/initialize.c:
+2025-06-18 09:52:05 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\../system/initialize.c:
 In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
                  from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\../system/initialize.c:5:
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:13:2: error: expected specifier-qualifier-list before 'devcall'
@@ -183,6 +182,6 @@ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\compile\../syst
   unsigned char *ptr, *start, stmp, tmp;
                               ^~~~
 
-2025-06-18 01:52:19 - Linking error:
+2025-06-18 09:52:05 - Linking error:
 g++: error: elf_i386: No such file or directory
 

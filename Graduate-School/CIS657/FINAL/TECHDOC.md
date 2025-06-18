@@ -41,12 +41,13 @@ XINU expects specific object files to be present during linking
 The object file xinu_simulation.o must exist in the output/obj directory
 Linking errors with -m elf_i386 flag on modern systems
 3.2 Absolute Requirements
-DO NOT MODIFY any files in the XINU OS/ directory
-Must generate object files that can be linked with XINU
-Must handle long Windows paths correctly
-Must isolate simulation code from XINU header conflicts
-Use only #  style comments in code
-Never hardcode timestamps or usernames - always get them from the system at runtime
+- DO NOT MODIFY any files in the XINU OS/ directory
+- Must generate object files that can be linked with XINU
+- Must handle long Windows paths correctly
+- Must isolate simulation code from XINU header conflicts
+- Use only # style comments in code
+- !!! CRITICAL !!! NEVER hardcode timestamps or usernames - ALWAYS get them from the system at runtime using the exact function in section 4.4
+
 4. Implementation Strategy
 4.1 Path Handling Solution
 Python
@@ -90,8 +91,11 @@ def generate_obj_file():
         # Create fallback minimal object file
         with open(obj_path, 'wb') as f:
             f.write(b'\0' * 128)
+
 4.4 Dynamic Timestamp and Username Generation
-Always use this approach to get timestamps and usernames at runtime:
+!!! CRITICAL REQUIREMENT !!!
+
+ALWAYS use EXACTLY this approach to get timestamps and usernames at runtime:
 
 Python
 def get_timestamp_and_user():
@@ -102,6 +106,14 @@ def get_timestamp_and_user():
     username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
     
     return timestamp, username
+
+DO NOT CREATE YOUR OWN VERSION OF THIS FUNCTION
+DO NOT MODIFY THIS FUNCTION
+DO NOT HARDCODE ANY DATES OR USERNAMES ANYWHERE IN THE CODEBASE
+TIMESTAMPS AND USERNAMES MUST ALWAYS BE OBTAINED FROM THE SYSTEM AT RUNTIME USING THIS FUNCTION
+
+ANY VIOLATION OF THIS REQUIREMENT WILL RESULT IN AUTOMATIC PROJECT FAILURE
+
 5. Common Errors and Solutions
 Error Message	Root Cause	Solution
 conflicting types for 'int8'	XINU redefines int8	Isolate simulation code from XINU headers
