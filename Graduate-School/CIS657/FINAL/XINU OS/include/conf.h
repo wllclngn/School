@@ -2,9 +2,6 @@
 
 /* Device switch table declarations */
 
-
-#include <xinu.h>
-
 /* Device table entry */
 struct	dentry	{
 	int32   dvnum;

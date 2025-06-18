@@ -1,7 +1,5 @@
 /* icu.h */
 
-#include <xinu.h>
-
 #define	ICU1	0x20		/* I/O port address, 8259A #1		*/
 #define	ICU2	0xA0		/* I/O port address, 8258A #2		*/
 

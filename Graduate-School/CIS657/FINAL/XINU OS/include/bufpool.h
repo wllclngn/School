@@ -13,8 +13,6 @@
 #define	BP_MAXN	2048		/* Maximum number of buffers in a pool	*/
 #endif
 
-#include <xinu.h>
-
 struct	bpentry	{		/* Description of a single buffer pool	*/
 	struct	bpentry *bpnext;/* pointer to next free buffer		*/
 	sid32	bpsem;		/* semaphore that counts buffers	*/

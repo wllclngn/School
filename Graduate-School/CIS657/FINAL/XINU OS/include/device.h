@@ -1,7 +1,5 @@
 /* device.h - isbaddev */
 
-#include <xinu.h>
-
 #define	DEVNAMLEN	16	/* maximum size of a device name	*/
 
 /* Macro used to verify device ID is valid  */

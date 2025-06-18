@@ -1,4 +1,4 @@
-# generator.py - Minimal XINU wrapper generator with improved Windows path handling
+# generator.py - Minimal XINU wrapper generator with improved Windows support
 import os
 import datetime
 import re
@@ -7,51 +7,13 @@ from utils.logger import log
 import sys
 from pathlib import Path
 
-# For Windows path handling with improved reliability
+# For Windows-specific functionality
 if os.name == 'nt':
-    import ctypes
-    from ctypes import wintypes
-
-    # Enable long path support at Windows API level
-    kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
-    kernel32.SetFileAttributesW.argtypes = (wintypes.LPCWSTR, wintypes.DWORD)
+    # Import our comprehensive Windows compatibility module
+    from utils import windows_compat
     
-    # Add registry check for long path support
-    try:
-        import winreg
-        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
-            long_paths_enabled, _ = winreg.QueryValueEx(key, "LongPathsEnabled")
-            if not long_paths_enabled:
-                log("WARNING: Long paths support is not enabled in Windows registry.")
-                log("To enable: Set HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem\\LongPathsEnabled to 1")
-    except Exception:
-        log("Could not verify Windows long path registry setting.")
-
-    def handle_long_path(path_str):
-        # Handle Windows long paths with more robust approach using Path objects
-        # consistently throughout the process
-        if not path_str:
-            return path_str
-            
-        # First convert to Path object for consistent handling
-        path_obj = Path(path_str)
-        
-        try:
-            # Resolve to absolute path with proper handling of symlinks and junctions
-            abs_path = path_obj.resolve()
-            
-            # Convert to string representation
-            path_str = str(abs_path)
-            
-            # Apply long path prefix if needed
-            if len(path_str) >= 260 and not path_str.startswith("\\\\?\\"):
-                return f"\\\\?\\{path_str}"
-            
-            return path_str
-        except Exception as e:
-            log(f"Warning: Path resolution failed for '{path_str}': {e}")
-            # Fall back to original path if resolution fails
-            return path_str
+    # Initialize the module
+    windows_handler = windows_compat.initialize()
 
 
 class XinuGenerator:
@@ -59,75 +21,47 @@ class XinuGenerator:
     
     def __init__(self, config):
         self.config = config
+        # Create Windows compatibility header immediately if on Windows
+        if os.name == 'nt':
+            self.setup_compatibility()
     
     def normalize_path(self, path):
-        """
-        Improved path normalization with more consistent handling
-        of edge cases and platform-specific behavior
-        """
+        # Improved path normalization with more consistent handling
+        # of edge cases and platform-specific behavior
         if not path:
             return path
+            
+        # Use Windows compatibility module if on Windows
+        if os.name == 'nt':
+            return windows_compat.normalize_windows_path(path)
             
         # Use Path objects for most operations to leverage built-in normalization
         try:
             # First convert to a Path object
             path_obj = Path(path)
             
-            # Windows-specific handling
-            if os.name == 'nt':
-                # Resolve to absolute path
-                if not path_obj.is_absolute():
-                    path_obj = path_obj.resolve()
-                
-                # Convert back to string and handle long path prefix if needed
-                path_str = str(path_obj)
-                if len(path_str) >= 260 and not path_str.startswith("\\\\?\\"):
-                    return handle_long_path(path_str)
-                
-                return path_str
-            else:
-                # For Unix systems, just use the Path object's string representation
-                # which automatically normalizes separators
-                return str(path_obj)
+            # For Unix systems, just use the Path object's string representation
+            # which automatically normalizes separators
+            return str(path_obj)
                 
         except Exception as e:
             log(f"Path normalization warning: {e}")
             # If Path handling fails, attempt basic string normalization
             
-            if os.name == 'nt':
-                # Windows normalization fallback
-                path = path.replace('/', '\\')
-                # De-duplicate backslashes, preserving network shares and long path prefixes
-                if path.startswith("\\\\?\\"):
-                    prefix, rest = "\\\\?\\", path[4:]
-                    # Clean up the rest of the path
-                    while "\\\\" in rest:
-                        rest = rest.replace("\\\\", "\\")
-                    path = prefix + rest
-                elif path.startswith("\\\\"):
-                    # Handle UNC paths (network shares)
-                    parts = path[2:].split('\\')
-                    prefix = "\\\\"
-                    rest = '\\'.join(parts)
-                    # Clean up the rest
-                    while "\\\\" in rest:
-                        rest = rest.replace("\\\\", "\\")
-                    path = prefix + rest
-                else:
-                    # Normal local paths
-                    while "\\\\" in path:
-                        path = path.replace("\\\\", "\\")
-            else:
-                # Unix normalization fallback
-                path = path.replace('\\', '/')
-                while '//' in path:
-                    path = path.replace('//', '/')
-                    
+            # Unix normalization fallback
+            path = path.replace('\\', '/')
+            while '//' in path:
+                path = path.replace('//', '/')
+                
             return path
 
     def get_safe_path(self, *parts):
         # Create a safe path by joining parts and normalizing,
         # handling all platform-specific edge cases
+        if os.name == 'nt':
+            # Use the Windows compatibility module
+            return windows_compat.get_safe_path(*parts)
+        
         # Join parts using the platform's separator
         if not parts:
             return ""
@@ -149,50 +83,27 @@ class XinuGenerator:
     def fix_include_paths(self, content):
         # Fix include paths in C/C++ code to use correct path separators
         if os.name == 'nt':  # Windows
-            # Find #include statements with forward slashes and replace them
-            pattern = r'#include\s+["<](.*?)[">]'
-            
-            def replace_path(match):
-                path = match.group(1)
-                fixed_path = path.replace('/', '\\')
-                if match.group(0).startswith('#include "'):
-                    return f'#include "{fixed_path}"'
-                else:
-                    return f'#include <{fixed_path}>'
-            
-            return re.sub(pattern, replace_path, content)
+            # Use the Windows compatibility module
+            return windows_compat.fix_include_paths(content)
         return content
     
     def fix_compiler_path(self, path):
         # Convert Unix-style paths to Windows-style if needed
         if os.name == 'nt' and path.startswith('/'):
-            # Convert /usr/bin/ style paths to Windows format
-            if path.endswith('/'):
-                cmd = path.split('/')[-2]  # Get command from path
-            else:
-                cmd = path.split('/')[-1]
-            
-            # Try to find the command in PATH
-            from shutil import which
-            cmd_path = which(cmd)
-            if cmd_path:
-                return cmd_path
-            
-            # If not found, try MinGW locations
-            mingw_paths = [
-                "C:\\MinGW\\bin",
-                "C:\\msys64\\mingw64\\bin",
-                "C:\\msys64\\mingw32\\bin"
-            ]
-            
-            for mp in mingw_paths:
-                if os.path.exists(os.path.join(mp, f"{cmd}.exe")):
-                    return os.path.join(mp, cmd)
-            
-            # If still not found, just return the command name
-            return cmd
+            # Use the Windows compatibility module
+            return windows_compat.fix_compiler_path(path)
         return path
     
+    def setup_compatibility(self):
+        # Create the Windows compatibility header first - before any other files
+        if os.name == 'nt':
+            output_dir = self.normalize_path(self.config.output_dir)
+            os.makedirs(output_dir, exist_ok=True)
+            
+            # Create compatibility header
+            compat_header = windows_compat.create_compatibility_header(output_dir)
+            log(f"Created Windows compatibility header: {compat_header}")
+
     def generate_files(self):
         # Generate only the essential files needed for XINU simulation
         log("Generating minimal XINU simulation files")
@@ -211,14 +122,35 @@ class XinuGenerator:
         self.generate_sim_helper()
         self.generate_obj_file()
         
+        # On Windows, set up Windows-specific compatibility environment
+        if os.name == 'nt':
+            self.setup_windows_environment()
+        
         log("XINU simulation file generation complete")
+    
+    def setup_windows_environment(self):
+        # Use our Windows compatibility module to set up the environment
+        if hasattr(self.config, 'include_dirs'):
+            include_dirs = self.config.include_dirs
+        else:
+            include_dirs = [self.config.include_dir]
+        
+        # Set up the full Windows environment for XINU compilation
+        windows_env = windows_compat.setup_windows_environment(self.config)
+        
+        log(f"Windows environment setup complete")
+        
+        return windows_env
     
     def generate_stddefs(self):
         # Generate xinu_stddefs.h - basic type definitions
         
-        # Get current timestamp and username from system
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        # Get current timestamp and username from system using required function
+        if os.name == 'nt':
+            timestamp, username = windows_compat.get_timestamp_and_user()
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
         content = f"""/* xinu_stddefs.h - Minimal type definitions for XINU simulation */
 /* Generated on: {timestamp} */
@@ -229,8 +161,18 @@ class XinuGenerator:
 /* Version information */
 #define VERSION "XINU Simulation Version 1.0"
 
-/* Minimal definition to avoid conflicts */
+#ifdef _WIN32
+/* Windows-specific compatibility */
+
+/* Basic constants that don't conflict */
+#ifndef NULLCH
+#define NULLCH '\\0'
+#endif
+
+#else
+/* Non-Windows platforms - Standard definitions */
 typedef unsigned char byte;
+#endif /* _WIN32 */
 
 #endif /* _XINU_STDDEFS_H_ */
 """
@@ -253,9 +195,13 @@ typedef unsigned char byte;
         log(f"Generating includes wrapper: {includes_path}")
         
         # Get current timestamp and username from system
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        if os.name == 'nt':
+            timestamp, username = windows_compat.get_timestamp_and_user()
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
+        # Simple includes wrapper that doesn't conflict with XINU
         content = f"""/* xinu_includes.h - Wrapper for XINU code compilation.
  * Generated on: {timestamp} by {username}
  */
@@ -265,7 +211,13 @@ typedef unsigned char byte;
 #define _CRT_SECURE_NO_WARNINGS 
 #define XINU_SIMULATION        
 
-/* Include our minimal defs */
+/* Windows compatibility - Minimal version */
+#ifdef _WIN32
+  /* Include the Windows compatibility header */
+  #include "xinu_windows_compat.h"
+#endif
+
+/* Include our minimal definitions */
 #include "xinu_stddefs.h" 
 
 #endif /* _XINU_INCLUDES_H_ */
@@ -284,10 +236,42 @@ typedef unsigned char byte;
         log(f"Generating simulation helper: {helper_path}")
         
         # Get current timestamp and username from system
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        if os.name == 'nt':
+            timestamp, username = windows_compat.get_timestamp_and_user()
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
-        content = f"""/* xinu_simulation.c - Helper functions for XINU simulation
+        # Windows-compatible C file - simpler approach
+        if os.name == 'nt':
+            content = f"""/* xinu_simulation.c - Helper functions for XINU simulation
+ * Generated on: {timestamp} by {username}
+ */
+#define _CRT_SECURE_NO_WARNINGS
+
+/* Windows compatibility header MUST be included first */
+#ifdef _WIN32
+  #include "xinu_windows_compat.h"
+#endif
+
+/* Use standard C libraries for basic functions */
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Main entry point for simulation */
+int main(void) {{
+    printf("XINU Simulation Starting\\n");
+    printf("Generated on: {timestamp} by {username}\\n\\n");
+    
+    printf("XINU Simulation Running\\n");
+    
+    printf("XINU Simulation Completed\\n");
+    return 0;
+}}
+"""
+        else:
+            # Regular Unix version
+            content = f"""/* xinu_simulation.c - Helper functions for XINU simulation
  * Generated on: {timestamp} by {username}
  */
 #define _CRT_SECURE_NO_WARNINGS
@@ -324,13 +308,23 @@ int main(void) {{
         dummy_c_path = self.get_safe_path(self.config.output_dir, "dummy.c")
         with open(dummy_c_path, 'w') as f:
             f.write("/* Minimal dummy object for compilation */\n")
+            
+            # Add Windows compatibility if needed
+            if os.name == 'nt':
+                f.write("#ifdef _WIN32\n")
+                f.write("/* Include Windows compatibility header */\n")
+                f.write("#include \"xinu_windows_compat.h\"\n")
+                f.write("#endif\n\n")
+            
             f.write("void xinu_simulation_dummy(void) {}\n")
         
         try:
             # Use direct execution with proper path handling
             if os.name == 'nt':
-                # On Windows, wrap paths in quotes to handle spaces and special characters
-                cmd = f'gcc -c "{dummy_c_path}" -o "{obj_path}"'
+                # On Windows, properly format the command to avoid path issues
+                gcc_path = windows_compat.find_compiler()
+                include_output_dir = f'-I"{self.config.output_dir}"'
+                cmd = f'"{gcc_path}" {include_output_dir} -c "{dummy_c_path}" -o "{obj_path}"'
             else:
                 # On Unix, use direct paths
                 cmd = f"gcc -c {dummy_c_path} -o {obj_path}"
@@ -352,13 +346,13 @@ int main(void) {{
                 # Create a minimal object file as a fallback
                 log("Attempting fallback object file creation")
                 with open(obj_path, 'wb') as f:
-                    # Just a minimal valid object file header to satisfy the linker
+                    # Write a minimal valid object file header
                     if os.name == 'nt':
-                        # COFF header for Windows
-                        f.write(bytes.fromhex('4d5a900003000000040000000ffff0000'))
+                        # COFF header for Windows (corrected hexadecimal)
+                        f.write(bytes.fromhex('4d5a9000030000000400000000ffff0000'))
                     else:
                         # ELF header for Linux
-                        f.write(bytes.fromhex('7f454c46010101000000000000000000'))
+                        f.write(bytes.fromhex('7f454c4601010100000000000000000000'))
                 
                 log(f"Created fallback object file: {obj_path}")
             

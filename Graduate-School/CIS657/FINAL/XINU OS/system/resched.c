@@ -1,126 +1,47 @@
 /* resched.c - resched */
 
 #include <xinu.h>
-#include <pstarv.h>
 
 /*------------------------------------------------------------------------
  *  resched  -  Reschedule processor to highest priority eligible process
  *------------------------------------------------------------------------
  */
-void resched(void)
+void	resched(void)		/* assumes interrupts are disabled	*/
 {
-    struct procent *ptold; /* Ptr to process being replaced */
-    struct procent *ptnew; /* Ptr to highest priority process to run */
-    static int32 pstarv_wait_time = 0; /* Static variable to track wait time */
-    static int32 context_switch_count = 0; /* Count context switches */
+	struct procent *ptold;	/* ptr to table entry for old process	*/
+	struct procent *ptnew;	/* ptr to table entry for new process	*/
 
-    /* If rescheduling is deferred, record attempt to reschedule */
-    if (Defer.ndefers > 0) {
-        Defer.attempt = TRUE;
-        return;
-    }
+	/* If rescheduling is deferred, record attempt and return */
 
-    /* Point to per-process table entry for the current process */
-    ptold = &proctab[currpid];
+	if (Defer.ndefers > 0) {
+		Defer.attempt = TRUE;
+		return;
+	}
 
-    /* Check for starving processes and update their priorities */
-    if (pstarv_pid != BADPID && proctab[pstarv_pid].prstate == PR_READY) {
-        /* Increment context switch counter when switching between P1 and P2 */
-        pid32 next_pid = firstid(readylist);
-        
-        /* Only count as context switch between P1 and P2 when the priorities match our test cases */
-        if ((ptold->prprio >= 35 && next_pid != pstarv_pid && 
-             proctab[next_pid].prprio >= 35)) {
-            context_switch_count++;
-            
-            /* Q1: Priority boost on context switch */
-            if (enable_starvation_fix) {
-                pri16 curr_prio = getprio(pstarv_pid);
-                if (curr_prio < 98) { /* Avoid overflow, max priority in XINU is often 99 */
-                    pri16 new_prio = curr_prio + 2;
-                    chprio(pstarv_pid, new_prio);
-                    kprintf("Q1: Pstarv (PID: %d) priority increased from %d to %d after %d context switches\n",
-                            pstarv_pid, curr_prio, new_prio, context_switch_count);
-                }
-            }
-        }
-        
-        /* Q2: Priority boost based on wait time - this happens on each clock tick */
-        /* On a typical XINU system with 10ms ticks, 200 ticks ≈ 2 seconds */
-        pstarv_wait_time++;
-        if ((pstarv_wait_time >= 200) && !enable_starvation_fix) {
-            pri16 curr_prio = getprio(pstarv_pid);
-            if (curr_prio < 90) { /* Leave some room before max priority */
-                pri16 new_prio = curr_prio + 5; /* Larger increment since it happens less frequently */
-                chprio(pstarv_pid, new_prio);
-                kprintf("Q2: Pstarv (PID: %d) priority increased from %d to %d after waiting %d ticks\n", 
-                        pstarv_pid, curr_prio, new_prio, pstarv_wait_time);
-            }
-            pstarv_wait_time = 0; /* Reset wait time */
-        }
-    }
+	/* Point to process table entry for the current (old) process */
 
-    /* If current process has a higher priority than what is in the */
-    /* ready list, then continue to run the current process */
-    if ((ptold->prstate == PR_CURR) &&
-        (ptold->prprio > firstkey(readylist))) {
-        return;
-    }
+	ptold = &proctab[currpid];
 
-    /* Force context switch to highest priority ready process */
-    if (ptold->prstate == PR_CURR) {
-        /* Place current process back on ready list */
-        ptold->prstate = PR_READY;
-        insert(currpid, readylist, ptold->prprio);
-    }
+	if (ptold->prstate == PR_CURR) {  /* process remains running */
+		if (ptold->prprio > firstkey(readylist)) {
+			return;
+		}
 
-    /* Remove process of highest priority from ready queue */
-    currpid = dequeue(readylist);
-    ptnew = &proctab[currpid];
-    ptnew->prstate = PR_CURR; /* Mark it currently running */
+		/* Old process will no longer remain current */
 
-#ifdef RTCLOCK
-    preempt = QUANTUM;        /* Reset preemption counter */
-#endif
+		ptold->prstate = PR_READY;
+		insert(currpid, readylist, ptold->prprio);
+	}
 
-    /* Context switch to next ready process */
-    ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
+	/* Force context switch to highest priority ready process */
 
-    /* Old process returns here when resumed */
-    return;
-}
+	currpid = dequeue(readylist);
+	ptnew = &proctab[currpid];
+	ptnew->prstate = PR_CURR;
+	preempt = QUANTUM;		/* reset time slice for process	*/
+	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
-/*------------------------------------------------------------------------
- *  resched_cntl  -  Control whether rescheduling is deferred
- *------------------------------------------------------------------------
- */
-unsigned long resched_cntl(int defer)
-{
-    unsigned long mask; /* Saved interrupt mask */
+	/* Old process returns here when resumed */
 
-    mask = disable();  /* Disable interrupts */
-    
-    /* Handle startup of deferred rescheduling */
-    if (defer == DEFER_START) {
-        /* Increment number of deferrals */
-        Defer.ndefers++;
-    }
-    /* Handle ending of deferred rescheduling */
-    else if (defer == DEFER_STOP) {
-        /* Decrement number of deferrals */
-        if (Defer.ndefers > 0) {
-            Defer.ndefers--;
-        }
-
-        /* Reschedule if necessary */
-        if ((Defer.ndefers == 0) && Defer.attempt) {
-            Defer.attempt = FALSE;
-            restore(mask);  /* Restore interrupts */
-            resched();
-            return OK;
-        }
-    }
-
-    restore(mask);  /* Restore interrupts */
-    return OK;
+	return;
 }

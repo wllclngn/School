@@ -8,7 +8,6 @@
 #include <stdarg.h>
 #include <tty.h>
 #include <ctype.h>
-#include <xinu.h>
 
 syscall getnum(void)
 {

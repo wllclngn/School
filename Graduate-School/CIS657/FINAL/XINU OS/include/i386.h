@@ -1,7 +1,5 @@
 /* i386.h - DELAY */
 
-#include <xinu.h>
-
 #define	NBPG		4096
 
 #define	NID		48

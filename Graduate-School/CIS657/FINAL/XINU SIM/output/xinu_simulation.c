@@ -1,16 +1,21 @@
 /* xinu_simulation.c - Helper functions for XINU simulation
- * Generated on: 2025-06-18 09:52:03 by mol
+ * Generated on: 2025-06-18 13:12:34 by mol
  */
 #define _CRT_SECURE_NO_WARNINGS
 
-/* Simple standalone simulation without XINU dependencies */
+/* Windows compatibility header MUST be included first */
+#ifdef _WIN32
+  #include "xinu_windows_compat.h"
+#endif
+
+/* Use standard C libraries for basic functions */
 #include <stdio.h>
 #include <stdlib.h>
 
 /* Main entry point for simulation */
 int main(void) {
     printf("XINU Simulation Starting\n");
-    printf("Generated on: 2025-06-18 09:52:03 by mol\n\n");
+    printf("Generated on: 2025-06-18 13:12:34 by mol\n\n");
     
     printf("XINU Simulation Running\n");
     

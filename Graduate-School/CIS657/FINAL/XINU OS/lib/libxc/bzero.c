@@ -11,7 +11,6 @@
  * @param *p pointer to start of block
  * @param len length of the block
  */
-#include <stddef.h>
 void bzero(void *p, int len)
 {
     int n;

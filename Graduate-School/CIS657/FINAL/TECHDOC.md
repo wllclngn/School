@@ -92,12 +92,12 @@ def generate_obj_file():
         with open(obj_path, 'wb') as f:
             f.write(b'\0' * 128)
 
-4.4 Dynamic Timestamp and Username Generation
+## 4.4 Dynamic Timestamp and Username Generation
 !!! CRITICAL REQUIREMENT !!!
 
 ALWAYS use EXACTLY this approach to get timestamps and usernames at runtime:
 
-Python
+```python
 def get_timestamp_and_user():
     # Get current timestamp in consistent format
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -106,11 +106,15 @@ def get_timestamp_and_user():
     username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
     
     return timestamp, username
+DO NOT CREATE YOUR OWN VERSION OF THIS FUNCTION DO NOT MODIFY THIS FUNCTION DO NOT HARDCODE ANY DATES OR USERNAMES ANYWHERE IN THE SOURCE CODEBASE TIMESTAMPS AND USERNAMES MUST ALWAYS BE OBTAINED FROM THE SYSTEM AT RUNTIME USING THIS FUNCTION
 
-DO NOT CREATE YOUR OWN VERSION OF THIS FUNCTION
-DO NOT MODIFY THIS FUNCTION
-DO NOT HARDCODE ANY DATES OR USERNAMES ANYWHERE IN THE CODEBASE
-TIMESTAMPS AND USERNAMES MUST ALWAYS BE OBTAINED FROM THE SYSTEM AT RUNTIME USING THIS FUNCTION
+Important Clarification:
+This requirement applies to the source code that generates files, not to the generated files themselves
+Generated output files WILL contain timestamps and usernames from when the program was executed
+Seeing timestamps in generated files (such as those in the output/ directory) is expected and correct
+The critical requirement is that these values must be obtained dynamically at runtime using the function above
+Example of correct usage: in generator.py, when creating header files, the function is called to get the current values
+Example of violation: hardcoding "timestamp = '2025-06-18 15:00:00'" in your source code
 
 ANY VIOLATION OF THIS REQUIREMENT WILL RESULT IN AUTOMATIC PROJECT FAILURE
 

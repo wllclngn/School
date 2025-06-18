@@ -6,8 +6,6 @@
  * Various structures and such used in pci.c
  */
 
-#include <xinu.h>
-
 typedef struct bios32 {
     unsigned long   signature;          /* "_32_"                            */
     unsigned long   bios32_entry;       /* 32 bit physical address for

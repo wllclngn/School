@@ -1,8 +1,3 @@
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
-
-#include <xinu.h>
-
 /* kernel.h */
 
 /* General type declarations used throughout the kernel */
@@ -78,5 +73,3 @@ extern	qid16	readylist;	/* global ID for list of ready processes*/
 syscall	kprintf(char *fmt, ...);
 syscall	kputc(byte);
 syscall	kgetc(void);
-
-#endif /* _KERNEL_H_ */

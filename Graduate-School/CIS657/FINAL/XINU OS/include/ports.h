@@ -1,7 +1,5 @@
 /* ports.h - isbadport */
 
-#include <xinu.h>
-
 #define	NPORTS		30		/* maximum number of ports	*/
 #define	PT_MSGS		100		/* total messages in system	*/
 #define	PT_FREE		1		/* port is free			*/

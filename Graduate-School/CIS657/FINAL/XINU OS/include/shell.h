@@ -62,8 +62,6 @@
 #define	SHELL_ERROR	 1
 #define	SHELL_EXIT	-3
 
-#include <xinu.h>
-
 /* Structure of an entry in the table of shell commands */
 
 struct	cmdent	{			/* entry in command table	*/
