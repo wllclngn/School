@@ -15,6 +15,27 @@ import glob
 print("##### XINU SIM Build System Start #####", flush=True)
 sys.stdout.reconfigure(line_buffering=True)
 
+# Import and setup the logger before anything else
+try:
+    sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+    from utils.logger import setup_logger, log, finalize_log, LOG_FILE
+    logger_imported = True
+except ImportError as e:
+    print(f"Warning: Could not import logger module: {str(e)}", flush=True)
+    logger_imported = False
+    
+    # Simple log function as fallback
+    def log(message, **kwargs):
+        print(message, flush=True)
+    
+    def setup_logger(**kwargs):
+        pass
+    
+    def finalize_log():
+        pass
+    
+    LOG_FILE = None
+
 class XinuBuilder:
     def __init__(self, verbose=False):
         self.verbose = verbose
@@ -39,6 +60,10 @@ class XinuBuilder:
         # Create directories if they don't exist
         for directory in [self.output_dir, self.obj_dir, self.include_dir]:
             os.makedirs(directory, exist_ok=True)
+        
+        # Initialize logger with proper output directory
+        if logger_imported:
+            setup_logger(verbose=verbose)
         
         # Template files
         self.templates = {
@@ -65,11 +90,12 @@ class XinuBuilder:
     
     def log(self, message):
         """Print log message with timestamp if verbose mode is enabled"""
-        if self.verbose:
+        if logger_imported:
+            # Use the imported logger if available
+            log(message, verbose_only=not self.verbose)
+        elif self.verbose:
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             print(f"{current_time}  - {message}", flush=True)
-        
-        # Always print critical messages
         else:
             print(message, flush=True)
     
@@ -343,8 +369,10 @@ class XinuBuilder:
         
         # If compilation failed, write log and exit
         if error_count > 0:
+            # Save to both our local compilation log and the global logger's file
             with open(self.output_files["compilation_log"], "w") as f:
                 f.write(compilation_log)
+                
             self.log(f"Compilation failed with {error_count} errors. See log for details.")
             return False
         
@@ -375,8 +403,11 @@ class XinuBuilder:
                 compilation_log += f"Error linking:\n{result.stderr}\n"
                 self.log(f"Error linking")
                 self.log(result.stderr)
+                
+                # Save to both logs on error
                 with open(self.output_files["compilation_log"], "w") as f:
                     f.write(compilation_log)
+                    
                 return False
             else:
                 # Make executable
@@ -386,19 +417,31 @@ class XinuBuilder:
         except Exception as e:
             compilation_log += f"Exception during linking: {str(e)}\n"
             self.log(f"Exception during linking: {str(e)}")
+            
+            # Save to both logs on error
             with open(self.output_files["compilation_log"], "w") as f:
                 f.write(compilation_log)
+                
             return False
         
         # Finalize compilation log
         compilation_log += f"SUCCESS: Build completed with {error_count} errors and {warning_count} unique warning(s).\n"
         compilation_log += f"XINU core executable: {self.output_files['executable']}\n"
         
+        # Always write to our compilation log
         with open(self.output_files["compilation_log"], "w") as f:
             f.write(compilation_log)
         
+        # Log success in global logger as well
         self.log(f"##### SUCCESS: Build completed with {error_count} errors and {warning_count} unique warning(s). #####")
         self.log(f"Compilation log saved to {self.output_files['compilation_log']}")
+        
+        if logger_imported:
+            # Finalize the logger's log files
+            try:
+                finalize_log()
+            except:
+                pass
         
         return True
     
@@ -464,6 +507,10 @@ def main():
     
     print(f"Command line arguments: clean={args.clean}, verbose={args.verbose}, run={args.run}", flush=True)
     
+    # Initialize logger with command line arguments
+    if logger_imported:
+        setup_logger(verbose=args.verbose)
+    
     # Create builder instance
     builder = XinuBuilder(verbose=args.verbose)
     
@@ -472,6 +519,10 @@ def main():
         clean=args.clean,
         run=args.run
     )
+    
+    # Finalize logs before exiting
+    if logger_imported:
+        finalize_log()
     
     # Exit with appropriate code
     print("XINU Builder exiting with status: " + ("SUCCESS" if success else "FAILURE"), flush=True)

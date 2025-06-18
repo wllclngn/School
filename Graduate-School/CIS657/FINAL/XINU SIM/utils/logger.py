@@ -107,3 +107,7 @@ def finalize_log():
     except Exception as e:
         print(f"{Colors.RED}[ERROR] Error finalizing log: {str(e)}{Colors.ENDC}")
         log(f"Error finalizing log: {str(e)}", level="ERROR")
+
+# Auto-initialize the logger when the module is imported
+# This ensures that the log file is created even if setup_logger is not explicitly called
+setup_logger()
