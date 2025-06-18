@@ -2,38 +2,38 @@
 #include "xinu_windows_compat.h"
 #endif
 
-#ifndef _STDIO_H_
-#define _STDIO_H_
-#include <stddef.h>
+/* stdio.h - definintions and constants for standard I/O functions */
 
-#include <xinu.h>
-
-/* stdio.h - definitions and constants for standard I/O functions */
 
 /* Prototypes for formatted input functions */
+
 extern	int32	_doscan(char *,int32 *, int32 (*)(void),
 			int32 (*)(char), int32, int32);
 extern	int32	sscanf(char *, char *, int32);
 extern	int32	fscanf(int32, char *, int32);
 #define	scanf(fmt, args)	fscanf(CONSOLE, fmt, args)
 
-/* Definition of standard input/ouput/error used with shell commands */
+
+/* Definintion of standard input/ouput/error used with shell commands */
+
 #define	stdin	((proctab[currpid]).prdesc[0])
 #define	stdout	((proctab[currpid]).prdesc[1])
 #define	stderr	((proctab[currpid]).prdesc[2])
 
+
 /* Prototypes for formatted output functions */
+
 extern	void	_doprnt(char *,int (*)(int), ...);
 extern	int32	fprintf(int, char *, ...);
 extern	int32	printf(const char *, ...);
 extern	int32	sprintf(char *, char *, ...);
 
+
 /* Prototypes for character input and output functions */
+
 extern	int32	fgetc(int);
 extern	char	*fgets(char *, int32, int32);
 extern	int32	fputc(int32, int32);
 extern	int32	fputs(char *, int32);
 extern	int32	putchar(int32 c);
 extern	int32	getchar(void);
-
-#endif /* _STDIO_H_ */

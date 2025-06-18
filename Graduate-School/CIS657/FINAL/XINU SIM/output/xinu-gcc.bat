@@ -1,6 +1,6 @@
 @echo off
 REM XINU Windows compatibility wrapper for GCC
-REM Generated on 2025-06-18 13:12:34
+REM Generated on 2025-06-18 13:27:26
 
 REM Save all arguments
 set ARGS=

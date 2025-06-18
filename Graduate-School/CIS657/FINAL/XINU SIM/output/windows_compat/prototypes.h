@@ -2,9 +2,6 @@
 #include "xinu_windows_compat.h"
 #endif
 
-#include <stddef.h>
-#include "xinu.h"
-#include <xinu.h>
 /* in file addargs.c */
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
