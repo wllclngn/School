@@ -39,27 +39,7 @@ class XinuCompiler:
             'user': os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         }
         
-        # Set OS-specific configuration
-        if system == 'darwin':
-            info['os'] = 'macos'
-            info['c_flags'] = '-Wall -Wextra'
-            info['cpp_flags'] = '-Wall -Wextra -std=c++11'
-            info['obj_ext'] = '.o'
-            info['exe_ext'] = ''
-        elif system == 'windows':
-            info['os'] = 'windows'
-            info['c_flags'] = '/W4'
-            info['cpp_flags'] = '/W4 /EHsc'
-            info['obj_ext'] = '.obj'
-            info['exe_ext'] = '.exe'
-        else:  # Linux and others
-            info['os'] = 'linux'
-            info['c_flags'] = '-Wall -Wextra -fPIC'
-            info['cpp_flags'] = '-Wall -Wextra -std=c++11 -fPIC'
-            info['obj_ext'] = '.o'
-            info['exe_ext'] = ''
-        
-        # Check for compiler availability
+        # Check for compiler availability and detect MinGW specifically
         try:
             process = subprocess.Popen(['g++', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = process.communicate()
@@ -68,13 +48,45 @@ class XinuCompiler:
                 info['compiler_version'] = version
                 log(f"Found g++ compiler: {version}")
                 self._print(f"Found g++ compiler: {version}")
+                
+                # Check if this is MinGW (will contain "MinGW" in version string)
+                is_mingw = "mingw" in version.lower()
             else:
                 log("Warning: g++ compiler not found")
                 self._print("Warning: g++ compiler not found")
                 info['compiler_version'] = 'unknown'
+                is_mingw = False
         except Exception:
             log("Warning: Could not determine g++ compiler version")
             info['compiler_version'] = 'unknown'
+            is_mingw = False
+        
+        # Set OS-specific configuration - use GCC style flags for MinGW
+        if system == 'darwin':
+            info['os'] = 'macos'
+            info['c_flags'] = '-Wall -Wextra'
+            info['cpp_flags'] = '-Wall -Wextra -std=c++11'
+            info['obj_ext'] = '.o'
+            info['exe_ext'] = ''
+        elif system == 'windows' and not is_mingw:
+            # Regular Windows MSVC compiler
+            info['os'] = 'windows'
+            info['c_flags'] = '/W4'
+            info['cpp_flags'] = '/W4 /EHsc'
+            info['obj_ext'] = '.obj'
+            info['exe_ext'] = '.exe'
+        else:  # Linux and others, including MinGW on Windows
+            # MinGW on Windows or GCC on Linux
+            info['os'] = 'linux' if system != 'windows' else 'mingw'
+            info['c_flags'] = '-Wall -Wextra'
+            info['cpp_flags'] = '-Wall -Wextra -std=c++11'
+            info['obj_ext'] = '.o'
+            info['exe_ext'] = '.exe' if system == 'windows' else ''
+            
+            # For Linux, add -fPIC flag
+            if system == 'linux':
+                info['c_flags'] += ' -fPIC'
+                info['cpp_flags'] += ' -fPIC'
         
         return info
     
@@ -96,6 +108,11 @@ class XinuCompiler:
         output_include_dir = os.path.join(self.config.output_dir)
         if os.path.exists(output_include_dir):
             self.include_paths.append(output_include_dir)
+            
+        # Add templates directory for fallback includes
+        templates_dir = os.path.join(self.config.project_dir, "templates")
+        if os.path.exists(templates_dir):
+            self.include_paths.append(templates_dir)
             
         # Create output directories if they don't exist
         os.makedirs(self.config.output_dir, exist_ok=True)

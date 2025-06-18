@@ -36,7 +36,7 @@ class XinuGenerator:
             
         # Define template files mapping
         template_files = {
-            "XINU_STDDEFS_H": os.path.join(templates_dir, "xinu_stdefs_h.tmpl"),
+            "XINU_STDDEFS_H": os.path.join(templates_dir, "xinu_stddefs_h.tmpl"),  # Correct spelling
             "XINU_H": os.path.join(templates_dir, "xinu_h.tmpl"),
             "XINU_INCLUDES_H": os.path.join(templates_dir, "xinu_includes_h.tmpl"),
             "XINU_SIM_DECLARATIONS_H": os.path.join(templates_dir, "xinu_sim_declarations_h.tmpl"),

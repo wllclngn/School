@@ -4,7 +4,7 @@ import os
 import glob
 import subprocess
 import platform
-from xinu_sim.utils.logger import log
+from utils.logger import log
 
 class XinuConfig:
     # Configuration and path management for XINU builder

@@ -1,31 +1,346 @@
-2025-06-17 21:19:42 - Cleaned output directories for complete rebuild
-2025-06-17 21:19:42 - WARNING: Template file not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\templates\xinu_stdefs_h.tmpl
-2025-06-17 21:19:42 - Loaded template: XINU_H
-2025-06-17 21:19:42 - Loaded template: XINU_INCLUDES_H
-2025-06-17 21:19:42 - Loaded template: XINU_SIM_DECLARATIONS_H
-2025-06-17 21:19:42 - Loaded template: XINU_SIMULATION_C
-2025-06-17 21:19:42 - Loaded template: XINU_CORE_C
-2025-06-17 21:19:42 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
-2025-06-17 21:19:42 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output']
-2025-06-17 21:19:42 - ERROR: g++ preprocessing failed: In file included from C:\Users\mol\AppData\Local\Temp\tmp09mjqj9x.c:1:0:
+2025-06-17 21:39:54 - Cleaned output directories for complete rebuild
+2025-06-17 21:39:54 - Loaded template: XINU_STDDEFS_H
+2025-06-17 21:39:54 - Loaded template: XINU_H
+2025-06-17 21:39:54 - Loaded template: XINU_INCLUDES_H
+2025-06-17 21:39:54 - Loaded template: XINU_SIM_DECLARATIONS_H
+2025-06-17 21:39:54 - Loaded template: XINU_SIMULATION_C
+2025-06-17 21:39:54 - Loaded template: XINU_CORE_C
+2025-06-17 21:39:54 - Found g++ compiler: g++ (MinGW.org GCC-6.3.0-1) 6.3.0
+2025-06-17 21:39:54 - Setup environment with include paths: ['C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU OS\\include', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\output', 'C:\\Users\\mol\\Desktop\\School\\Graduate-School\\CIS657\\FINAL\\XINU SIM\\templates']
+2025-06-17 21:39:55 - ERROR: g++ preprocessing failed: In file included from C:\Users\mol\AppData\Local\Temp\tmpn_xl8p9y.c:1:0:
 C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu.h:13:85: fatal error: xinu_stddefs.h: No such file or directory
  #include "xinu_stddefs.h" // This path assumes xinu_stddefs.h is in the project root
                                                                                      ^
 compilation terminated.
 
-2025-06-17 21:19:42 - WARNING: Falling back to template-based file generation
-2025-06-17 21:19:42 - ERROR: Template 'XINU_STDDEFS_H' not found
-2025-06-17 21:19:42 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
-2025-06-17 21:19:42 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
-2025-06-17 21:19:42 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
-2025-06-17 21:19:42 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
-2025-06-17 21:19:42 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
-2025-06-17 21:19:42 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
-2025-06-17 21:19:42 - Structure adaptations: {}
-2025-06-17 21:19:42 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
-gcc: error: /W4: No such file or directory
+2025-06-17 21:39:55 - WARNING: Falling back to template-based file generation
+2025-06-17 21:39:55 - Generated XINU stddefs: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-17 21:39:55 - Generated XINU header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu.h
+2025-06-17 21:39:55 - Generated XINU includes: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-17 21:39:55 - Generated simulation declarations: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h
+2025-06-17 21:39:55 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-17 21:39:55 - Generated XINU core: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c
+2025-06-17 21:39:55 - Structure adaptations: {}
+2025-06-17 21:39:55 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:7:1: error: expected identifier or '(' before '{' token
+ {{ basic_types }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:1: error: expected identifier or '(' before '{' token
+ {{ process_states }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:13:1: error: expected identifier or '(' before '{' token
+ {{ status_codes }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:1: error: expected identifier or '(' before '{' token
+ {{ common_definitions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:1: error: expected identifier or '(' before '{' token
+ {{ shell_definitions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:1: error: expected identifier or '(' before '{' token
+ {{ custom_types }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:1: error: expected identifier or '(' before '{' token
+ {{ external_declarations }}
+ ^
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:13:2: error: expected specifier-qualifier-list before 'devcall'
+  devcall (*dvinit) (struct dentry *);
+  ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
+ typedef char                int8;
+                             ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
+ typedef int8_t   int8;
+                  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
+ #define NULL 0  /* null pointer for linked lists */
+ 
+In file included from c:\mingw\include\stdint.h:54:0,
+                 from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
+ #define NULL ((void *)0)
+ 
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
+ extern syscall putc(did32, char);
+                ^~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                                  ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                                   ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                 ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                                                 ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:3:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
+ extern int32 fscanf(int32, char *, int32);
+              ^~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:7:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:16:1: error: expected identifier or '(' before '{' token
+ {{ system_structures }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:19:1: error: expected identifier or '(' before '{' token
+ {{ system_variables }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:22:1: error: expected identifier or '(' before '{' token
+ {{ process_structure }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h:28:1: error: expected identifier or '(' before '{' token
+ {{ additional_structures }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:11:1: error: expected identifier or '(' before '{' token
+ {{ test_forward_declarations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'main':
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: implicit declaration of function 'getenv' [-Wimplicit-function-declaration]
+         char *user = getenv("USER");
+                      ^~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:26:22: warning: initialization makes pointer from integer without a cast [-Wint-conversion]
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:28:18: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+             user = getenv("USERNAME"); /* For Windows */
+                  ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: error: 'test_execution_switch' undeclared (first use in this function)
+         {{ test_execution_switch }}
+            ^~~~~~~~~~~~~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:12: note: each undeclared identifier is reported only once for each function it appears in
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:37:34: error: expected ';' before '}' token
+         {{ test_execution_switch }}
+                                  ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: In function 'initialize_simulation':
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: implicit declaration of function 'strcpy' [-Wimplicit-function-declaration]
+             strcpy(proctab[i].prname, "NULLPROC");
+             ^~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: warning: incompatible implicit declaration of built-in function 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:53:13: note: include '<string.h>' or provide a declaration of 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:55:23: error: 'struct procent' has no member named 'prio'; did you mean 'prprio'?
+             proctab[i].prio = 0;
+                       ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: warning: incompatible implicit declaration of built-in function 'strcpy'
+             strcpy(proctab[i].prname, "UNUSED");
+             ^~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:57:13: note: include '<string.h>' or provide a declaration of 'strcpy'
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:64:5: error: 'count1000' undeclared (first use in this function)
+     count1000 = 0;
+     ^~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:8: error: 'custom_initialization' undeclared (first use in this function)
+     {{ custom_initialization }}
+        ^~~~~~~~~~~~~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:71:30: error: expected ';' before '}' token
+     {{ custom_initialization }}
+                              ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c: At top level:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.c:75:1: error: expected identifier or '(' before '{' token
+ {{ test_implementations }}
+ ^
 
-2025-06-17 21:19:42 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
-gcc: error: /W4: No such file or directory
+2025-06-17 21:39:55 - Compilation error in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:13:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:7:1: error: expected identifier or '(' before '{' token
+ {{ basic_types }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:10:1: error: expected identifier or '(' before '{' token
+ {{ process_states }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:13:1: error: expected identifier or '(' before '{' token
+ {{ status_codes }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:16:1: error: expected identifier or '(' before '{' token
+ {{ common_definitions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:19:1: error: expected identifier or '(' before '{' token
+ {{ shell_definitions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:22:1: error: expected identifier or '(' before '{' token
+ {{ custom_types }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output/xinu_stddefs.h:25:1: error: expected identifier or '(' before '{' token
+ {{ external_declarations }}
+ ^
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:52:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/conf.h:13:2: error: expected specifier-qualifier-list before 'devcall'
+  devcall (*dvinit) (struct dentry *);
+  ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:13:29: error: conflicting types for 'int8'
+ typedef char                int8;
+                             ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:21:18: note: previous declaration of 'int8' was here
+ typedef int8_t   int8;
+                  ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:59:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/kernel.h:53:0: warning: "NULL" redefined
+ #define NULL 0  /* null pointer for linked lists */
+ 
+In file included from c:\mingw\include\stdint.h:54:0,
+                 from c:\mingw\lib\gcc\mingw32\6.3.0\include\stdint.h:9,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:10,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+c:\mingw\lib\gcc\mingw32\6.3.0\include\stddef.h:406:0: note: this is the location of the previous definition
+ #define NULL ((void *)0)
+ 
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:200:16: warning: conflicting types for built-in function 'putc'
+ extern syscall putc(did32, char);
+                ^~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:50: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                                  ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:283:32: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_in(struct ttycblk *, struct uart_csreg *);
+                                ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:51: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                                   ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:286:33: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyInter_out(struct ttycblk *, struct uart_csreg *);
+                                 ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:49: warning: 'struct uart_csreg' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                                                 ^~~~~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:295:31: warning: 'struct ttycblk' declared inside parameter list will not be visible outside of this definition or declaration
+ extern void ttyKickOut(struct ttycblk *, struct uart_csreg *);
+                               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:13:14: warning: conflicting types for built-in function 'fscanf'
+ extern int32 fscanf(int32, char *, int32);
+              ^~~~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:661:38: error: conflicting types for 'open'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int open (const char*, int, ...);
+                                      ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:167:16: note: previous declaration of 'open' was here
+ extern syscall open(did32, char *, char *);
+                ^~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:662:38: error: conflicting types for 'read'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int read (int, void*, unsigned int);
+                                      ^~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:203:16: note: previous declaration of 'read' was here
+ extern syscall read(did32, char *, uint32);
+                ^~~~
+In file included from c:\mingw\include\unistd.h:56:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:
+c:\mingw\include\io.h:668:38: error: conflicting types for 'write'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int write (int, const void*, unsigned int);
+                                      ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:319:16: note: previous declaration of 'write' was here
+ extern syscall write(did32, char *, uint32);
+                ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:7:0:
+c:\mingw\include\unistd.h:113:34: error: conflicting types for 'sleep'
+ unsigned __cdecl __MINGW_NOTHROW sleep( unsigned );
+                                  ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:65:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/prototypes.h:258:16: note: previous declaration of 'sleep' was here
+ extern syscall sleep(uint32);
+                ^~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:9:0:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:12:1: error: expected identifier or '(' before '{' token
+ {{ stdio_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:15:1: error: expected identifier or '(' before '{' token
+ {{ stdlib_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:18:1: error: expected identifier or '(' before '{' token
+ {{ string_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:21:1: error: expected identifier or '(' before '{' token
+ {{ process_management }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:24:1: error: expected identifier or '(' before '{' token
+ {{ interrupt_management }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:27:1: error: expected identifier or '(' before '{' token
+ {{ simulation_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_sim_declarations.h:30:1: error: expected identifier or '(' before '{' token
+ {{ dynamic_functions }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:12:1: error: expected identifier or '(' before '{' token
+ {{ stdio_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:15:1: error: expected identifier or '(' before '{' token
+ {{ stdlib_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:18:1: error: expected identifier or '(' before '{' token
+ {{ string_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:21:1: error: expected identifier or '(' before '{' token
+ {{ process_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:24:1: error: expected identifier or '(' before '{' token
+ {{ interrupt_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:27:1: error: expected identifier or '(' before '{' token
+ {{ simulation_implementations }}
+ ^
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:31:15: error: conflicting types for 'clktime'
+ unsigned long clktime = 0;/* Current time in seconds since boot */
+               ^~~~~~~
+In file included from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/xinu.h:51:0,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/stdio.h:5,
+                 from C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:3:
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include/clock.h:14:15: note: previous declaration of 'clktime' was here
+ extern uint32 clktime; /* current time in secs since boot */
+               ^~~~~~~
+C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c:38:1: error: expected identifier or '(' before '{' token
+ {{ dynamic_implementations }}
+ ^
 
-2025-06-17 21:19:42 - Error: No object files to link
+2025-06-17 21:39:55 - Error: No object files to link
