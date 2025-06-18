@@ -1,5 +1,5 @@
 /* xinu_win_helpers.c - Windows helper functions for XINU
- * Generated on: 2025-06-18 14:23:09 by mol
+ * Generated on: 2025-06-18 14:58:50 by mol
  * AUTOMATICALLY GENERATED - DO NOT EDIT DIRECTLY
  */
 #ifdef _WIN32

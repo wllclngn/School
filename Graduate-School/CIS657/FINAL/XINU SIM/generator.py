@@ -104,6 +104,101 @@ class XinuGenerator:
             compat_header = windows_compat.create_compatibility_header(output_dir)
             log(f"Created Windows compatibility header: {compat_header}")
 
+    def scan_include_files(self):
+        # Scan all relevant include files to build a dependency graph
+        include_files = {}
+        
+        # Get list of include directories
+        if hasattr(self.config, 'include_dirs'):
+            include_dirs = self.config.include_dirs
+        else:
+            include_dirs = [self.config.include_dir]
+        
+        # Process each include directory
+        for include_dir in include_dirs:
+            if os.path.exists(include_dir):
+                for root, _, files in os.walk(include_dir):
+                    for file in files:
+                        if file.endswith(('.h', '.hpp')):
+                            file_path = os.path.join(root, file)
+                            includes = self.extract_includes(file_path, include_dirs)
+                            include_files[file_path] = includes
+        
+        return include_files
+
+    def extract_includes(self, file_path, include_dirs):
+        # Extract include statements from a file
+        includes = []
+        include_pattern = re.compile(r'#include\s+["<](.*?)[">]')
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                for line in f:
+                    match = include_pattern.search(line)
+                    if match:
+                        include_name = match.group(1)
+                        # Find full path of the included file
+                        for include_dir in include_dirs:
+                            potential_path = os.path.join(include_dir, include_name)
+                            if os.path.exists(potential_path):
+                                includes.append(potential_path)
+                                break
+        except Exception as e:
+            log(f"Error processing includes in {file_path}: {e}")
+        
+        return includes
+
+    def check_for_circular_includes(self, include_files):
+        # Check for circular dependencies in include files using DFS algorithm
+        
+        # Build dependency graph
+        graph = {}
+        for file_path, includes in include_files.items():
+            graph[file_path] = includes
+        
+        # Track visited nodes and current path
+        visited = set()
+        path = []
+        path_set = set()
+        
+        def dfs(node):
+            # If node is already in current path, we found a cycle
+            if node in path_set:
+                cycle_start = path.index(node)
+                return True, path[cycle_start:] + [node]
+            
+            # If already visited and not in cycle, skip
+            if node in visited:
+                return False, []
+            
+            # Mark as visited and add to current path
+            visited.add(node)
+            path.append(node)
+            path_set.add(node)
+            
+            # Check all dependencies
+            if node in graph:
+                for neighbor in graph[node]:
+                    has_cycle, cycle_path = dfs(neighbor)
+                    if has_cycle:
+                        return True, cycle_path
+            
+            # Remove from current path when backtracking
+            path.pop()
+            path_set.remove(node)
+            
+            return False, []
+        
+        # Check each node as a starting point
+        for node in graph:
+            has_cycle, cycle_path = dfs(node)
+            if has_cycle:
+                # Return simplified path with basenames for readability
+                simple_path = [os.path.basename(p) for p in cycle_path]
+                return True, simple_path
+        
+        return False, []
+
     def generate_files(self):
         # Generate only the essential files needed for XINU simulation
         log("Generating minimal XINU simulation files")
@@ -111,6 +206,55 @@ class XinuGenerator:
         # Create output directory with long path support
         output_dir = self.normalize_path(self.config.output_dir)
         os.makedirs(output_dir, exist_ok=True)
+        
+        # Check for circular includes before proceeding
+        include_files = self.scan_include_files()
+        has_circular, circular_path = self.check_for_circular_includes(include_files)
+        
+        if has_circular:
+            log("CRITICAL ERROR: Circular include dependencies detected!")
+            log("Circular path: " + " -> ".join(circular_path))
+            log("Compilation cannot proceed with circular dependencies.")
+            
+            # Create a special error file to inform the user
+            error_path = self.get_safe_path(output_dir, "circular_includes_error.txt")
+            with open(error_path, 'w') as f:
+                f.write(f"CRITICAL ERROR: Circular include dependencies detected at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                f.write("Circular include path:\n")
+                f.write(" -> ".join(circular_path) + "\n\n")
+                f.write("Possible solutions:\n")
+                f.write("1. Use include guards in all header files (#ifndef _FILE_H_ / #define _FILE_H_)\n")
+                f.write("2. Create a base_types.h file for common type definitions\n")
+                f.write("3. Use forward declarations for struct types where possible\n")
+                f.write("4. Reorganize your code to avoid mutual dependencies\n")
+                f.write("\nCompilation aborted to prevent errors.\n")
+            
+            # Create a special header to indicate circular includes
+            base_types_path = self.get_safe_path(output_dir, "base_types.h")
+            with open(base_types_path, 'w') as f:
+                f.write("/* base_types.h - Generated to resolve circular dependencies */\n")
+                f.write(f"/* Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} */\n")
+                f.write("#ifndef _BASE_TYPES_H_\n")
+                f.write("#define _BASE_TYPES_H_\n\n")
+                f.write("/* Basic type definitions */\n")
+                f.write("typedef char                int8;\n")
+                f.write("typedef short               int16;\n")
+                f.write("typedef int                 int32;\n")
+                f.write("typedef unsigned char       uint8;\n")
+                f.write("typedef unsigned short      uint16;\n")
+                f.write("typedef unsigned int        uint32;\n")
+                f.write("typedef unsigned long long  uint64;\n\n")
+                f.write("/* This file was auto-generated to fix circular dependencies in headers */\n")
+                f.write("/* Please include this file in your problematic headers */\n\n")
+                f.write("#endif /* _BASE_TYPES_H_ */\n")
+            
+            # Exit early but still create a minimal environment
+            self.generate_stddefs(True)
+            self.generate_includes_wrapper()
+            
+            log("Created base_types.h with common definitions to help resolve circular dependencies.")
+            log("Please check circular_includes_error.txt for details on fixing the issue.")
+            return
         
         # Create obj directory to prevent "No such file or directory" error
         obj_dir = self.get_safe_path(output_dir, "obj")
@@ -142,7 +286,7 @@ class XinuGenerator:
         
         return windows_env
     
-    def generate_stddefs(self):
+    def generate_stddefs(self, has_circular_deps=False):
         # Generate xinu_stddefs.h - basic type definitions
         
         # Get current timestamp and username from system using required function
@@ -152,30 +296,53 @@ class XinuGenerator:
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
-        content = f"""/* xinu_stddefs.h - Minimal type definitions for XINU simulation */
-/* Generated on: {timestamp} */
-/* By user: {username} */
-#ifndef _XINU_STDDEFS_H_
-#define _XINU_STDDEFS_H_
-
-/* Version information */
-#define VERSION "XINU Simulation Version 1.0"
-
-#ifdef _WIN32
-/* Windows-specific compatibility */
-
-/* Basic constants that don't conflict */
-#ifndef NULLCH
-#define NULLCH '\\0'
-#endif
-
-#else
-/* Non-Windows platforms - Standard definitions */
-typedef unsigned char byte;
-#endif /* _WIN32 */
-
-#endif /* _XINU_STDDEFS_H_ */
-"""
+        # Create more complete type definitions if circular dependencies detected
+        if has_circular_deps:
+            content = f"/* xinu_stddefs.h - Extended type definitions to prevent circular dependencies */\n"
+            content += f"/* Generated on: {timestamp} */\n"
+            content += f"/* By user: {username} */\n"
+            content += "#ifndef _XINU_STDDEFS_H_\n"
+            content += "#define _XINU_STDDEFS_H_\n\n"
+            content += "/* Version information */\n"
+            content += "#define VERSION \"XINU Simulation Version 1.0\"\n\n"
+            content += "/* Basic type definitions to prevent circular dependencies */\n"
+            content += "typedef char                int8;\n"
+            content += "typedef short               int16;\n"
+            content += "typedef int                 int32;\n"
+            content += "typedef unsigned char       uint8;\n"
+            content += "typedef unsigned short      uint16;\n"
+            content += "typedef unsigned int        uint32;\n"
+            content += "typedef unsigned long long  uint64;\n\n"
+            content += "#ifdef _WIN32\n"
+            content += "/* Windows-specific compatibility */\n\n"
+            content += "/* Basic constants that don't conflict */\n"
+            content += "#ifndef NULLCH\n"
+            content += "#define NULLCH '\\0'\n"
+            content += "#endif\n\n"
+            content += "#else\n"
+            content += "/* Non-Windows platforms - Standard definitions */\n"
+            content += "typedef unsigned char byte;\n"
+            content += "#endif /* _WIN32 */\n\n"
+            content += "#endif /* _XINU_STDDEFS_H_ */\n"
+        else:
+            content = f"/* xinu_stddefs.h - Minimal type definitions for XINU simulation */\n"
+            content += f"/* Generated on: {timestamp} */\n"
+            content += f"/* By user: {username} */\n"
+            content += "#ifndef _XINU_STDDEFS_H_\n"
+            content += "#define _XINU_STDDEFS_H_\n\n"
+            content += "/* Version information */\n"
+            content += "#define VERSION \"XINU Simulation Version 1.0\"\n\n"
+            content += "#ifdef _WIN32\n"
+            content += "/* Windows-specific compatibility */\n\n"
+            content += "/* Basic constants that don't conflict */\n"
+            content += "#ifndef NULLCH\n"
+            content += "#define NULLCH '\\0'\n"
+            content += "#endif\n\n"
+            content += "#else\n"
+            content += "/* Non-Windows platforms - Standard definitions */\n"
+            content += "typedef unsigned char byte;\n"
+            content += "#endif /* _WIN32 */\n\n"
+            content += "#endif /* _XINU_STDDEFS_H_ */\n"
         
         # Save to output directory using safe path handling
         stddefs_path = self.get_safe_path(self.config.output_dir, "xinu_stddefs.h")
@@ -202,26 +369,21 @@ typedef unsigned char byte;
             username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
         
         # Simple includes wrapper that doesn't conflict with XINU
-        content = f"""/* xinu_includes.h - Wrapper for XINU code compilation.
- * Generated on: {timestamp} by {username}
- */
-#ifndef _XINU_INCLUDES_H_ 
-#define _XINU_INCLUDES_H_
-
-#define _CRT_SECURE_NO_WARNINGS 
-#define XINU_SIMULATION        
-
-/* Windows compatibility - Minimal version */
-#ifdef _WIN32
-  /* Include the Windows compatibility header */
-  #include "xinu_windows_compat.h"
-#endif
-
-/* Include our minimal definitions */
-#include "xinu_stddefs.h" 
-
-#endif /* _XINU_INCLUDES_H_ */
-"""
+        content = f"/* xinu_includes.h - Wrapper for XINU code compilation.\n"
+        content += f" * Generated on: {timestamp} by {username}\n"
+        content += f" */\n"
+        content += "#ifndef _XINU_INCLUDES_H_ \n"
+        content += "#define _XINU_INCLUDES_H_\n\n"
+        content += "#define _CRT_SECURE_NO_WARNINGS \n"
+        content += "#define XINU_SIMULATION        \n\n"
+        content += "/* Windows compatibility - Minimal version */\n"
+        content += "#ifdef _WIN32\n"
+        content += "  /* Include the Windows compatibility header */\n"
+        content += "  #include \"xinu_windows_compat.h\"\n"
+        content += "#endif\n\n"
+        content += "/* Include our minimal definitions */\n"
+        content += "#include \"xinu_stddefs.h\" \n\n"
+        content += "#endif /* _XINU_INCLUDES_H_ */\n"
         
         # Fix include paths for Windows
         content = self.fix_include_paths(content)
@@ -244,53 +406,46 @@ typedef unsigned char byte;
         
         # Windows-compatible C file - simpler approach
         if os.name == 'nt':
-            content = f"""/* xinu_simulation.c - Helper functions for XINU simulation
- * Generated on: {timestamp} by {username}
- */
-#define _CRT_SECURE_NO_WARNINGS
-
-/* Windows compatibility header MUST be included first */
-#ifdef _WIN32
-  #include "xinu_windows_compat.h"
-#endif
-
-/* Use standard C libraries for basic functions */
-#include <stdio.h>
-#include <stdlib.h>
-
-/* Main entry point for simulation */
-int main(void) {{
-    printf("XINU Simulation Starting\\n");
-    printf("Generated on: {timestamp} by {username}\\n\\n");
-    
-    printf("XINU Simulation Running\\n");
-    
-    printf("XINU Simulation Completed\\n");
-    return 0;
-}}
-"""
+            content = f"/* xinu_simulation.c - Helper functions for XINU simulation\n"
+            content += f" * Generated on: {timestamp} by {username}\n"
+            content += f" */\n"
+            content += "#define _CRT_SECURE_NO_WARNINGS\n\n"
+            content += "/* Windows compatibility header MUST be included first */\n"
+            content += "#ifdef _WIN32\n"
+            content += "  #include \"xinu_windows_compat.h\"\n"
+            content += "#endif\n\n"
+            content += "/* Use standard C libraries for basic functions */\n"
+            content += "#include <stdio.h>\n"
+            content += "#include <stdlib.h>\n\n"
+            content += "/* Main entry point for simulation */\n"
+            content += "int main(void) {\n"
+            content += f"    printf(\"XINU Simulation Starting\\n\");\n"
+            content += f"    printf(\"Generated on: {timestamp} by {username}\\n\\n\");\n"
+            content += f"    \n"
+            content += f"    printf(\"XINU Simulation Running\\n\");\n"
+            content += f"    \n"
+            content += f"    printf(\"XINU Simulation Completed\\n\");\n"
+            content += f"    return 0;\n"
+            content += "}\n"
         else:
             # Regular Unix version
-            content = f"""/* xinu_simulation.c - Helper functions for XINU simulation
- * Generated on: {timestamp} by {username}
- */
-#define _CRT_SECURE_NO_WARNINGS
-
-/* Simple standalone simulation without XINU dependencies */
-#include <stdio.h>
-#include <stdlib.h>
-
-/* Main entry point for simulation */
-int main(void) {{
-    printf("XINU Simulation Starting\\n");
-    printf("Generated on: {timestamp} by {username}\\n\\n");
-    
-    printf("XINU Simulation Running\\n");
-    
-    printf("XINU Simulation Completed\\n");
-    return 0;
-}}
-"""
+            content = f"/* xinu_simulation.c - Helper functions for XINU simulation\n"
+            content += f" * Generated on: {timestamp} by {username}\n"
+            content += f" */\n"
+            content += "#define _CRT_SECURE_NO_WARNINGS\n\n"
+            content += "/* Simple standalone simulation without XINU dependencies */\n"
+            content += "#include <stdio.h>\n"
+            content += "#include <stdlib.h>\n\n"
+            content += "/* Main entry point for simulation */\n"
+            content += "int main(void) {\n"
+            content += f"    printf(\"XINU Simulation Starting\\n\");\n"
+            content += f"    printf(\"Generated on: {timestamp} by {username}\\n\\n\");\n"
+            content += f"    \n"
+            content += f"    printf(\"XINU Simulation Running\\n\");\n"
+            content += f"    \n"
+            content += f"    printf(\"XINU Simulation Completed\\n\");\n"
+            content += f"    return 0;\n"
+            content += "}\n"
         
         # Fix include paths for Windows
         content = self.fix_include_paths(content)
