@@ -229,38 +229,6 @@ else
 fi
 ```
 
-## Build Process Details
-
-### Phase 1: File Generation
-1. **Template Loading**: Load and parse template files from `templates/` directory
-2. **Standard Definitions**: Generate `xinu_stddefs.h` with XINU type definitions and constants
-3. **Include Wrapper**: Create `xinu_includes.h` with proper include ordering
-4. **Core Implementation**: Generate `xinu_core.c` main executable template
-5. **Simulation Helpers**: Create platform-specific simulation support functions
-
-### Phase 2: Source Discovery
-1. **Directory Scanning**: Recursively scan XINU OS directories for `.c` source files
-2. **Makefile Parsing**: Extract source file lists and build parameters from Makefiles
-3. **File Filtering**: Remove assembly files and excluded library functions
-4. **Dependency Resolution**: Organize source files by compilation order
-
-### Phase 3: Compilation
-1. **Include Path Setup**: Configure compiler include directories
-2. **Flag Configuration**: Set cross-platform compiler flags and options
-3. **Object Generation**: Compile each source file to object format
-4. **Error Collection**: Aggregate compilation errors and warnings
-
-### Phase 4: Linking
-1. **Object Collection**: Gather all successfully compiled object files
-2. **Library Resolution**: Link required system and math libraries
-3. **Executable Creation**: Generate final XINU simulation executable
-4. **Permission Setting**: Configure executable permissions (Unix/Linux)
-
-### Phase 5: Verification
-1. **Build Validation**: Verify executable creation and basic integrity
-2. **Log Generation**: Create detailed compilation log with summary
-3. **Error Reporting**: Provide actionable feedback for build issues
-
 ## Logging and Debugging
 
 ### Log Files
