@@ -1,50 +1,6 @@
-/* priority.c - chprio, getprio, updatepriostarv */
+/* priority.c - chprio, getprio */
 
 #include <xinu.h>
-
-/*------------------------------------------------------------------------
- * updatepriostarv - Update the priority of a starving process
- *------------------------------------------------------------------------
- */
-syscall updatepriostarv(
-    pid32   pid,            /* ID of process to change     */
-    pri16   newprio         /* new priority                */
-)
-{
-    intmask mask;           /* saved interrupt mask        */
-    struct  procent *prptr; /* ptr to process' table entry */
-    pri16   oldprio;        /* process's priority to return*/
-
-    mask = disable();
-    if (isbadpid(pid)) {
-        restore(mask);
-        return SYSERR;
-    }
-    
-    prptr = &proctab[pid];
-    oldprio = prptr->prprio;
-    
-    // Only update priority if the process is in a ready state
-    // and is not currently running
-    if ((prptr->prstate == PR_READY) && (pid != currpid)) {
-        prptr->prprio = newprio;
-        
-        // Print message showing priority increase
-        kprintf("Process %d ('Pstarv') priority increased to %d\n", pid, newprio);
-        
-        // Update the process in the ready list
-        if (newprio > oldprio) {
-            // Remove from the ready list
-            getitem(pid);
-            
-            // Insert with the new priority
-            insert(pid, readylist, newprio);
-        }
-    }
-    
-    restore(mask);
-    return oldprio;
-}
 
 /*------------------------------------------------------------------------
  * chprio  -  Change the scheduling priority of a process

@@ -30,7 +30,7 @@ syscall updatepriostarv(pid32 pid, pri16 newprio)
     }
 
     restore(mask);
-    return OK;
+    return oldprio;    /* Return old priority value for consistency */
 }
 
 /*------------------------------------------------------------------------
@@ -69,6 +69,11 @@ void boost_pstarv_priority(void)
  */
 void check_pstarv_time(void)
 {
+    /* Check if starvation prevention is enabled */
+    if (!enable_starvation_fix) {
+        return;
+    }
+    
     intmask mask;                   /* Saved interrupt mask */
     uint32 current_time;
     uint32 time_in_ready;

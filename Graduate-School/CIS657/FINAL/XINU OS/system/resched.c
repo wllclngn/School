@@ -24,17 +24,7 @@ void	resched(void)
 
 	/* Check for starvation prevention (Question 1) */
 	if (starvation_prevention && starvingPID != BADPID) {
-		struct procent *pstarv = &proctab[starvingPID];
-		if (pstarv->prstate != PR_FREE) {
-			pri16 old_prio = pstarv->prprio;
-			if (old_prio < MAXPRIO) {
-				pri16 new_prio = (old_prio + 2 > MAXPRIO) ? MAXPRIO : old_prio + 2;
-				updatepriostarv(starvingPID, new_prio);
-				
-				kprintf("BOOST: PStarv (PID: %d) priority increased from %d to %d\n",
-						starvingPID, old_prio, new_prio);
-			}
-		}
+		boost_pstarv_priority();
 	}
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
