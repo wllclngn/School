@@ -1,3 +1,12 @@
 # Specific obj files to ignore
 *.obj
 *.bak
+
+# CIS657
+Graduate-School/CIS657/FINAL/XINU SIM/__pycache__/*
+Graduate-School/CIS657/FINAL/XINU SIM/output/*
+Graduate-School/CIS657/FINAL/XINU SIM/utils/__pycache__/*
+Graduate-School/CIS657/FINAL/XINU OS/include/base_types.h
+Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
+
+#CSE687
