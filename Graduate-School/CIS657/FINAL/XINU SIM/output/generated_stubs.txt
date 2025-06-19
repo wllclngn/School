@@ -1,0 +1,16 @@
+file.h|2025-06-18 21:49:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/file.h
+rfilesys.h|2025-06-18 21:50:22|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/rfilesys.h
+process.h|2025-06-18 21:59:50|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/process.h
+rdisksys.h|2025-06-18 21:59:50|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/rdisksys.h
+lfilesys.h|2025-06-18 22:06:19|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/lfilesys.h
+ether.h|2025-06-18 22:15:49|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/ether.h
+pstarv.h|2025-06-18 22:15:49|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/pstarv.h
+device.h|2025-06-18 22:15:49|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/device.h
+net.h|2025-06-18 22:15:49|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/net.h
+ip.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/ip.h
+arp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/arp.h
+udp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/udp.h
+tcp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/tcp.h
+icmp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/icmp.h
+name.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/name.h
+dhcp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dhcp.h

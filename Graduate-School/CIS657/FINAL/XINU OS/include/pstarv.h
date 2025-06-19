@@ -3,7 +3,10 @@
 #ifndef _PSTARV_H_
 #define _PSTARV_H_
 
-#include <xinu.h>
+/* Include only what's needed, not the entire xinu.h */
+#include <kernel.h>
+#include <conf.h>
+#include <process.h>
 
 /* Global variable declarations */
 extern pid32 starvingPID;            /* PID of process to monitor for starvation (Q1) */
@@ -19,4 +22,3 @@ extern void check_pstarv_time(void);
 extern syscall updatepriostarv(pid32 pid, pri16 newprio);
 
 #endif /* _PSTARV_H_ */
-

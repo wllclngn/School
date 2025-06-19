@@ -11,14 +11,34 @@
 #include <semaphore.h>
 #include <memory.h>
 #include <bufpool.h>
+#include <clock.h>
 #include <mark.h>
 #include <ports.h>
 #include <uart.h>
 #include <tty.h>
 #include <device.h>
 #include <interrupt.h>
-#include <date.h>
+#include <file.h>
+#include <rfilesys.h>
+#include <rdisksys.h>
+#include <lfilesys.h>
+#include <ether.h>
+#include <net.h>
+#include <ip.h>
+#include <arp.h>
+#include <udp.h>
+#include <dhcp.h>
+#include <icmp.h>
+#include <tftp.h>
+#include <name.h>
 #include <shell.h>
-#include <pstarv.h>  /* Include for starvation prevention */
+#include <date.h>
+#include <prototypes.h>
+#include <delay.h>
+#include <stdio.h>
+#include <string.h>
+
+/* Include pstarv.h at the end to avoid circular dependencies */
+#include <pstarv.h>
 
 #endif

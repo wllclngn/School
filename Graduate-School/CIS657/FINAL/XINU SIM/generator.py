@@ -199,6 +199,327 @@ class XinuGenerator:
         
         return False, []
 
+    def generate_base_types(self):
+        # Create base_types.h with basic type definitions
+        output_dir = self.normalize_path(self.config.output_dir)
+        base_types_path = self.get_safe_path(output_dir, "base_types.h")
+        
+        # Get current timestamp and username
+        if os.name == 'nt':
+            timestamp, username = windows_compat.get_timestamp_and_user()
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        
+        # Create header content
+        content = f"/* base_types.h - Standard type definitions for XINU OS\n"
+        content += f" * Generated on: {timestamp}\n"
+        content += f" */\n"
+        content += "#ifndef _BASE_TYPES_H_\n"
+        content += "#define _BASE_TYPES_H_\n\n"
+        content += "/* Basic type definitions */\n"
+        content += "typedef char                int8;\n"
+        content += "typedef short               int16;\n"
+        content += "typedef int                 int32;\n"
+        content += "typedef long                int64;\n"
+        content += "typedef unsigned char       uint8;\n"
+        content += "typedef unsigned short      uint16;\n"
+        content += "typedef unsigned int        uint32;\n"
+        content += "typedef unsigned long long  uint64;\n\n"
+        content += "/* XINU process and device types */\n"
+        content += "typedef int32               pid32;\n"
+        content += "typedef int16               pri16;\n"
+        content += "typedef int16               qid16;     /* Queue ID type - must match kernel.h */\n"
+        content += "typedef int32               sid32;\n"
+        content += "typedef int32               did32;\n"
+        content += "typedef int32               ibid32;\n"
+        content += "typedef int32               dbid32;\n\n"
+        content += "#endif /* _BASE_TYPES_H_ */\n"
+        
+        with open(base_types_path, 'w') as f:
+            f.write(content)
+        log(f"Generated base types file: {base_types_path}")
+        
+        # Also copy to include directory to ensure it's found properly
+        include_base_types_path = self.get_safe_path(self.config.include_dir, "base_types.h")
+        with open(include_base_types_path, 'w') as f:
+            f.write(content)
+        log(f"Generated base types file (include dir copy): {include_base_types_path}")
+
+    def _generate_common_stubs(self):
+        # Create common stub files that are often needed
+        common_headers = [
+            "file.h", 
+            "process.h", 
+            "rfilesys.h",
+            "rdisksys.h",
+            "lfilesys.h",
+            "ether.h",
+            "pstarv.h",
+            "net.h",
+            "ip.h",
+            "arp.h",
+            "udp.h",
+            "tcp.h",
+            "icmp.h",
+            "name.h",
+            "device.h"
+        ]
+        stubs_created = []
+        
+        output_dir = self.normalize_path(self.config.output_dir)
+        
+        for header_name in common_headers:
+            content = self.generate_stub_header(header_name)
+            header_path = self.get_safe_path(output_dir, header_name)
+            
+            # Only create if it doesn't exist
+            if not os.path.exists(header_path):
+                with open(header_path, 'w') as f:
+                    f.write(content)
+                log(f"Generated common stub header: {header_path}")
+                stubs_created.append(header_path)
+        
+        # Track the stubs we created
+        if stubs_created:
+            self.track_generated_stubs(stubs_created)
+
+    def generate_stub_header(self, header_name, needed_types=None):
+        # Generate a stub header based on header name and needed types
+        if needed_types is None:
+            needed_types = set()
+        
+        # Get current timestamp and username using existing methods
+        if os.name == 'nt':
+            timestamp, username = windows_compat.get_timestamp_and_user()
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
+        
+        # Create header guard name
+        basename = os.path.splitext(os.path.basename(header_name))[0]
+        header_guard = f"_{basename.upper()}_H_"
+        
+        content = f"/* {header_name} - Generated stub header for XINU OS simulation\n"
+        content += f" * Generated on: {timestamp}\n"
+        content += f" */\n"
+        content += f"#ifndef {header_guard}\n"
+        content += f"#define {header_guard}\n\n"
+        
+        # Include basic types if we need them
+        content += "#include \"base_types.h\"\n\n"
+        
+        # Generate appropriate content based on header name
+        if basename == "file":
+            content += "/* File system type definitions */\n"
+            content += "typedef int32 did32;            /* Device ID type */\n"
+            content += "typedef int32 ibid32;           /* I-block ID type */\n"
+            content += "typedef int32 dbid32;           /* Data block ID type */\n\n"
+            content += "#define FNAMLEN     16          /* Length of filename */\n"
+            content += "#define FBUFLEN     1024        /* Size of file buffer */\n\n"
+        elif basename == "process":
+            content += "/* Process type definitions */\n"
+            content += "typedef int32 pid32;            /* Process ID type */\n"
+            content += "typedef int16 pri16;            /* Process priority */\n\n"
+            content += "/* Process state constants */\n"
+            content += "#define PR_FREE      0          /* Process table entry is unused */\n"
+            content += "#define PR_CURR      1          /* Process is running */\n"
+            content += "#define PR_READY     2          /* Process is on ready queue */\n"
+            content += "#define PR_SLEEP     4          /* Process is sleeping */\n"
+            content += "#define PR_SUSP      5          /* Process is suspended */\n\n"
+        elif basename in ["rfilesys", "rdisksys", "lfilesys"]:
+            content += "/* Minimal stub for filesystem module */\n"
+            content += "#include \"file.h\"             /* Include file header for types */\n\n"
+            content += "#define FNAMLEN     16          /* Length of filename */\n\n"
+            content += "/* Minimal filesystem structure stubs */\n"
+            content += "typedef struct lfdir {\n"
+            content += "    int dummy;\n"
+            content += "} lfdir_t;\n\n"
+            content += "typedef struct lflcblk {\n"
+            content += "    int dummy;\n"
+            content += "} lflcblk_t;\n\n"
+        elif basename == "pstarv":
+            content += "/* Starvation prevention definitions */\n"
+            content += "extern int32 starvingPID;       /* PID to monitor for starvation */\n"
+            content += "extern int32 starvation_prevention; /* Starvation prevention flag */\n"
+            content += "extern int32 pstarv_pid;        /* Process to monitor for Q2 */\n"
+            content += "extern int32 enable_starvation_fix; /* Enable starvation fix */\n"
+            content += "extern int32 pstarv_ready_time; /* Time when pstarv entered ready queue */\n"
+            content += "extern int32 last_boost_time;   /* Last priority boost time */\n\n"
+            content += "void boost_pstarv_priority(void);\n"
+            content += "void check_pstarv_time(void);\n"
+            content += "int32 updatepriostarv(int32 pid, int16 newprio);\n\n"
+        elif basename == "ether":
+            content += "/* Ethernet device driver stub */\n"
+            content += "#include \"device.h\"      /* Include device definitions */\n\n"
+            content += "/* Basic Ethernet definitions */\n"
+            content += "#define ETH_ADDR_LEN   6       /* Ethernet address length  */\n"
+            content += "#define ETH_HDR_LEN    14      /* Ethernet header length   */\n"
+            content += "#define ETH_CRC_LEN    4       /* Ethernet CRC length      */\n\n"
+            content += "/* Structure of an Ethernet address */\n"
+            content += "typedef struct {\n"
+            content += "    byte addr[ETH_ADDR_LEN];   /* Ethernet MAC address */\n"
+            content += "} eth_addr_t;\n\n"
+        elif basename == "device":
+            # Note that we don't define struct dentry here to avoid conflict with conf.h
+            content += "/* Device definitions stub - Minimal version that works with conf.h */\n"
+            content += "#define DEVNAMLEN   16      /* Length of device name      */\n\n"
+            content += "/* No struct dentry here - it's already defined in conf.h */\n\n"
+        elif basename == "net" or basename == "ip" or basename == "arp" or basename == "udp" or basename == "tcp" or basename == "icmp":
+            content += f"/* {basename.upper()} Protocol stub header */\n"
+            content += "#include \"ether.h\"         /* Include Ethernet definitions */\n\n"
+            
+            # Add specific content based on protocol
+            if basename == "ip":
+                content += "/* IP protocol definitions */\n"
+                content += "#define IP_ADDR_LEN   4        /* Length of IP address in bytes */\n"
+                content += "typedef uint32 ip_addr_t;      /* IP address type */\n\n"
+            elif basename == "arp":
+                content += "/* ARP protocol definitions */\n"
+                content += "#define ARP_HALEN    6        /* Ethernet hardware address length */\n"
+                content += "#define ARP_PALEN    4        /* IP protocol address length */\n\n"
+            elif basename == "tcp":
+                content += "/* TCP protocol definitions */\n"
+                content += "#define TCP_PORTS    65536    /* Total number of TCP ports */\n"
+                content += "#define TCP_HDR_LEN  20       /* TCP header length without options */\n\n"
+            elif basename == "udp":
+                content += "/* UDP protocol definitions */\n"
+                content += "#define UDP_PORTS    65536    /* Total number of UDP ports */\n"
+                content += "#define UDP_HDR_LEN  8        /* UDP header length */\n\n"
+            elif basename == "icmp":
+                content += "/* ICMP protocol definitions */\n"
+                content += "#define ICMP_HDR_LEN 8        /* ICMP header length */\n\n"
+            else:  # net.h
+                content += "/* General network definitions */\n"
+                content += "#define NETIF_NHWA   32       /* Size of hardware address */\n"
+                content += "#define NETIF_NEKA   32       /* Max size of Ethernet address */\n\n"
+        elif basename == "name":
+            content += "/* Name resolution stub header */\n"
+            content += "#include \"net.h\"            /* Include network definitions */\n\n"
+            content += "/* Name server definitions */\n"
+            content += "#define NS_MAXNAM    64       /* Max length of domain name */\n"
+            content += "#define MAXDNAME     256      /* Max domain name length */\n\n"
+        else:
+            # Generic stub for other headers
+            content += "/* Generic stub for XINU OS header file */\n\n"
+            
+            # Add definitions for needed types
+            if needed_types:
+                content += "/* Required type definitions */\n"
+                for type_name in needed_types:
+                    if type_name.startswith("int") or type_name.startswith("uint"):
+                        if type_name == "int32":
+                            content += "typedef int int32;                /* 32-bit signed integer */\n"
+                        elif type_name == "uint32":
+                            content += "typedef unsigned int uint32;      /* 32-bit unsigned integer */\n"
+                        elif type_name == "int16":
+                            content += "typedef short int16;             /* 16-bit signed integer */\n"
+                        elif type_name == "uint16":
+                            content += "typedef unsigned short uint16;   /* 16-bit unsigned integer */\n"
+                        elif type_name == "int8":
+                            content += "typedef char int8;               /* 8-bit signed integer */\n"
+                        elif type_name == "uint8":
+                            content += "typedef unsigned char uint8;     /* 8-bit unsigned integer */\n"
+                    else:
+                        content += f"typedef int {type_name};            /* Generic stub for {type_name} */\n"
+                content += "\n"
+        
+        # Close the header guard
+        content += f"#endif /* {header_guard} */\n"
+        
+        return content
+        
+    def analyze_compile_errors(self, error_output):
+        # Analyze compilation errors to detect missing headers and undefined types
+        missing_headers = {}
+        undefined_types = {}
+        
+        # Regular expressions to match common error patterns
+        header_pattern = re.compile(r'fatal error: ([\w\./-]+)\.h: No such file or directory')
+        type_pattern = re.compile(r'unknown type name [\'"](\w+)[\'"]')
+        
+        for line in error_output.split('\n'):
+            # Look for missing header files
+            header_match = header_pattern.search(line)
+            if header_match:
+                header_name = header_match.group(1).strip() + '.h'
+                if header_name not in missing_headers:
+                    missing_headers[header_name] = {'references': [line], 'needed_by': set()}
+                else:
+                    missing_headers[header_name]['references'].append(line)
+            
+            # Look for undefined types
+            type_match = type_pattern.search(line)
+            if type_match:
+                type_name = type_match.group(1).strip()
+                if type_name not in undefined_types:
+                    undefined_types[type_name] = {'references': [line], 'possible_header': None}
+                else:
+                    undefined_types[type_name]['references'].append(line)
+        
+        # Map common types to their headers
+        common_types = {
+            'int32': 'base_types',
+            'uint32': 'base_types',
+            'pid32': 'process',
+            'pri16': 'process',
+            'did32': 'file',
+            'ibid32': 'file',
+            'dbid32': 'file',
+        }
+        
+        # Try to associate undefined types with specific headers
+        for type_name, info in undefined_types.items():
+            if type_name in common_types:
+                header = common_types[type_name] + '.h'
+                info['possible_header'] = header
+                if header in missing_headers:
+                    missing_headers[header]['needed_by'].add(type_name)
+        
+        return missing_headers, undefined_types
+
+    def create_missing_header_stubs(self, missing_headers, undefined_types):
+        # Create stub header files for missing headers
+        stubs_created = []
+        
+        output_dir = self.normalize_path(self.config.output_dir)
+        header_dir = output_dir
+        
+        # Ensure output directory exists
+        os.makedirs(header_dir, exist_ok=True)
+        
+        # Process each missing header
+        for header_name, info in missing_headers.items():
+            # Get needed types for this header
+            needed_types = info.get('needed_by', set())
+            
+            # Generate content
+            content = self.generate_stub_header(header_name, needed_types)
+            
+            # Save to output directory
+            header_path = self.get_safe_path(header_dir, header_name)
+            with open(header_path, 'w') as f:
+                f.write(content)
+            
+            log(f"Generated stub header: {header_path}")
+            stubs_created.append(header_path)
+        
+        return stubs_created
+
+    def track_generated_stubs(self, stub_paths):
+        # Record which headers were generated as stubs
+        track_file = self.get_safe_path(self.config.output_dir, "generated_stubs.txt")
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        try:
+            with open(track_file, 'a') as f:
+                for path in stub_paths:
+                    basename = os.path.basename(path)
+                    f.write(f"{basename}|{timestamp}|{path}\n")
+            log(f"Updated stub tracking file with {len(stub_paths)} entries")
+        except Exception as e:
+            log(f"Warning: Could not update stub tracking: {str(e)}")
+
     def generate_files(self):
         # Generate only the essential files needed for XINU simulation
         log("Generating minimal XINU simulation files")
@@ -206,6 +527,9 @@ class XinuGenerator:
         # Create output directory with long path support
         output_dir = self.normalize_path(self.config.output_dir)
         os.makedirs(output_dir, exist_ok=True)
+        
+        # Generate base types header first
+        self.generate_base_types()
         
         # Check for circular includes before proceeding
         include_files = self.scan_include_files()
@@ -229,25 +553,6 @@ class XinuGenerator:
                 f.write("4. Reorganize your code to avoid mutual dependencies\n")
                 f.write("\nCompilation aborted to prevent errors.\n")
             
-            # Create a special header to indicate circular includes
-            base_types_path = self.get_safe_path(output_dir, "base_types.h")
-            with open(base_types_path, 'w') as f:
-                f.write("/* base_types.h - Generated to resolve circular dependencies */\n")
-                f.write(f"/* Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} */\n")
-                f.write("#ifndef _BASE_TYPES_H_\n")
-                f.write("#define _BASE_TYPES_H_\n\n")
-                f.write("/* Basic type definitions */\n")
-                f.write("typedef char                int8;\n")
-                f.write("typedef short               int16;\n")
-                f.write("typedef int                 int32;\n")
-                f.write("typedef unsigned char       uint8;\n")
-                f.write("typedef unsigned short      uint16;\n")
-                f.write("typedef unsigned int        uint32;\n")
-                f.write("typedef unsigned long long  uint64;\n\n")
-                f.write("/* This file was auto-generated to fix circular dependencies in headers */\n")
-                f.write("/* Please include this file in your problematic headers */\n\n")
-                f.write("#endif /* _BASE_TYPES_H_ */\n")
-            
             # Exit early but still create a minimal environment
             self.generate_stddefs(True)
             self.generate_includes_wrapper()
@@ -265,6 +570,9 @@ class XinuGenerator:
         self.generate_includes_wrapper()
         self.generate_sim_helper()
         self.generate_obj_file()
+        
+        # Also generate stub headers for commonly needed files
+        self._generate_common_stubs()
         
         # On Windows, set up Windows-specific compatibility environment
         if os.name == 'nt':
@@ -303,16 +611,10 @@ class XinuGenerator:
             content += f"/* By user: {username} */\n"
             content += "#ifndef _XINU_STDDEFS_H_\n"
             content += "#define _XINU_STDDEFS_H_\n\n"
+            content += "/* Include base types */\n"
+            content += "#include \"base_types.h\"\n\n"
             content += "/* Version information */\n"
             content += "#define VERSION \"XINU Simulation Version 1.0\"\n\n"
-            content += "/* Basic type definitions to prevent circular dependencies */\n"
-            content += "typedef char                int8;\n"
-            content += "typedef short               int16;\n"
-            content += "typedef int                 int32;\n"
-            content += "typedef unsigned char       uint8;\n"
-            content += "typedef unsigned short      uint16;\n"
-            content += "typedef unsigned int        uint32;\n"
-            content += "typedef unsigned long long  uint64;\n\n"
             content += "#ifdef _WIN32\n"
             content += "/* Windows-specific compatibility */\n\n"
             content += "/* Basic constants that don't conflict */\n"
@@ -330,6 +632,8 @@ class XinuGenerator:
             content += f"/* By user: {username} */\n"
             content += "#ifndef _XINU_STDDEFS_H_\n"
             content += "#define _XINU_STDDEFS_H_\n\n"
+            content += "/* Include base types */\n"
+            content += "#include \"base_types.h\"\n\n"
             content += "/* Version information */\n"
             content += "#define VERSION \"XINU Simulation Version 1.0\"\n\n"
             content += "#ifdef _WIN32\n"
@@ -376,6 +680,8 @@ class XinuGenerator:
         content += "#define _XINU_INCLUDES_H_\n\n"
         content += "#define _CRT_SECURE_NO_WARNINGS \n"
         content += "#define XINU_SIMULATION        \n\n"
+        content += "/* Include base types first */\n"
+        content += "#include \"base_types.h\"\n\n"
         content += "/* Windows compatibility - Minimal version */\n"
         content += "#ifdef _WIN32\n"
         content += "  /* Include the Windows compatibility header */\n"
@@ -410,6 +716,8 @@ class XinuGenerator:
             content += f" * Generated on: {timestamp} by {username}\n"
             content += f" */\n"
             content += "#define _CRT_SECURE_NO_WARNINGS\n\n"
+            content += "/* Include our base types first */\n"
+            content += "#include \"base_types.h\"\n\n"
             content += "/* Windows compatibility header MUST be included first */\n"
             content += "#ifdef _WIN32\n"
             content += "  #include \"xinu_windows_compat.h\"\n"
@@ -420,7 +728,7 @@ class XinuGenerator:
             content += "/* Main entry point for simulation */\n"
             content += "int main(void) {\n"
             content += f"    printf(\"XINU Simulation Starting\\n\");\n"
-            content += f"    printf(\"Generated on: {timestamp} by {username}\\n\\n\");\n"
+            content += f"    printf(\"Generated on: {timestamp}\\n\\n\");\n"
             content += f"    \n"
             content += f"    printf(\"XINU Simulation Running\\n\");\n"
             content += f"    \n"
@@ -433,13 +741,15 @@ class XinuGenerator:
             content += f" * Generated on: {timestamp} by {username}\n"
             content += f" */\n"
             content += "#define _CRT_SECURE_NO_WARNINGS\n\n"
+            content += "/* Include our base types first */\n"
+            content += "#include \"base_types.h\"\n\n"
             content += "/* Simple standalone simulation without XINU dependencies */\n"
             content += "#include <stdio.h>\n"
             content += "#include <stdlib.h>\n\n"
             content += "/* Main entry point for simulation */\n"
             content += "int main(void) {\n"
             content += f"    printf(\"XINU Simulation Starting\\n\");\n"
-            content += f"    printf(\"Generated on: {timestamp} by {username}\\n\\n\");\n"
+            content += f"    printf(\"Generated on: {timestamp}\\n\\n\");\n"
             content += f"    \n"
             content += f"    printf(\"XINU Simulation Running\\n\");\n"
             content += f"    \n"
@@ -463,6 +773,7 @@ class XinuGenerator:
         dummy_c_path = self.get_safe_path(self.config.output_dir, "dummy.c")
         with open(dummy_c_path, 'w') as f:
             f.write("/* Minimal dummy object for compilation */\n")
+            f.write("#include \"base_types.h\"\n\n")
             
             # Add Windows compatibility if needed
             if os.name == 'nt':

@@ -8,6 +8,7 @@ import re
 import tempfile
 from utils.logger import log
 from makefile_parser import MakefileParser
+from generator import XinuGenerator
 
 class XinuCompiler:
     # XINU compiler that directly uses source files from the Makefile
@@ -108,8 +109,8 @@ class XinuCompiler:
         self._print(f"Setup environment with include paths: {self.include_paths}")
     
     def compile(self):
-        # Compile the XINU simulation
-        self._print("\n##### Compiling XINU Simulation #####")
+        # Standard compile method (use compile_with_retry for enhanced version)
+        log("Compiling XINU Simulation")
         
         # Parse Makefile to get original source files
         self._parse_makefile()
@@ -136,6 +137,193 @@ class XinuCompiler:
         else:
             self._print("\nXINU Simulation compilation failed!")
             return False
+            
+    def compile_with_retry(self):
+        # Enhanced compile method with retry support
+        self._print("\n##### Compiling XINU Simulation #####")
+        
+        # Parse Makefile to get original source files
+        self._parse_makefile()
+        
+        # First attempt at compilation
+        success, compile_output = self._compile_attempt()
+        
+        # If it failed, check for missing headers
+        if not success:
+            # Create generator for analyzing errors and creating stubs
+            generator = XinuGenerator(self.config)
+            
+            # Analyze compilation errors
+            log("Analyzing compilation errors for missing headers")
+            missing_headers, undefined_types = generator.analyze_compile_errors(compile_output)
+            
+            # If we found missing headers, generate them and retry
+            if missing_headers:
+                log(f"Detected {len(missing_headers)} missing headers, generating stubs")
+                self._print(f"\nDetected {len(missing_headers)} missing headers, generating stubs and retrying...")
+                
+                # Create stub headers
+                generated_stubs = generator.create_missing_header_stubs(missing_headers, undefined_types)
+                
+                # Track what we generated
+                generator.track_generated_stubs(generated_stubs)
+                
+                # Retry compilation
+                self._print("\n##### Retrying Compilation with Generated Stubs #####")
+                success, compile_output = self._compile_attempt()
+        
+        # Report final result
+        if success:
+            self._print("\nXINU Simulation compilation successful!")
+            return True
+        else:
+            self._print("\nXINU Simulation compilation failed!")
+            return False
+
+    def _compile_attempt(self):
+        # Attempt to compile all source files
+        compile_output = ""
+        success = True
+        
+        # Compile the simulation helper
+        sim_helper_path = os.path.join(self.config.output_dir, "xinu_simulation.c")
+        sim_helper_obj = self._get_object_path(sim_helper_path)
+        result, output = self._capture_compile_output(sim_helper_path, sim_helper_obj)
+        compile_output += output
+        success = success and result
+        
+        # Compile XINU OS source files from Makefile
+        xinu_objects = []
+        for source_file in self.xinu_source_files:
+            obj_file = self._get_object_path(source_file)
+            result, output = self._capture_compile_output(source_file, obj_file, 
+                                                force_include=self.config.includes_h)
+            compile_output += output
+            if result:
+                xinu_objects.append(obj_file)
+            else:
+                success = False
+        
+        # Only link if compilation succeeded
+        if success and xinu_objects:
+            # Link everything together
+            all_objects = [sim_helper_obj] + xinu_objects
+            link_result, link_output = self._capture_link_output(all_objects)
+            compile_output += link_output
+            success = success and link_result
+        
+        return success, compile_output
+
+    def _capture_compile_output(self, source_path, obj_path, force_include=None):
+        # Compile a file and capture the output
+        self._print(f"Compiling {os.path.basename(source_path)}...")
+        
+        # Check if the source file exists
+        if not os.path.exists(source_path):
+            log(f"Error: Source file not found: {source_path}")
+            self._print(f"Error: Source file not found: {source_path}")
+            return False, f"Error: Source file not found: {source_path}\n"
+        
+        # Build include paths
+        include_opts = " ".join(f'-I"{p}"' for p in self.include_paths if os.path.exists(p))
+        
+        # Build command based on source type
+        compiler = self.system_info['c_compiler']
+        flags = self.system_info['c_flags']
+        
+        # Add force include if specified (for XINU OS sources)
+        force_include_opt = ""
+        if force_include:
+            if self.system_info['os'] == 'windows' and not 'mingw' in self.system_info['os']:
+                force_include_opt = f' /FI"{force_include}"'
+            else:
+                force_include_opt = f' -include "{force_include}"'
+        
+        cmd = f'{compiler} {flags} {include_opts}{force_include_opt} -c "{source_path}" -o "{obj_path}"'
+        
+        try:
+            self._print(f"Running: {cmd}")
+            process = subprocess.Popen(
+                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True
+            )
+            stdout, stderr = process.communicate()
+            output = f"OUTPUT {source_path}:\n{stdout}\n{stderr}\n"
+            
+            if process.returncode != 0:
+                log(f"Compilation error in {source_path}:\n{stderr}")
+                self._print(f"Error compiling {os.path.basename(source_path)}")
+                self._print(f"Error message: {stderr}")
+                return False, output
+            
+            self._print(f"Successfully compiled {os.path.basename(source_path)}")
+            return True, output
+        except Exception as e:
+            error_msg = f"Error during compilation of {source_path}: {str(e)}"
+            log(error_msg)
+            self._print(f"Error during compilation of {os.path.basename(source_path)}: {str(e)}")
+            return False, error_msg
+
+    def _capture_link_output(self, object_files):
+        # Link object files and capture the output
+        if not object_files:
+            log("Error: No object files to link")
+            self._print("Error: No object files to link")
+            return False, "Error: No object files to link\n"
+        
+        # Create the executable path
+        exe_name = "xinu_core" + self.system_info['exe_ext']
+        exe_path = os.path.join(self.config.output_dir, exe_name)
+        
+        # Store the path in the config for other modules to access
+        self.config.xinu_core_output = exe_path
+        
+        # Build object files list
+        obj_list = " ".join(f'"{obj}"' for obj in object_files)
+        
+        # Get additional linker flags from Makefile if available
+        additional_flags = ""
+        if hasattr(self.makefile_parser, "get_linker_flags"):
+            makefile_flags = self.makefile_parser.get_linker_flags()
+            if makefile_flags:
+                additional_flags = " ".join(makefile_flags)
+        
+        # Add math library in Unix systems
+        if self.system_info['os'] in ('linux', 'macos'):
+            additional_flags += " -lm"
+        
+        # Link command
+        cmd = f'{self.system_info["compiler"]} {obj_list} -o "{exe_path}" {additional_flags}'
+        
+        self._print(f"Linking executable: {exe_path}")
+        self._print(f"Running: {cmd}")
+        
+        try:
+            process = subprocess.Popen(
+                cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True
+            )
+            stdout, stderr = process.communicate()
+            output = f"LINK OUTPUT:\n{stdout}\n{stderr}\n"
+            
+            if process.returncode != 0:
+                log(f"Linking error:\n{stderr}")
+                self._print(f"Error linking executable: {exe_path}")
+                self._print(f"Error message: {stderr}")
+                return False, output
+            
+            self._print(f"Successfully created executable: {exe_path}")
+            
+            # Make the file executable on Unix-like systems
+            if self.system_info['os'] in ('linux', 'macos'):
+                os.chmod(exe_path, 0o755)
+            
+            return True, output
+        except Exception as e:
+            error_msg = f"Error during linking: {str(e)}"
+            log(error_msg)
+            self._print(f"Error during linking: {str(e)}")
+            return False, error_msg
     
     def _parse_makefile(self):
         # Parse XINU OS Makefile to get source files
@@ -259,6 +447,10 @@ class XinuCompiler:
             makefile_flags = self.makefile_parser.get_linker_flags()
             if makefile_flags:
                 additional_flags = " ".join(makefile_flags)
+        
+        # Add math library in Unix systems
+        if self.system_info['os'] in ('linux', 'macos'):
+            additional_flags += " -lm"
         
         # Link command
         cmd = f'{self.system_info["compiler"]} {obj_list} -o "{exe_path}" {additional_flags}'

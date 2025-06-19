@@ -1,119 +1,125 @@
-# main.py - XINU SIM main entry point
-# Direct compilation approach based on PowerShell script methodology
-
+# main.py - Main entry point for XINU Simulation builder
 import os
 import sys
 import argparse
 import datetime
 import platform
-from pathlib import Path
-
-# Add current directory to path for local imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-# Import local modules
-from utils.logger import log, setup_logger
+import subprocess
 from utils.config import XinuConfig
+from utils.logger import log
 from generator import XinuGenerator
 from compiler import XinuCompiler
-
-def setup_logging(level='INFO'):
-    # Setup logging with specified level
-    verbose = level.lower() == 'debug'
-    return setup_logger(verbose=verbose)
+import shutil
+import re
 
 class XinuSimMain:
-    # Main class for XINU simulation
+    # Main orchestrator for XINU simulation build
     
-    def __init__(self):
-        self.config = XinuConfig()
-        self.generator = None
-        self.compiler = None
+    def __init__(self, args):
+        # Initialize the XINU simulation builder
+        self.args = args
         
-    def _print(self, message):
-        # Print directly to terminal for real-time feedback
-        sys.stdout.write(message + "\n")
-        sys.stdout.flush()
+        # Get current timestamp for logs
+        self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-    def setup_args(self):
-        # Parse command-line arguments
-        parser = argparse.ArgumentParser(
-            description='XINU OS Simulation System',
-            epilog='Streamlined compilation for XINU OS.'
-        )
+        # Set up configuration - pass the project directory instead of args
+        self.config = XinuConfig(args.directory)
         
-        parser.add_argument('-x', '--xinu-dir', dest='xinu_dir',
-                           help='Path to XINU OS directory')
-        parser.add_argument('-o', '--output-dir', dest='output_dir',
-                           help='Path to output directory')
-        parser.add_argument('-r', '--rebuild-all', dest='rebuild_all',
-                           action='store_true',
-                           help='Force rebuild of all components')
-        parser.add_argument('-c', '--clean', dest='rebuild_all',
-                           action='store_true',
-                           help='Clean and rebuild (alias for --rebuild-all)')
-        parser.add_argument('-v', '--verbose', dest='verbose',
-                           action='store_true',
-                           help='Enable verbose output')
-        parser.add_argument('-d', '--debug', dest='debug',
-                           action='store_true',
-                           help='Enable debug mode')
-        parser.add_argument('--run', dest='run_sim',
-                           action='store_true',
-                           help='Run the simulation after building')
-        
-        args = parser.parse_args()
-        return args
-    
-    def initialize(self):
-        # Initialize the XINU simulation system
-        # Parse command-line arguments
-        args = self.setup_args()
-        
-        # Setup logging
-        log_level = 'DEBUG' if getattr(args, 'debug', False) else 'INFO'
-        setup_logging(log_level)
-        
-        # Update config from args
-        if getattr(args, 'xinu_dir', None):
-            self.config.xinu_os_dir = os.path.abspath(args.xinu_dir)
-            self.config.include_dir = os.path.join(self.config.xinu_os_dir, "include")
-            self.config.compile_dir = os.path.join(self.config.xinu_os_dir, "compile")
-            
-        if getattr(args, 'output_dir', None):
+        # If custom output dir specified, update it
+        if args.output_dir:
             self.config.output_dir = os.path.abspath(args.output_dir)
             self.config.obj_dir = os.path.join(self.config.output_dir, "obj")
-            self.config.includes_h = os.path.join(self.config.output_dir, "xinu_includes.h")
-            
-        # Clean if requested
-        if getattr(args, 'rebuild_all', False):
-            self.config.clean_build_files()
         
-        # Display welcome message
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        username = os.environ.get("USER", os.environ.get("USERNAME", "unknown"))
-        
-        self._print("\n##############################################")
-        self._print("#  XINU Simulation System - Streamlined Build")
-        self._print("##############################################")
-        self._print(f"Date/Time: {current_time}")
-        self._print(f"User: {username}")
-        self._print(f"System: {platform.system()} {platform.release()}")
-        self._print("##############################################\n")
-        
-        # Check XINU OS directory
-        if not os.path.exists(self.config.xinu_os_dir):
-            self._print(f"ERROR: XINU OS directory not found at: {self.config.xinu_os_dir}")
-            return False
-            
-        # Setup objects
+        # Initialize components
         self.generator = XinuGenerator(self.config)
         self.compiler = XinuCompiler(self.config)
         
-        # Store run flag for later
-        self.run_after_build = getattr(args, 'run_sim', False)
+        # Determine if we should run after build
+        self.run_after_build = args.run
         
-        return True
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log(f"XINU Builder Started at {timestamp}")
+    
+    def _print(self, message):
+        # Print messages with consistent formatting
+        print(message)
+        
+    def _print_header(self):
+        # Print header information for the build
+        self._print("\n" + "#" * 46)
+        log(f"XINU Simulation System - Streamlined Build on {platform.system()} {platform.release()}")
+        self._print("#" * 46)
+        self._print(f"Date/Time: {self.timestamp}")
+        self._print(f"User: {os.environ.get('USER', os.environ.get('USERNAME', 'unknown'))}")
+        self._print(f"System: {platform.system()} {platform.release()}")
+        self._print("#" * 46 + "\n")
+    
+    def clean(self):
+        # Clean up output artifacts
+        log("Cleaning output files")
+        
+        # List of file patterns to remove
+        patterns = [
+            "*.o", "*.obj",                    # Object files
+            "xinu_core", "xinu_core.exe",      # Executables
+            "xinu_*.h", "xinu_*.c",            # Generated source files
+            "base_types.h",                    # Special header
+            "circular_includes_error.txt",     # Error logs
+            "compilation.txt",                 # Compilation log
+            "compilation_summary.txt"          # Build summary
+        ]
+        
+        output_dir = self.config.output_dir
+        obj_dir = self.config.obj_dir
+        
+        # Remove specific files in output directory
+        for pattern in patterns:
+            for f in self._find_files(output_dir, pattern):
+                try:
+                    os.remove(f)
+                    log(f"Removed {f}")
+                except Exception as e:
+                    log(f"Error removing {f}: {str(e)}")
+        
+        # Clean object files separately
+        for f in self._find_files(obj_dir, "*.o"):
+            try:
+                os.remove(f)
+            except Exception:
+                pass
+        log("Removed object files from " + obj_dir)
+        
+        # Also clean XINU include directory from our generated files
+        if hasattr(self.config, 'include_dir'):
+            for pattern in ["xinu_*.h", "base_types.h"]:
+                for f in self._find_files(self.config.include_dir, pattern):
+                    try:
+                        os.remove(f)
+                        log(f"Removed {f}")
+                    except Exception as e:
+                        log(f"Error removing {f}: {str(e)}")
+    
+    def _find_files(self, directory, pattern):
+        # Find files matching a pattern
+        if not os.path.exists(directory):
+            return []
+            
+        result = []
+        for root, _, files in os.walk(directory):
+            for name in files:
+                if self._match_pattern(name, pattern):
+                    result.append(os.path.join(root, name))
+                    
+        return result
+    
+    def _match_pattern(self, filename, pattern):
+        # Match filename against a pattern with wildcards
+        if pattern == "*":
+            return True
+            
+        # Convert glob pattern to regex pattern
+        regex_pattern = "^" + pattern.replace(".", "\\.").replace("*", ".*") + "$"
+        return bool(re.match(regex_pattern, filename))
     
     def run(self):
         # Run the XINU simulation build process
@@ -121,9 +127,9 @@ class XinuSimMain:
         self._print("\n### Generating XINU Simulation Wrapper Files ###")
         self.generator.generate_files()
         
-        # Compile simulation using direct Makefile sources
+        # Compile simulation with retry support
         self._print("\n### Compiling XINU Simulation ###")
-        compile_result = self.compiler.compile()
+        compile_result = self.compiler.compile_with_retry()  # Use the new retry method
         
         # Report result
         if compile_result:
@@ -133,7 +139,15 @@ class XinuSimMain:
             # Run if requested
             if self.run_after_build:
                 self._print("\nRunning simulation...")
-                self.config.run_simulation()
+                # Check if config has run_simulation method
+                if hasattr(self.config, "run_simulation"):
+                    self.config.run_simulation()
+                else:
+                    # Fallback to direct execution
+                    try:
+                        subprocess.run([self.config.xinu_core_output])
+                    except Exception as e:
+                        self._print(f"Error running simulation: {e}")
             else:
                 self._print("\nRun the simulation with:")
                 self._print(f"  {self.config.xinu_core_output}")
@@ -143,13 +157,53 @@ class XinuSimMain:
             self._print("\n### Build Failed ###")
             self._print("\nPlease check the error messages above and fix any issues.")
             return False
+            
+
+def parse_args():
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="XINU Simulation Builder")
+    
+    parser.add_argument("--clean", action="store_true", help="Clean up output files before build")
+    parser.add_argument("--run", action="store_true", help="Run the simulation after build")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose output")
+    parser.add_argument("--no-compile", action="store_true", help="Generate files only (no compilation)")
+    parser.add_argument("--starvation", type=int, default=0, help="Set starvation testing parameter")
+    parser.add_argument("--directory", "-d", type=str, default=".", help="Project root directory")
+    parser.add_argument("--output-dir", "-o", type=str, help="Custom output directory")
+    
+    return parser.parse_args()
 
 
-# Main entry point
-if __name__ == "__main__":
-    xinu_sim = XinuSimMain()
-    if xinu_sim.initialize():
-        success = xinu_sim.run()
-        sys.exit(0 if success else 1)
+def main():
+    # Main entry point
+    args = parse_args()
+    
+    # Configure logging verbosity - just using log function, no setup_logging
+    if args.verbose:
+        os.environ["XINU_VERBOSE"] = "1"
+    
+    # Print header
+    log(f"XINU Builder Started at {timestamp}")
+    print(f"Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"User: {os.environ.get('USER', os.environ.get('USERNAME', 'unknown'))}")
+    print("-" * 40)
+    
+    # Create main object
+    xinu_sim = XinuSimMain(args)
+    xinu_sim._print_header()
+    
+    # Clean if requested
+    if args.clean:
+        xinu_sim.clean()
+    
+    # Run the build process
+    if not args.no_compile:
+        result = xinu_sim.run()
+        sys.exit(0 if result else 1)
     else:
-        sys.exit(1)
+        print("Skipping compilation (--no-compile specified)")
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
