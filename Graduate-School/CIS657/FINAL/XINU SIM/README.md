@@ -1,20 +1,28 @@
 # XINU SIM Builder
 
-A robust, cross-platform Python build system for compiling and running XINU Operating System simulations. The XINU SIM Builder offers a fully automated toolchain for generating, building, and executing XINU OS simulations with strict, transparent logging and no misleading or simulated actions.
+A robust, cross-platform Python build system for compiling and running XINU Operating System simulations. XINU SIM Builder offers a fully automated toolchain for generating, building, and executing XINU OS simulations with strict, transparent logging and no misleading or simulated actions. **Full Windows compatibility is a first-class priority.**
+
+---
 
 ## Project Purpose
 
-The XINU SIM Builder (`xinu_sim`) is designed for developers and students working with the XINU Operating System. It automates the build process, manages code generation from templates, handles compilation and linking, and (optionally) runs the final simulation. The system is designed to be platform-agnostic, supporting Linux, macOS, and Windows, and always adheres to strict operational transparency—logging only what is actually done and never printing misleading or suggestive messages.
+The XINU SIM Builder (`xinu_sim`) is designed for developers and students working with the XINU Operating System. It automates the build process, manages code generation from templates, handles compilation and linking, and (optionally) runs the final simulation. The system is designed to be platform-agnostic, supporting Linux, macOS, and **Windows** (including Windows 10/11 and WSL), and always adheres to strict operational transparency—logging only what is actually done and never printing misleading or suggestive messages.
+
+---
 
 ## What This Project Does
 
 - **Automated Code Generation**: Dynamically creates required C headers, type definitions, and simulation-specific source files using templates.
 - **Source Discovery & Makefile Parsing**: Scans XINU OS directories for source files and parses XINU Makefiles to extract build instructions.
+- **Circular Dependency Detection**: Automatically detects circular include dependencies in header files and aborts the build with a detailed error log and suggestions for resolution.
 - **Intelligent Compilation**: Compiles all required XINU OS sources with correct include and object management, using platform-appropriate compilers and flags.
-- **Artifact Management**: Organizes build outputs, object files, and logs in a dedicated structure.
-- **Error Handling**: Provides robust, actionable error detection and logging.
+- **Artifact Management**: Organizes build output, object files, and logs in a dedicated structure.
+- **Error Handling**: Provides robust, actionable error detection and logging, with special care for platform-specific issues.
 - **Strict Logging**: Console and file logs report only real actions—no suggestions, no stubs, and no simulated operations.
 - **Simulation Execution**: Optionally runs the compiled XINU simulation if and only if explicitly requested (with `--run`).
+- **Full Windows Support**: Handles all path normalization, compatibility headers, and compilation nuances for Windows. Produces `.exe` simulation output for native execution.
+
+---
 
 ## Features
 
@@ -22,7 +30,7 @@ The XINU SIM Builder (`xinu_sim`) is designed for developers and students workin
 
 - **Template-Based Generation**: Generates all required headers and simulation scaffolding from templates in the `templates/` directory.
 - **Modular Architecture**: Each key function is in its own module (`generator.py`, `compiler.py`, `makefile_parser.py`, `utils/`).
-- **Cross-Platform**: Runs identically on Windows, Linux, and macOS.
+- **Cross-Platform**: Runs identically on Windows, Linux, and macOS. Additional compatibility logic for Windows (path separators, `.exe` outputs, MinGW-w64 support, and more).
 - **No Stubs/Facades**: All actions are real; the system never prints or logs actions it hasn't performed.
 
 ### Compilation
@@ -30,7 +38,7 @@ The XINU SIM Builder (`xinu_sim`) is designed for developers and students workin
 - **Automatic Source File Discovery**: Scans standard XINU OS directories for sources.
 - **Makefile Integration**: Parses and obeys Makefile-defined build logic.
 - **Object File Organization**: All object files are organized under `output/obj/`.
-- **Platform-Aware Linking**: Handles system-specific compiler/linker flags and library requirements.
+- **Platform-Aware Linking**: Handles system-specific compiler/linker flags and library requirements. On Windows, outputs `xinu_core.exe`.
 
 ### Execution
 
@@ -42,6 +50,8 @@ The XINU SIM Builder (`xinu_sim`) is designed for developers and students workin
 - **Accurate Build Logs**: All actions, errors, and outputs are logged to `output/compilation.txt`.
 - **Verbose Option**: Use `-v` or `--verbose` for detailed logging.
 - **No Banners or Decorative Output**: Logging is modern and strictly functional.
+
+---
 
 ## Architecture
 
@@ -70,6 +80,8 @@ Graduate-School/CIS657/FINAL/
     └── config/
 ```
 
+---
+
 ## Requirements
 
 - **Python 3.7+**
@@ -93,9 +105,15 @@ brew install gcc python3
 
 #### Windows
 
-- Install MinGW-w64 or similar
-- Ensure `gcc.exe` is in system PATH
-- Install Python 3.7+ from python.org
+- **Install MinGW-w64** (recommended; provides `gcc.exe` and `g++.exe`)
+    - [MinGW-w64 Download](https://www.mingw-w64.org/downloads/)
+- Add MinGW-w64 `bin` directory to your `PATH` environment variable.
+- Install Python 3.7+ from [python.org](https://www.python.org/downloads/windows/).
+- **No WSL Required**: Runs natively on Windows!
+- All path separators, permissions, and build outputs are handled for native Windows compatibility.
+- The output executable will be `output\xinu_core.exe`—run directly from the Windows terminal or double-click in Explorer.
+
+---
 
 ## Quick Start
 
@@ -129,23 +147,45 @@ brew install gcc python3
 
 > **Note:** No instructional messages are output—actions only reflect what is performed.
 
+---
+
+## Circular Dependency Detection
+
+XINU SIM Builder **automatically detects circular dependencies** in your header files before compiling. If a circular include is found:
+
+- The build process halts.
+- An error log (`circular_includes_error.txt`) is created in the output directory, detailing the problematic include chain.
+- Suggestions for resolving the issue are included in the error file.
+- No further compilation is attempted until the circular dependency is resolved.
+
+**This check runs identically on Windows, Linux, and macOS.**
+
+---
+
 ## Logging and Debugging
 
 - All logs are in `output/compilation.txt` (with timestamps).
 - Use `--verbose` for more detail.
 - No banners or decorative output; logs are strictly functional.
 
+---
+
 ## Troubleshooting
 
 - **Build Fails:** Check prerequisites, permissions, and that all templates are present.
-- **Executable Not Found or Not Running:** Ensure build completed successfully and that you have execution permissions (on Unix, use `chmod +x`).
-- **No Suggestive Output:** If you expected a message about how to run the simulation, see the documentation here; the build system won’t print such messages unless actually running the simulation.
+- **Executable Not Found or Not Running:** Ensure build completed successfully and that you have execution permissions (on Unix, use `chmod +x`). On Windows, the `.exe` is always runnable.
+- **Circular Includes:** If you see a `circular_includes_error.txt`, read and resolve the reported dependency loop before retrying.
+- **Windows-Specific:** If you see path issues, confirm MinGW-w64 is installed and your `PATH` is set correctly.
+
+---
 
 ## Contributing
 
-- Please test all changes across platforms.
+- Please test all changes across platforms (especially Windows!).
 - Provide detailed logs and environment information for issues.
 - Adhere to the project's strict operational and logging standards.
+
+---
 
 ## License
 
