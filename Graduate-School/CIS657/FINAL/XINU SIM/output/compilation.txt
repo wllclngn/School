@@ -1,2 +1,33 @@
-### XINU Compilation Log ###
-Started: mod at 2025-06-18 23:13:42
+XINU Compilation Log
+Started: mod at 2025-06-19 00:02:14
+2025-06-19 00:02:14 - XINU Builder Started at 2025-06-19 00:02:14
+2025-06-19 00:02:14 - User: mod
+2025-06-19 00:02:14 - System: Linux 6.15.2-arch1-1
+2025-06-19 00:02:14 - XINU Simulation System - Streamlined Build on Linux 6.15.2-arch1-1
+2025-06-19 00:02:14 - Generating XINU Simulation Wrapper Files
+2025-06-19 00:02:14 - Generating minimal XINU simulation files
+2025-06-19 00:02:14 - Generated base types file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/base_types.h
+2025-06-19 00:02:14 - Generated base types file (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/base_types.h
+2025-06-19 00:02:14 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
+2025-06-19 00:02:14 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
+2025-06-19 00:02:14 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-19 00:02:14 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-19 00:02:14 - Generating simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-19 00:02:14 - Generated simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-19 00:02:14 - Warning: Could not compile object file: gcc: fatal error: input file ‘/home/mod/School/Graduate-School/CIS657/FINAL/XINU’ is the same as output file
+compilation terminated.
+
+2025-06-19 00:02:14 - Command was: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dummy.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
+2025-06-19 00:02:14 - Attempting fallback object file creation
+2025-06-19 00:02:14 - Created fallback object file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
+2025-06-19 00:02:14 - XINU simulation file generation complete
+2025-06-19 00:02:14 - Compiling XINU Simulation
+2025-06-19 00:02:14 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
+2025-06-19 00:02:14 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
+2025-06-19 00:02:14 - Makefile not found: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
+2025-06-19 00:02:14 - Compile command: g++ /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core
+2025-06-19 00:02:14 - Compilation succeeded
+2025-06-19 00:02:14 - Build Successful
+2025-06-19 00:02:14 - Executable created: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core
+2025-06-19 00:02:14 - Running simulation...
+2025-06-19 00:02:14 - Running XINU simulation: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core

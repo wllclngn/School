@@ -1,5 +1,5 @@
 /* base_types.h - Standard type definitions for XINU OS
- * Generated on: 2025-06-18 22:26:54
+ * Generated on: 2025-06-19 00:02:14
  */
 #ifndef _BASE_TYPES_H_
 #define _BASE_TYPES_H_

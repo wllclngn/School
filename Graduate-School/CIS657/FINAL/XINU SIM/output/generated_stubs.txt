@@ -14,3 +14,5 @@ tcp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM
 icmp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/icmp.h
 name.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/name.h
 dhcp.h|2025-06-18 22:26:54|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dhcp.h
+tftp.h|2025-06-18 23:22:49|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/tftp.h
+delay.h|2025-06-18 23:26:18|/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/delay.h

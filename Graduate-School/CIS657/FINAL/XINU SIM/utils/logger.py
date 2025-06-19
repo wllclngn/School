@@ -37,18 +37,12 @@ def setup_logger(verbose=False):
     
     # Create the log file with header
     with open(LOG_FILE, 'w') as f:
-        f.write(f"### XINU Compilation Log ###\nStarted: {user_login} at {now}\n")
+        f.write(f"XINU Compilation Log\nStarted: {user_login} at {now}\n")
     
     # Create summary file (will be merged at the end)
     with open(SUMMARY_FILE, 'w') as f:
         f.write("")
     
-    # Print banner to terminal
-    print(f"{Colors.HEADER}### XINU Builder Started ###")
-    print(f"Time: {now}")
-    print(f"User: {user_login}{Colors.ENDC}")
-    print("-" * 40)
-
 def log(message, verbose_only=False, summary=False, terminal_only=False, level="INFO"):
     # Write log message to file and console
     if verbose_only and not VERBOSE:

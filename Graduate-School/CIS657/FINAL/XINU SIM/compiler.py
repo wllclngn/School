@@ -15,13 +15,6 @@ class XinuCompiler:
     
     def __init__(self, config):
         self.config = config
-        self.detected_compile_errors = []
-        self.structure_adaptations = {}
-        self.include_paths = []
-        self.system_info = self._get_system_info()
-        self.makefile_parser = MakefileParser(config)
-        self.xinu_source_files = []
-        self._setup_environment()
         
     def _print(self, message):
         # Print directly to terminal for real-time feedback
@@ -138,46 +131,32 @@ class XinuCompiler:
             self._print("\nXINU Simulation compilation failed!")
             return False
             
+    def get_compile_command(self):
+        # Generate the compilation command as a list
+        gpp = getattr(self.config, 'gpp_path', "g++")
+        output = getattr(self.config, 'xinu_core_output', "xinu_core")
+        src = os.path.join(self.config.output_dir, "xinu_simulation.c")
+        return [gpp, src, "-o", output]
+
     def compile_with_retry(self):
-        # Enhanced compile method with retry support
-        self._print("\n##### Compiling XINU Simulation #####")
-        
-        # Parse Makefile to get original source files
+        # Compile XINU simulation, with modern schema logs only
+        makefile_path = os.path.join(self.config.project_dir, "compile", "Makefile")
+        log(f"Parsing Makefile: {makefile_path}")
+
         self._parse_makefile()
-        
-        # First attempt at compilation
-        success, compile_output = self._compile_attempt()
-        
-        # If it failed, check for missing headers
-        if not success:
-            # Create generator for analyzing errors and creating stubs
-            generator = XinuGenerator(self.config)
-            
-            # Analyze compilation errors
-            log("Analyzing compilation errors for missing headers")
-            missing_headers, undefined_types = generator.analyze_compile_errors(compile_output)
-            
-            # If we found missing headers, generate them and retry
-            if missing_headers:
-                log(f"Detected {len(missing_headers)} missing headers, generating stubs")
-                self._print(f"\nDetected {len(missing_headers)} missing headers, generating stubs and retrying...")
-                
-                # Create stub headers
-                generated_stubs = generator.create_missing_header_stubs(missing_headers, undefined_types)
-                
-                # Track what we generated
-                generator.track_generated_stubs(generated_stubs)
-                
-                # Retry compilation
-                self._print("\n##### Retrying Compilation with Generated Stubs #####")
-                success, compile_output = self._compile_attempt()
-        
-        # Report final result
-        if success:
-            self._print("\nXINU Simulation compilation successful!")
+
+        compile_cmd = self.get_compile_command()
+        log(f"Compile command: {' '.join(compile_cmd)}")
+
+        try:
+            result = subprocess.run(compile_cmd, check=True, capture_output=True, text=True)
+            log("Compilation succeeded")
             return True
-        else:
-            self._print("\nXINU Simulation compilation failed!")
+        except subprocess.CalledProcessError as e:
+            log(f"Compilation failed: {e.stderr.strip() if e.stderr else str(e)}")
+            return False
+        except Exception as e:
+            log(f"Error during compilation: {str(e)}")
             return False
 
     def _compile_attempt(self):
@@ -326,14 +305,13 @@ class XinuCompiler:
             return False, error_msg
     
     def _parse_makefile(self):
-        # Parse XINU OS Makefile to get source files
-        self._print("\n##### Parsing XINU OS Makefile #####")
-        
-        if not self.makefile_parser.parse_makefile():
-            self._print("Warning: Failed to parse Makefile, falling back to source scanning")
-            self._scan_for_source_files()
+        # Parse the Makefile and log real actions in modern schema
+        makefile_path = os.path.join(self.config.project_dir, "compile", "Makefile")
+        log(f"Parsing Makefile: {makefile_path}")
+        if not os.path.exists(makefile_path):
+            log(f"Makefile not found: {makefile_path}")
             return
-        
+
         # Get resolved source files from Makefile
         self.xinu_source_files = self.makefile_parser.get_resolved_source_files()
         
@@ -343,7 +321,7 @@ class XinuCompiler:
             if inc_dir not in self.include_paths:
                 self.include_paths.append(inc_dir)
         
-        self._print(f"Found {len(self.xinu_source_files)} source files from Makefile")
+        log(f"Found {len(self.xinu_source_files)} source files from Makefile")
         log(f"Source files from Makefile: {self.xinu_source_files}")
     
     def _scan_for_source_files(self):

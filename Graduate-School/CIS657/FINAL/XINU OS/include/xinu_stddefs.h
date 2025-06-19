@@ -1,5 +1,5 @@
 /* xinu_stddefs.h - Minimal type definitions for XINU simulation */
-/* Generated on: 2025-06-18 22:26:54 */
+/* Generated on: 2025-06-19 00:02:14 */
 /* By user: mod */
 #ifndef _XINU_STDDEFS_H_
 #define _XINU_STDDEFS_H_
