@@ -1,33 +1,47 @@
 XINU Compilation Log
-Started: mod at 2025-06-19 00:02:14
-2025-06-19 00:02:14 - XINU Builder Started at 2025-06-19 00:02:14
-2025-06-19 00:02:14 - User: mod
-2025-06-19 00:02:14 - System: Linux 6.15.2-arch1-1
-2025-06-19 00:02:14 - XINU Simulation System - Streamlined Build on Linux 6.15.2-arch1-1
-2025-06-19 00:02:14 - Generating XINU Simulation Wrapper Files
-2025-06-19 00:02:14 - Generating minimal XINU simulation files
-2025-06-19 00:02:14 - Generated base types file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/base_types.h
-2025-06-19 00:02:14 - Generated base types file (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/base_types.h
-2025-06-19 00:02:14 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
-2025-06-19 00:02:14 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
-2025-06-19 00:02:14 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-19 00:02:14 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-19 00:02:14 - Generating simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-19 00:02:14 - Generated simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-19 00:02:14 - Warning: Could not compile object file: gcc: fatal error: input file ‘/home/mod/School/Graduate-School/CIS657/FINAL/XINU’ is the same as output file
-compilation terminated.
-
-2025-06-19 00:02:14 - Command was: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dummy.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
-2025-06-19 00:02:14 - Attempting fallback object file creation
-2025-06-19 00:02:14 - Created fallback object file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
-2025-06-19 00:02:14 - XINU simulation file generation complete
-2025-06-19 00:02:14 - Compiling XINU Simulation
-2025-06-19 00:02:14 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
-2025-06-19 00:02:14 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
-2025-06-19 00:02:14 - Makefile not found: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/compile/Makefile
-2025-06-19 00:02:14 - Compile command: g++ /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core
-2025-06-19 00:02:14 - Compilation succeeded
-2025-06-19 00:02:14 - Build Successful
-2025-06-19 00:02:14 - Executable created: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core
-2025-06-19 00:02:14 - Running simulation...
-2025-06-19 00:02:14 - Running XINU simulation: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_core
+Started: mol at 2025-06-19 00:07:26
+2025-06-19 00:07:26 - Initializing XINU Windows Compatibility Module v1.4.0
+2025-06-19 00:07:27 - Found compiler: C:\MinGW\bin\gcc.exe
+2025-06-19 00:07:27 - WARNING: Long paths support is not enabled in Windows registry.
+2025-06-19 00:07:27 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
+2025-06-19 00:07:27 - Initializing XINU Windows Compatibility Module v1.4.0
+2025-06-19 00:07:27 - Found compiler: C:\MinGW\bin\gcc.exe
+2025-06-19 00:07:27 - WARNING: Long paths support is not enabled in Windows registry.
+2025-06-19 00:07:27 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
+2025-06-19 00:07:27 - XINU Builder Started at 2025-06-19 00:07:27
+2025-06-19 00:07:27 - User: mol
+2025-06-19 00:07:27 - System: Windows 11
+2025-06-19 00:07:27 - Created Windows compatibility header: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_windows_compat.h
+2025-06-19 00:07:27 - XINU Simulation System - Streamlined Build on Windows 11
+2025-06-19 00:07:27 - Generating XINU Simulation Wrapper Files
+2025-06-19 00:07:27 - Generating minimal XINU simulation files
+2025-06-19 00:07:27 - Generated base types file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\base_types.h
+2025-06-19 00:07:27 - Generated base types file (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\base_types.h
+2025-06-19 00:07:27 - Generated standard definitions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_stddefs.h
+2025-06-19 00:07:27 - Generated standard definitions (include dir copy): C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU OS\include\xinu_stddefs.h
+2025-06-19 00:07:27 - Generating includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-19 00:07:27 - Generated includes wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_includes.h
+2025-06-19 00:07:27 - Generating simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-19 00:07:27 - Generated simulation helper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c
+2025-06-19 00:07:27 - Created object file: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\obj\xinu_simulation.o
+2025-06-19 00:07:27 - Setting up Windows environment for XINU compilation
+2025-06-19 00:07:27 - WARNING: Long paths support is not enabled in Windows registry.
+2025-06-19 00:07:27 - To enable: Set HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled to 1
+2025-06-19 00:07:27 - Created Windows helper functions: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_win_helpers.c
+2025-06-19 00:07:27 - Created Windows compatibility layer in C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output
+2025-06-19 00:07:27 - Created patched headers: conf.h, kernel.h, prototypes.h, stdio.h, xinu.h
+2025-06-19 00:07:27 - Created compiler wrapper: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu-gcc.bat
+2025-06-19 00:07:27 - Windows environment setup complete
+2025-06-19 00:07:27 - Use the generated compatibility headers and build scripts to compile XINU
+2025-06-19 00:07:27 - Windows environment setup complete
+2025-06-19 00:07:27 - XINU simulation file generation complete
+2025-06-19 00:07:27 - Compiling XINU Simulation
+2025-06-19 00:07:27 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\compile\Makefile
+2025-06-19 00:07:27 - Parsing Makefile: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\compile\Makefile
+2025-06-19 00:07:27 - Makefile not found: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\compile\Makefile
+2025-06-19 00:07:27 - Compile command: g++ C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_simulation.c -o C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.exe
+2025-06-19 00:07:30 - Compilation succeeded
+2025-06-19 00:07:30 - Build Successful
+2025-06-19 00:07:30 - Executable created: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.exe
+2025-06-19 00:07:30 - Running simulation...
+2025-06-19 00:07:30 - Running XINU simulation: C:\Users\mol\Desktop\School\Graduate-School\CIS657\FINAL\XINU SIM\output\xinu_core.exe
