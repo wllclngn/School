@@ -1,27 +1,31 @@
-/* p2_process.c - P2 process for XINU Final Project
- */
+/* p2_process.c - Higher priority process P2 for starvation simulation */
 
 #include <xinu.h>
-#include <pstarv.h>
 #include <stdio.h>
 
-void p2_func(void) {
-    int i;
-    const int MAX_ITERATIONS = 5;  // Limited to 5 iterations for demonstration
+/*------------------------------------------------------------------------
+ * p2_func - Entry function for the high-priority process P2
+ *------------------------------------------------------------------------
+ */
+void p2_func(void)
+{
+    int iterations = 0;
+    const int MAX_ITERATIONS = 50;
     
-    for (i = 1; i <= MAX_ITERATIONS; i++) {
-        kprintf("P2 (PID: %d, Prio: %d) running iteration %d/%d - Time: %d\n",
-                currpid, proctab[currpid].prprio, i, MAX_ITERATIONS, clktime);
+    kprintf("!!!!!!!!!! P2 (PID: %d, Prio: %d) HAS STARTED !!!!!!!!!!\n", 
+            currpid, proctab[currpid].prprio);
+    
+    while (iterations < MAX_ITERATIONS) {
+        kprintf("P2 (PID: %d, Prio: %d) is running (iteration %d/%d)\n",
+                currpid, proctab[currpid].prprio, iterations + 1, MAX_ITERATIONS);
         
-        // Shorter busy loop to consume less CPU time
-        volatile unsigned int j;
-        for(j = 0; j < 25000; j++);
+        /* Do some busy work to consume CPU time */
+        volatile int j;
+        for (j = 0; j < 500000; j++);
         
-        // Yield after each iteration to allow other processes to run
+        iterations++;
         yield();
     }
     
-    kprintf("P2 (PID: %d) FINISHED ALL ITERATIONS.\n", currpid);
-    // Process terminates
-    kill(currpid);
+    kprintf("P2 (PID: %d) finished.\n", currpid);
 }
