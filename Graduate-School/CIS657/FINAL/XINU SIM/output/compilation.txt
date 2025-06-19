@@ -1,62 +1,62 @@
-2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/compilation.txt
-2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 19:46:46 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
-2025-06-18 19:46:46 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output']
-2025-06-18 19:46:46 - Generating minimal XINU simulation files
-2025-06-18 19:46:46 - CRITICAL ERROR: Circular include dependencies detected!
-2025-06-18 19:46:46 - Circular path: pstarv.h -> xinu.h -> pstarv.h
-2025-06-18 19:46:46 - Compilation cannot proceed with circular dependencies.
-2025-06-18 19:46:46 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
-2025-06-18 19:46:46 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
-2025-06-18 19:46:46 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 19:46:46 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 19:46:46 - Created base_types.h with common definitions to help resolve circular dependencies.
-2025-06-18 19:46:46 - Please check circular_includes_error.txt for details on fixing the issue.
-2025-06-18 19:46:46 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/Makefile
-2025-06-18 19:46:46 - Found definition: COMPILER_ROOT = /usr/bin/
-2025-06-18 19:46:46 - Found definition: CC = ${COMPILER_ROOT}gcc
-2025-06-18 19:46:46 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
-2025-06-18 19:46:46 - Found definition: AS = ${COMPILER_ROOT}as --32
-2025-06-18 19:46:46 - Found definition: LD = ${COMPILER_ROOT}ld
-2025-06-18 19:46:46 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
-2025-06-18 19:46:46 - Found definition: LIB = ../lib/libxc
-2025-06-18 19:46:46 - Found definition: XINU = ./xinu
-2025-06-18 19:46:46 - Found definition: MAKEDEP = gcc -M -MG
-2025-06-18 19:46:46 - Found definition: DEFS = -DBSDURG
-2025-06-18 19:46:46 - Found definition: CFLAGS_EXTRA = 
-2025-06-18 19:46:46 - Found definition: INCLUDE = -I../include
-2025-06-18 19:46:46 - Found definition: BRELOC = 0x150000
-2025-06-18 19:46:46 - Found definition: BOOTPLOC = 0x150000
-2025-06-18 19:46:46 - Found definition: SDEFS = -I../include
-2025-06-18 19:46:46 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
-2025-06-18 19:46:46 - Found definition: LDFLAGS = -m elf_i386
-2025-06-18 19:46:46 - Found definition: TOPDIR = ..
-2025-06-18 19:46:46 - Found definition: COMPS = system 							\
-2025-06-18 19:46:46 - Found definition: SRC_FILES = 
-2025-06-18 19:46:46 - Found definition: SYSTEM_SFILES = \
-2025-06-18 19:46:46 - Found definition: SYSTEM_CFILES = \
-2025-06-18 19:46:46 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-2025-06-18 19:46:46 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-2025-06-18 19:46:46 - Found definition: TTY_SFILES = \
-2025-06-18 19:46:46 - Found definition: TTY_CFILES = \
-2025-06-18 19:46:46 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-2025-06-18 19:46:46 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-2025-06-18 19:46:46 - Found definition: SHELL_CFILES = \
-2025-06-18 19:46:46 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
-2025-06-18 19:46:46 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-2025-06-18 19:46:46 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-2025-06-18 19:46:46 - Found source files: ['\\']
-2025-06-18 19:46:46 - Found source files: ['\\']
-2025-06-18 19:46:46 - Found source files: ['\\']
-2025-06-18 19:46:46 - Found compiled source: ../system/initialize.c
-2025-06-18 19:46:46 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
-2025-06-18 19:46:46 - Found LDFLAGS: ['-m', 'elf_i386']
-2025-06-18 19:46:46 - Found include directory from INCLUDE: ../include
-2025-06-18 19:46:46 - Successfully parsed Makefile: found 4 source files and 1 include directories
-2025-06-18 19:46:46 - Source files from Makefile: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c']
-2025-06-18 19:46:46 - Error: Source file not found: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-18 19:46:46 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:
+2025-06-18 20:27:34 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/compilation.txt
+2025-06-18 20:27:34 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/base_types.h
+2025-06-18 20:27:34 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 20:27:34 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
+2025-06-18 20:27:34 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output']
+2025-06-18 20:27:34 - Generating minimal XINU simulation files
+2025-06-18 20:27:34 - CRITICAL ERROR: Circular include dependencies detected!
+2025-06-18 20:27:34 - Circular path: pstarv.h -> xinu.h -> pstarv.h
+2025-06-18 20:27:34 - Compilation cannot proceed with circular dependencies.
+2025-06-18 20:27:34 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
+2025-06-18 20:27:34 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
+2025-06-18 20:27:34 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 20:27:34 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 20:27:34 - Created base_types.h with common definitions to help resolve circular dependencies.
+2025-06-18 20:27:34 - Please check circular_includes_error.txt for details on fixing the issue.
+2025-06-18 20:27:34 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/Makefile
+2025-06-18 20:27:34 - Found definition: COMPILER_ROOT = /usr/bin/
+2025-06-18 20:27:34 - Found definition: CC = ${COMPILER_ROOT}gcc
+2025-06-18 20:27:34 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
+2025-06-18 20:27:34 - Found definition: AS = ${COMPILER_ROOT}as --32
+2025-06-18 20:27:34 - Found definition: LD = ${COMPILER_ROOT}ld
+2025-06-18 20:27:34 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
+2025-06-18 20:27:34 - Found definition: LIB = ../lib/libxc
+2025-06-18 20:27:34 - Found definition: XINU = ./xinu
+2025-06-18 20:27:34 - Found definition: MAKEDEP = gcc -M -MG
+2025-06-18 20:27:34 - Found definition: DEFS = -DBSDURG
+2025-06-18 20:27:34 - Found definition: CFLAGS_EXTRA = 
+2025-06-18 20:27:34 - Found definition: INCLUDE = -I../include
+2025-06-18 20:27:34 - Found definition: BRELOC = 0x150000
+2025-06-18 20:27:34 - Found definition: BOOTPLOC = 0x150000
+2025-06-18 20:27:34 - Found definition: SDEFS = -I../include
+2025-06-18 20:27:34 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+2025-06-18 20:27:34 - Found definition: LDFLAGS = -m elf_i386
+2025-06-18 20:27:34 - Found definition: TOPDIR = ..
+2025-06-18 20:27:34 - Found definition: COMPS = system 							\
+2025-06-18 20:27:34 - Found definition: SRC_FILES = 
+2025-06-18 20:27:34 - Found definition: SYSTEM_SFILES = \
+2025-06-18 20:27:34 - Found definition: SYSTEM_CFILES = \
+2025-06-18 20:27:34 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
+2025-06-18 20:27:34 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
+2025-06-18 20:27:34 - Found definition: TTY_SFILES = \
+2025-06-18 20:27:34 - Found definition: TTY_CFILES = \
+2025-06-18 20:27:34 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+2025-06-18 20:27:34 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
+2025-06-18 20:27:34 - Found definition: SHELL_CFILES = \
+2025-06-18 20:27:34 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
+2025-06-18 20:27:34 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
+2025-06-18 20:27:34 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
+2025-06-18 20:27:34 - Found source files: ['\\']
+2025-06-18 20:27:34 - Found source files: ['\\']
+2025-06-18 20:27:34 - Found source files: ['\\']
+2025-06-18 20:27:34 - Found compiled source: ../system/initialize.c
+2025-06-18 20:27:34 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
+2025-06-18 20:27:34 - Found LDFLAGS: ['-m', 'elf_i386']
+2025-06-18 20:27:34 - Found include directory from INCLUDE: ../include
+2025-06-18 20:27:34 - Successfully parsed Makefile: found 4 source files and 1 include directories
+2025-06-18 20:27:34 - Source files from Makefile: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c']
+2025-06-18 20:27:34 - Error: Source file not found: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 20:27:34 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:
 In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:6:
 /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:3:18: warning: conflicting types for built-in function ‘strncpy’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
     3 | extern  char    *strncpy(char *, const char *, int32);
@@ -262,7 +262,7 @@ In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/incl
   252 |         DELAY(n);
       |         ^~~~~
 
-2025-06-18 19:46:46 - Linking error:
+2025-06-18 20:27:34 - Linking error:
 /usr/bin/ld: cannot find /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o: No such file or directory
 /usr/bin/ld: cannot find elf_i386: No such file or directory
 collect2: error: ld returned 1 exit status

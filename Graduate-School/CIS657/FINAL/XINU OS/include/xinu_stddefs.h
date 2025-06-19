@@ -1,5 +1,5 @@
 /* xinu_stddefs.h - Extended type definitions to prevent circular dependencies */
-/* Generated on: 2025-06-18 19:46:46 */
+/* Generated on: 2025-06-18 20:27:34 */
 /* By user: mod */
 #ifndef _XINU_STDDEFS_H_
 #define _XINU_STDDEFS_H_
