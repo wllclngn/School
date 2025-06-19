@@ -48,15 +48,18 @@ void boost_pstarv_priority(void)
         prptr = &proctab[starvingPID];
         if (prptr->prstate != PR_FREE) {
             pri16 oldprio = prptr->prprio;
-            pri16 newprio = (oldprio + 2 > MAXPRIO) ? MAXPRIO : oldprio + 2; /* Increase by 2, up to max */
-            
-            updatepriostarv(starvingPID, newprio);
-            
-            kprintf("BOOST: Pstarv (PID: %d) priority increased from %d to %d\n", 
-                    starvingPID, oldprio, newprio);
-                    
-            /* Update last boost time */
-            last_boost_time = clktime;
+            /* Add check for maximum priority to avoid unnecessary updates */
+            if (oldprio < MAXPRIO) {
+                pri16 newprio = (oldprio + 2 > MAXPRIO) ? MAXPRIO : oldprio + 2;
+                
+                updatepriostarv(starvingPID, newprio);
+                
+                kprintf("BOOST: Pstarv (PID: %d) priority increased from %d to %d\n", 
+                        starvingPID, oldprio, newprio);
+                        
+                /* Update last boost time */
+                last_boost_time = clktime;
+            }
         }
     }
     
@@ -78,6 +81,7 @@ void check_pstarv_time(void)
     uint32 current_time;
     uint32 time_in_ready;
     struct procent *prptr;
+    static uint32 last_time_checked = 0; /* Static to track last check time */
     
     mask = disable();
     
@@ -86,20 +90,25 @@ void check_pstarv_time(void)
         
         if (prptr->prstate == PR_READY) {
             current_time = clktime;
-            time_in_ready = current_time - pstarv_ready_time;
             
-            /* Check if 2 seconds have passed since last priority boost */
-            if (time_in_ready >= 2) {
+            /* Check if at least 2 seconds have passed since process entered ready state */
+            /* Also ensure we don't boost more than once within same interval */
+            if (current_time >= pstarv_ready_time + 2 && current_time > last_time_checked) {
                 pri16 oldprio = prptr->prprio;
-                pri16 newprio = (oldprio + 5 > MAXPRIO) ? MAXPRIO : oldprio + 5; /* Increase by 5, up to max */
-                
-                updatepriostarv(pstarv_pid, newprio);
-                
-                kprintf("TIME-BOOST: Pstarv (PID: %d) priority increased from %d to %d after %d seconds\n",
-                        pstarv_pid, oldprio, newprio, time_in_ready);
-                        
-                /* Reset the ready time */
-                pstarv_ready_time = current_time;
+                /* Only boost if not already at maximum priority */
+                if (oldprio < MAXPRIO) {
+                    pri16 newprio = (oldprio + 5 > MAXPRIO) ? MAXPRIO : oldprio + 5; /* Increase by 5, up to max */
+                    
+                    updatepriostarv(pstarv_pid, newprio);
+                    
+                    /* Calculate how long process has been waiting */
+                    time_in_ready = current_time - pstarv_ready_time;
+                    
+                    kprintf("TIME-BOOST: Pstarv (PID: %d) priority increased from %d to %d after %d seconds\n",
+                            pstarv_pid, oldprio, newprio, time_in_ready);
+                    
+                    last_time_checked = current_time;
+                }
             }
         }
     }

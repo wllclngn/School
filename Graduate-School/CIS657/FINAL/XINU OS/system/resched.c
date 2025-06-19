@@ -35,6 +35,12 @@ void	resched(void)
 		/* Old process will no longer remain current */
 		ptold->prstate = PR_READY;
 		insert(currpid, readylist, ptold->prprio);
+		
+		/* For Question 2: Record when a process enters the ready state */
+		if (ptold->prpid == pstarv_pid && pstarv_pid != BADPID) {
+			pstarv_ready_time = clktime;
+			kprintf("READY STATE: Pstarv entered ready state at time %d\n", pstarv_ready_time);
+		}
 	}
 
 	/* Force context switch to highest priority ready process */
@@ -50,10 +56,9 @@ void	resched(void)
 	kprintf("CONTEXT SWITCH: From PID=%d (%s) to PID=%d (%s)\n",
 			ptold->prpid, old_name, ptnew->prpid, new_name);
 			
-	/* For Question 2: Record when PStarv enters the ready state */
+	/* For Question 2: Reset tracking when Pstarv gets the CPU */
 	if (ptnew->prpid == pstarv_pid && pstarv_pid != BADPID) {
-		pstarv_ready_time = clktime;
-		kprintf("READY TIME: PStarv entered ready state at time %d\n", pstarv_ready_time);
+		kprintf("RUNNING STATE: Pstarv now running at time %d\n", clktime);
 	}
 
 	/* Context switch to next ready process */
