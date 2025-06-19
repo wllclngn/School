@@ -1,11 +1,20 @@
-/* xinu_stddefs.h - Minimal type definitions for XINU simulation */
-/* Generated on: 2025-06-18 18:30:07 */
+/* xinu_stddefs.h - Extended type definitions to prevent circular dependencies */
+/* Generated on: 2025-06-18 19:46:46 */
 /* By user: mod */
 #ifndef _XINU_STDDEFS_H_
 #define _XINU_STDDEFS_H_
 
 /* Version information */
 #define VERSION "XINU Simulation Version 1.0"
+
+/* Basic type definitions to prevent circular dependencies */
+typedef char                int8;
+typedef short               int16;
+typedef int                 int32;
+typedef unsigned char       uint8;
+typedef unsigned short      uint16;
+typedef unsigned int        uint32;
+typedef unsigned long long  uint64;
 
 #ifdef _WIN32
 /* Windows-specific compatibility */

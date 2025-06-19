@@ -1,198 +1,269 @@
-2025-06-18 18:30:07 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/compilation.txt
-2025-06-18 18:30:07 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-18 18:30:07 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 18:30:07 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
-2025-06-18 18:30:07 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output']
-2025-06-18 18:30:07 - Generating minimal XINU simulation files
-2025-06-18 18:30:07 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
-2025-06-18 18:30:07 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
-2025-06-18 18:30:07 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 18:30:07 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
-2025-06-18 18:30:07 - Generating simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-18 18:30:07 - Generated simulation helper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
-2025-06-18 18:30:07 - Warning: Could not compile object file: gcc: fatal error: input file ‘/home/mod/School/Graduate-School/CIS657/FINAL/XINU’ is the same as output file
-compilation terminated.
-
-2025-06-18 18:30:07 - Command was: gcc -c /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/dummy.c -o /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
-2025-06-18 18:30:07 - Attempting fallback object file creation
-2025-06-18 18:30:07 - Created fallback object file: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o
-2025-06-18 18:30:07 - XINU simulation file generation complete
-2025-06-18 18:30:07 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/Makefile
-2025-06-18 18:30:07 - Found definition: COMPILER_ROOT = /usr/bin/
-2025-06-18 18:30:07 - Found definition: CC = ${COMPILER_ROOT}gcc
-2025-06-18 18:30:07 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
-2025-06-18 18:30:07 - Found definition: AS = ${COMPILER_ROOT}as --32
-2025-06-18 18:30:07 - Found definition: LD = ${COMPILER_ROOT}ld
-2025-06-18 18:30:07 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
-2025-06-18 18:30:07 - Found definition: LIB = ../lib/libxc
-2025-06-18 18:30:07 - Found definition: XINU = ./xinu
-2025-06-18 18:30:07 - Found definition: MAKEDEP = gcc -M -MG
-2025-06-18 18:30:07 - Found definition: DEFS = -DBSDURG
-2025-06-18 18:30:07 - Found definition: CFLAGS_EXTRA = 
-2025-06-18 18:30:07 - Found definition: INCLUDE = -I../include
-2025-06-18 18:30:07 - Found definition: BRELOC = 0x150000
-2025-06-18 18:30:07 - Found definition: BOOTPLOC = 0x150000
-2025-06-18 18:30:07 - Found definition: SDEFS = -I../include
-2025-06-18 18:30:07 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
-2025-06-18 18:30:07 - Found definition: LDFLAGS = -m elf_i386
-2025-06-18 18:30:07 - Found definition: TOPDIR = ..
-2025-06-18 18:30:07 - Found definition: COMPS = system 							\
-2025-06-18 18:30:07 - Found definition: SRC_FILES = 
-2025-06-18 18:30:07 - Found definition: SYSTEM_SFILES = \
-2025-06-18 18:30:07 - Found definition: SYSTEM_CFILES = \
-2025-06-18 18:30:07 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-2025-06-18 18:30:07 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-2025-06-18 18:30:07 - Found definition: TTY_SFILES = \
-2025-06-18 18:30:07 - Found definition: TTY_CFILES = \
-2025-06-18 18:30:07 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-2025-06-18 18:30:07 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-2025-06-18 18:30:07 - Found definition: SHELL_CFILES = \
-2025-06-18 18:30:07 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
-2025-06-18 18:30:07 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-2025-06-18 18:30:07 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-2025-06-18 18:30:07 - Found source files: ['\\']
-2025-06-18 18:30:07 - Found source files: ['\\']
-2025-06-18 18:30:07 - Found source files: ['\\']
-2025-06-18 18:30:07 - Found compiled source: ../system/initialize.c
-2025-06-18 18:30:07 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
-2025-06-18 18:30:07 - Found LDFLAGS: ['-m', 'elf_i386']
-2025-06-18 18:30:07 - Found include directory from INCLUDE: ../include
-2025-06-18 18:30:07 - Successfully parsed Makefile: found 4 source files and 1 include directories
-2025-06-18 18:30:07 - Source files from Makefile: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c']
-2025-06-18 18:30:07 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:
-In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:7:
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:9: error: unknown type name ‘int32’; did you mean ‘int’?
-    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:32: error: unknown type name ‘int32’; did you mean ‘int’?
-    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
-      |                                ^~~~~
-      |                                int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:6:41: error: unknown type name ‘int32’; did you mean ‘int’?
-    6 | extern  int32   _doscan(char *,int32 *, int32 (*)(void),
-      |                                         ^~~~~
-      |                                         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:25: error: unknown type name ‘int32’; did you mean ‘int’?
-    7 |                         int32 (*)(char), int32, int32);
-      |                         ^~~~~
-      |                         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:42: error: unknown type name ‘int32’; did you mean ‘int’?
-    7 |                         int32 (*)(char), int32, int32);
-      |                                          ^~~~~
-      |                                          int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:7:49: error: unknown type name ‘int32’; did you mean ‘int’?
-    7 |                         int32 (*)(char), int32, int32);
-      |                                                 ^~~~~
-      |                                                 int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:8:9: error: unknown type name ‘int32’; did you mean ‘int’?
-    8 | extern  int32   sscanf(char *, char *, int32);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:8:40: error: unknown type name ‘int32’; did you mean ‘int’?
-    8 | extern  int32   sscanf(char *, char *, int32);
-      |                                        ^~~~~
-      |                                        int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:9:9: error: unknown type name ‘int32’; did you mean ‘int’?
-    9 | extern  int32   fscanf(int32, char *, int32);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:9:30: error: expected ‘)’ before ‘char’
-    9 | extern  int32   fscanf(int32, char *, int32);
-      |                              ^~~~~
-      |                              )
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   23 | extern  int32   fprintf(int, char *, ...);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:23:17: warning: conflicting types for built-in function ‘fprintf’; expected ‘int(void *, const char *, ...)’ [-Wbuiltin-declaration-mismatch]
-   23 | extern  int32   fprintf(int, char *, ...);
+2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/compilation.txt
+2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 19:46:46 - Removed /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 19:46:46 - Found g++ compiler: g++ (GCC) 15.1.1 20250425
+2025-06-18 19:46:46 - Setup environment with include paths: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include', '/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output']
+2025-06-18 19:46:46 - Generating minimal XINU simulation files
+2025-06-18 19:46:46 - CRITICAL ERROR: Circular include dependencies detected!
+2025-06-18 19:46:46 - Circular path: pstarv.h -> xinu.h -> pstarv.h
+2025-06-18 19:46:46 - Compilation cannot proceed with circular dependencies.
+2025-06-18 19:46:46 - Generated standard definitions: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_stddefs.h
+2025-06-18 19:46:46 - Generated standard definitions (include dir copy): /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu_stddefs.h
+2025-06-18 19:46:46 - Generating includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 19:46:46 - Generated includes wrapper: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_includes.h
+2025-06-18 19:46:46 - Created base_types.h with common definitions to help resolve circular dependencies.
+2025-06-18 19:46:46 - Please check circular_includes_error.txt for details on fixing the issue.
+2025-06-18 19:46:46 - Parsing Makefile: /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/Makefile
+2025-06-18 19:46:46 - Found definition: COMPILER_ROOT = /usr/bin/
+2025-06-18 19:46:46 - Found definition: CC = ${COMPILER_ROOT}gcc
+2025-06-18 19:46:46 - Found definition: cPP = ${COMPILER_ROOT}gcc -E
+2025-06-18 19:46:46 - Found definition: AS = ${COMPILER_ROOT}as --32
+2025-06-18 19:46:46 - Found definition: LD = ${COMPILER_ROOT}ld
+2025-06-18 19:46:46 - Found definition: OBJCOPY = ${COMPILER_ROOT}objcopy
+2025-06-18 19:46:46 - Found definition: LIB = ../lib/libxc
+2025-06-18 19:46:46 - Found definition: XINU = ./xinu
+2025-06-18 19:46:46 - Found definition: MAKEDEP = gcc -M -MG
+2025-06-18 19:46:46 - Found definition: DEFS = -DBSDURG
+2025-06-18 19:46:46 - Found definition: CFLAGS_EXTRA = 
+2025-06-18 19:46:46 - Found definition: INCLUDE = -I../include
+2025-06-18 19:46:46 - Found definition: BRELOC = 0x150000
+2025-06-18 19:46:46 - Found definition: BOOTPLOC = 0x150000
+2025-06-18 19:46:46 - Found definition: SDEFS = -I../include
+2025-06-18 19:46:46 - Found definition: CFLAGS = -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+2025-06-18 19:46:46 - Found definition: LDFLAGS = -m elf_i386
+2025-06-18 19:46:46 - Found definition: TOPDIR = ..
+2025-06-18 19:46:46 - Found definition: COMPS = system 							\
+2025-06-18 19:46:46 - Found definition: SRC_FILES = 
+2025-06-18 19:46:46 - Found definition: SYSTEM_SFILES = \
+2025-06-18 19:46:46 - Found definition: SYSTEM_CFILES = \
+2025-06-18 19:46:46 - Found definition: SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
+2025-06-18 19:46:46 - Found definition: SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
+2025-06-18 19:46:46 - Found definition: TTY_SFILES = \
+2025-06-18 19:46:46 - Found definition: TTY_CFILES = \
+2025-06-18 19:46:46 - Found definition: TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+2025-06-18 19:46:46 - Found definition: TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
+2025-06-18 19:46:46 - Found definition: SHELL_CFILES = \
+2025-06-18 19:46:46 - Found definition: SHELL_CFULL = ${SHELL_CFILES:%=../shell/%}
+2025-06-18 19:46:46 - Found definition: OBJ_TMP = $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
+2025-06-18 19:46:46 - Found definition: OBJ_FILES = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
+2025-06-18 19:46:46 - Found source files: ['\\']
+2025-06-18 19:46:46 - Found source files: ['\\']
+2025-06-18 19:46:46 - Found source files: ['\\']
+2025-06-18 19:46:46 - Found compiled source: ../system/initialize.c
+2025-06-18 19:46:46 - Found CFLAGS: ['-march=i586', '-m32', '-fno-builtin', '-fno-stack-protector', '-nostdlib', '-c', '-Wall', '-O', '${DEFS}', '${INCLUDE}', '${CFLAGS_EXTRA}']
+2025-06-18 19:46:46 - Found LDFLAGS: ['-m', 'elf_i386']
+2025-06-18 19:46:46 - Found include directory from INCLUDE: ../include
+2025-06-18 19:46:46 - Successfully parsed Makefile: found 4 source files and 1 include directories
+2025-06-18 19:46:46 - Source files from Makefile: ['/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c']
+2025-06-18 19:46:46 - Error: Source file not found: /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c
+2025-06-18 19:46:46 - Compilation error in /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:6:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:3:18: warning: conflicting types for built-in function ‘strncpy’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    3 | extern  char    *strncpy(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:1:1: note: ‘strncpy’ is declared in header ‘<string.h>’
+  +++ |+#include <string.h>
+    1 | /* string.h */
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:4:18: warning: conflicting types for built-in function ‘strncat’; expected ‘char *(char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    4 | extern  char    *strncat(char *, const char *, int32);
+      |                  ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:4:18: note: ‘strncat’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:5:17: warning: conflicting types for built-in function ‘strncmp’; expected ‘int(const char *, const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    5 | extern  int32   strncmp(const char *, const char *, int32);
       |                 ^~~~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:1:1: note: ‘fprintf’ is declared in header ‘<stdio.h>’
-  +++ |+#include <stdio.h>
-    1 | /* stdio.h - definintions and constants for standard I/O functions */
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:24:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   24 | extern  int32   printf(const char *, ...);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   25 | extern  int32   sprintf(char *, char *, ...);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: warning: mismatch in argument 2 type of built-in function ‘sprintf’; expected ‘const char *’ [-Wbuiltin-declaration-mismatch]
-   25 | extern  int32   sprintf(char *, char *, ...);
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:5:17: note: ‘strncmp’ is declared in header ‘<string.h>’
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/string.h:9:17: warning: conflicting types for built-in function ‘strnlen’; expected ‘long unsigned int(const char *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
+    9 | extern  int32   strnlen(const char *, uint32);
       |                 ^~~~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:25:17: note: ‘sprintf’ is declared in header ‘<stdio.h>’
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:30:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   30 | extern  int32   fgetc(int);
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c: In function ‘nulluser’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:57:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   57 |                 (uint32)maxheap - (uint32)0);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:59:28: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   59 |                 (uint32)0, (uint32)maxheap - 1);
+      |                            ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:61:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   61 |                 (uint32)&etext - (uint32)0);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:63:28: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   63 |                 (uint32)0, (uint32)&etext - 1);
+      |                            ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:65:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   65 |                 (uint32)&end - (uint32)&etext);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:65:32: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   65 |                 (uint32)&end - (uint32)&etext);
+      |                                ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:67:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   67 |                 (uint32)&etext, (uint32)&end - 1);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:67:33: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   67 |                 (uint32)&etext, (uint32)&end - 1);
+      |                                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:70:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   70 |                 (uint32)HOLESTART - (uint32)roundmb(minheap));
+      |                 ^
+In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/xinu.h:12,
+                 from /home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:5:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:18:40: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   18 | #define roundmb(x)      (char *)( (7 + (uint32)(x)) & (~7) )
+      |                                        ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:70:45: note: in expansion of macro ‘roundmb’
+   70 |                 (uint32)HOLESTART - (uint32)roundmb(minheap));
+      |                                             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:18:25: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   18 | #define roundmb(x)      (char *)( (7 + (uint32)(x)) & (~7) )
+      |                         ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:70:45: note: in expansion of macro ‘roundmb’
+   70 |                 (uint32)HOLESTART - (uint32)roundmb(minheap));
+      |                                             ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:70:37: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   70 |                 (uint32)HOLESTART - (uint32)roundmb(minheap));
+      |                                     ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:74:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   74 |                 (uint32)maxheap - (uint32)HOLEEND);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:74:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   74 |                 (uint32)maxheap - (uint32)HOLEEND);
+      |                                   ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:76:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   76 |                 (uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
+      |                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:36: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                    ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:76:42: note: in expansion of macro ‘truncmb’
+   76 |                 (uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
+      |                                          ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:25: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                         ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:76:42: note: in expansion of macro ‘truncmb’
+   76 |                 (uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
+      |                                          ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:76:34: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   76 |                 (uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
+      |                                  ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:81:9: error: implicit declaration of function ‘enable’ [-Wimplicit-function-declaration]
+   81 |         enable();
+      |         ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:85:9: error: implicit declaration of function ‘resume’ [-Wimplicit-function-declaration]
+   85 |         resume (
+      |         ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:86:12: error: implicit declaration of function ‘create’ [-Wimplicit-function-declaration]
+   86 |            create((void *)main, INITSTK, INITPRIO, "Main process", 20, 0,
+      |            ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c: In function ‘sysinit’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:114:9: error: implicit declaration of function ‘initevec’ [-Wimplicit-function-declaration]
+  114 |         initevec();
+      |         ^~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:18:40: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   18 | #define roundmb(x)      (char *)( (7 + (uint32)(x)) & (~7) )
+      |                                        ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:133:51: note: in expansion of macro ‘roundmb’
+  133 |         memptr = memlist.mnext = (struct memblk *)roundmb(minheap);
+      |                                                   ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:18:25: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   18 | #define roundmb(x)      (char *)( (7 + (uint32)(x)) & (~7) )
+      |                         ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:133:51: note: in expansion of macro ‘roundmb’
+  133 |         memptr = memlist.mnext = (struct memblk *)roundmb(minheap);
+      |                                                   ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:137:49: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  137 |                 memptr->mlength = (int) truncmb((unsigned) HOLESTART -
+      |                                                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:138:26: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  138 |                          (unsigned)&end - 4);
+      |                          ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:137:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  137 |                 memptr->mlength = (int) truncmb((unsigned) HOLESTART -
+      |                                   ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:141:50: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  141 |                 memptr->mlength = (int) truncmb( (uint32)maxheap -
+      |                                                  ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:142:33: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  142 |                                 (uint32)HOLEEND - NULLSTK);
+      |                                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:25: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                         ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:141:41: note: in expansion of macro ‘truncmb’
+  141 |                 memptr->mlength = (int) truncmb( (uint32)maxheap -
+      |                                         ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:141:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  141 |                 memptr->mlength = (int) truncmb( (uint32)maxheap -
+      |                                   ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:18:40: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   18 | #define roundmb(x)      (char *)( (7 + (uint32)(x)) & (~7) )
+      |                                        ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:145:60: note: in expansion of macro ‘roundmb’
+  145 |                 memlist.mnext = memptr = (struct memblk *) roundmb(&end);
+      |                                                            ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:147:52: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  147 |                 memptr->mlength = (uint32) truncmb((uint32)maxheap -
+      |                                                    ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:148:33: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  148 |                                 (uint32)&end - NULLSTK);
+      |                                 ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:45: note: in definition of macro ‘truncmb’
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                                             ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/memory.h:19:25: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   19 | #define truncmb(x)      (char *)( ((uint32)(x)) & (~7) )
+      |                         ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:147:44: note: in expansion of macro ‘truncmb’
+  147 |                 memptr->mlength = (uint32) truncmb((uint32)maxheap -
+      |                                            ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:147:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  147 |                 memptr->mlength = (uint32) truncmb((uint32)maxheap -
+      |                                   ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:167:28: error: implicit declaration of function ‘getstk’ [-Wimplicit-function-declaration]
+  167 |         prptr->prstkbase = getstk(NULLSTK);
+      |                            ^~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:167:26: error: assignment to ‘char *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  167 |         prptr->prstkbase = getstk(NULLSTK);
+      |                          ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:183:9: error: implicit declaration of function ‘bufinit’ [-Wimplicit-function-declaration]
+  183 |         bufinit();
+      |         ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:190:9: error: implicit declaration of function ‘pci_init’ [-Wimplicit-function-declaration]
+  190 |         pci_init();
+      |         ^~~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:194:9: error: implicit declaration of function ‘clkinit’ [-Wimplicit-function-declaration]
+  194 |         clkinit();
+      |         ^~~~~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c: In function ‘sizmem’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:234:21: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  234 |                 if ((uint32)ptr == (uint32)HOLESTART) { /* skip I/O pages */
+      |                     ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:234:36: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  234 |                 if ((uint32)ptr == (uint32)HOLESTART) { /* skip I/O pages */
+      |                                    ^
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:219:39: warning: variable ‘stmp’ set but not used [-Wunused-but-set-variable]
+  219 |         unsigned char   *ptr, *start, stmp, tmp;
+      |                                       ^~~~
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c: In function ‘delay’:
+/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/compile/../system/initialize.c:252:9: error: implicit declaration of function ‘DELAY’ [-Wimplicit-function-declaration]
+  252 |         DELAY(n);
       |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:32: error: unknown type name ‘int32’; did you mean ‘int’?
-   31 | extern  char    *fgets(char *, int32, int32);
-      |                                ^~~~~
-      |                                int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:31:39: error: unknown type name ‘int32’; did you mean ‘int’?
-   31 | extern  char    *fgets(char *, int32, int32);
-      |                                       ^~~~~
-      |                                       int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   32 | extern  int32   fputc(int32, int32);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
-   32 | extern  int32   fputc(int32, int32);
-      | ^~~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:32:17: warning: declaration of built-in function ‘fputc’ without a prototype; expected ‘int(int,  void *)’ [-Wbuiltin-declaration-mismatch]
-   32 | extern  int32   fputc(int32, int32);
-      |                 ^~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:33:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   33 | extern  int32   fputs(char *, int32);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:33:31: error: unknown type name ‘int32’; did you mean ‘int’?
-   33 | extern  int32   fputs(char *, int32);
-      |                               ^~~~~
-      |                               int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:34:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   34 | extern  int32   putchar(int32 c);
-      |         ^~~~~
-      |         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:34:25: error: unknown type name ‘int32’; did you mean ‘int’?
-   34 | extern  int32   putchar(int32 c);
-      |                         ^~~~~
-      |                         int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdio.h:35:9: error: unknown type name ‘int32’; did you mean ‘int’?
-   35 | extern  int32   getchar(void);
-      |         ^~~~~
-      |         int
-In file included from /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/xinu_simulation.c:8:
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:1: error: unknown type name ‘int32’; did you mean ‘int’?
-    9 | int32 labs(int32);
-      | ^~~~~
-      | int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:9:7: warning: conflicting types for built-in function ‘labs’; expected ‘long int(long int)’ [-Wbuiltin-declaration-mismatch]
-    9 | int32 labs(int32);
-      |       ^~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:1:1: note: ‘labs’ is declared in header ‘<stdlib.h>’
-  +++ |+#include <stdlib.h>
-    1 | /**
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:11:1: error: unknown type name ‘int32’; did you mean ‘int’?
-   11 | int32 atol(char *);
-      | ^~~~~
-      | int
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:12:6: warning: conflicting types for built-in function ‘bzero’; expected ‘void(void *, long unsigned int)’ [-Wbuiltin-declaration-mismatch]
-   12 | void bzero(void *, int);
-      |      ^~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:14:1: error: unknown type name ‘uint32’
-   14 | uint32 rand(void);
-      | ^~~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:16:7: warning: conflicting types for built-in function ‘malloc’; expected ‘void *(long unsigned int)’ [-Wbuiltin-declaration-mismatch]
-   16 | void *malloc(unsigned int nbytes);
-      |       ^~~~~~
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU OS/include/stdlib.h:16:7: note: ‘malloc’ is declared in header ‘<stdlib.h>’
 
-2025-06-18 18:30:07 - Linking error:
-/home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o: file not recognized: file format not recognized
+2025-06-18 19:46:46 - Linking error:
+/usr/bin/ld: cannot find /home/mod/School/Graduate-School/CIS657/FINAL/XINU SIM/output/obj/xinu_simulation.o: No such file or directory
+/usr/bin/ld: cannot find elf_i386: No such file or directory
 collect2: error: ld returned 1 exit status
 
